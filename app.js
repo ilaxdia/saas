@@ -13,6 +13,7 @@ let appraisalPdfBase64 = null;
 let userCredits = parseInt(localStorage.getItem('user_credits') || '5');
 let selectedPackage = { credits: 0, price: 0 };
 let slideshowInterval = null;
+let isSystemApiKeyActive = false;
 
 // DOM Elements
 const apiStatusIndicator = document.getElementById('api-status-indicator');
@@ -87,10 +88,23 @@ const btnCloseLegalFooter = document.getElementById('btn-close-legal-footer');
 
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
+    // Check if there is a system-wide API key active on Vercel
+    try {
+        const statusRes = await fetch('/api/status');
+        const statusData = await statusRes.json();
+        if (statusData && statusData.configured) {
+            isSystemApiKeyActive = true;
+        }
+    } catch (err) {
+        console.error("System API status check failed:", err);
+    }
+
     // Load Saved API Key
     if (geminiApiKey) {
-        apiKeyInput.value = geminiApiKey;
+        if (apiKeyInput) apiKeyInput.value = geminiApiKey;
         validateApiKey(geminiApiKey);
+    } else if (isSystemApiKeyActive) {
+        updateApiStatus(true);
     } else {
         updateApiStatus(false, 'Gemini Bağlı Değil');
     }
@@ -193,14 +207,40 @@ function getProjectFromDB(id) {
 
 // Update API Status Indicator
 function updateApiStatus(connected, message) {
+    if (!apiStatusIndicator) return;
     if (connected) {
         apiStatusIndicator.className = 'api-status-badge status-connected';
-        apiStatusIndicator.querySelector('.status-text').innerText = 'Gemini Hazır';
+        const txtEl = apiStatusIndicator.querySelector('.status-text') || document.getElementById('api-status-text');
+        if (txtEl) txtEl.innerText = 'Gemini Hazır';
     } else {
         apiStatusIndicator.className = 'api-status-badge status-disconnected';
-        apiStatusIndicator.querySelector('.status-text').innerText = message || 'Gemini Bağlı Değil';
+        const txtEl = apiStatusIndicator.querySelector('.status-text') || document.getElementById('api-status-text');
+        if (txtEl) txtEl.innerText = message || 'Gemini Bağlı Değil';
     }
     checkFormValidation();
+}
+
+// Call Gemini API (either direct using custom key or via backend proxy using system key)
+async function callGemini(requestBody) {
+    let response;
+    if (geminiApiKey) {
+        // Direct call using custom API key
+        response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+    } else if (isSystemApiKeyActive) {
+        // Proxy call using securing system API key on Vercel backend
+        response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+    } else {
+        throw new Error('Gemini API Anahtarı tanımlanmamış. Lütfen ayarlardan giriniz.');
+    }
+    return response;
 }
 
 // Validate API Key using a lightweight request to Gemini API
@@ -982,7 +1022,7 @@ async function analyzeAppraisalPDF() {
     // Check if real API Key is connected
     const isApiKeyValid = apiStatusIndicator.classList.contains('status-connected');
 
-    if (isApiKeyValid && geminiApiKey) {
+    if (isApiKeyValid && (geminiApiKey || isSystemApiKeyActive)) {
         // Real Gemini API call
         setTimeout(async () => {
             try {
@@ -1007,27 +1047,23 @@ Rapordan aşağıdaki bilgileri çıkar ve tam olarak belirtilen JSON formatınd
   "ai_summary": "Örn: BMW 320d, sol ön çamurluk değişimi ve sağ kapılardaki yüzeysel boyalar dışında tamamen orijinaldir. Motor performansı %92 olup tüm mekanik aksamı sorunsuzdur. Şasiler ve airbagler hatasızdır. Toplam 17.250 TL tramer kaydı vardır."
 }`;
 
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [
-                            {
-                                parts: [
-                                    { text: prompt },
-                                    {
-                                        inlineData: {
-                                            mimeType: 'application/pdf',
-                                            data: appraisalPdfBase64
-                                        }
+                const response = await callGemini({
+                    contents: [
+                        {
+                            parts: [
+                                { text: prompt },
+                                {
+                                    inlineData: {
+                                        mimeType: 'application/pdf',
+                                        data: appraisalPdfBase64
                                     }
-                                ]
-                            }
-                        ],
-                        generationConfig: {
-                            responseMimeType: 'application/json'
+                                }
+                            ]
                         }
-                    })
+                    ],
+                    generationConfig: {
+                        responseMimeType: 'application/json'
+                    }
                 });
 
                 if (!response.ok) {
@@ -1279,7 +1315,7 @@ async function generateListing() {
         return;
     }
 
-    if (!geminiApiKey) {
+    if (!geminiApiKey && !isSystemApiKeyActive) {
         alert('Lütfen önce API Ayarlarından API Anahtarınızı girin.');
         return;
     }
@@ -1320,13 +1356,7 @@ async function generateListing() {
             }
         };
 
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-        });
+        const response = await callGemini(requestBody);
 
         if (!response.ok) {
             const errData = await response.json();
