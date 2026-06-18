@@ -2189,10 +2189,10 @@ Sitedeki güncel bilgiler ve sıkça sorulan soruların yanıtları:
    - İlan oluşturabilmek için en az 1 fotoğraf yüklediğinizden ve form detaylarını doldurduğunuzdan emin olun.
 
 3. Kredi Paketleri ve Ücretleri:
-   - Sitemizde 3 adet kredi paketi mevcuttur (1 Kredi = 10 TL olarak ücretlendirilir):
-     - 10 Kredi: 100 TL
-     - 50 Kredi (En Popüler): 500 TL
-     - 150 Kredi: 1500 TL
+   - Sitemizde 3 adet kredi paketi mevcuttur (Ödeme miktarı yükseldikçe kredi başı fiyat ucuzlar, kullanıcının avantajı artar):
+     - 10 Kredi: 100 TL (Kredi başı 10 TL)
+     - 50 Kredi (En Popüler): 400 TL (Kredi başı 8 TL - %20 indirimli!)
+     - 150 Kredi: 900 TL (Kredi başı 6 TL - %40 indirimli!)
    - Satın almak için sol menünün en altında yer alan "Kredi Satın Al / Yükle" butonuna tıklayıp kart simülasyonuyla yükleme yapabilirsiniz.
    - Başlangıçta sistem denemesi için herkese 5 adet ücretsiz ilan hakkı (kredi) verilir. Her ilan üretimi veya PDF analiz işlemi 1 kredi tüketir.
 
@@ -2242,7 +2242,7 @@ function getChatbotLocalFallback(query) {
     
     // 3. Kredi paketleri ve fiyatlar
     if (q.includes('kredi') || q.includes('fiyat') || q.includes('paket') || q.includes('satın') || q.includes('yükle') || q.includes('ödeme') || q.includes('iyzico') || q.includes('ücret')) {
-        return "Sistemimizde 3 farklı kredi paketi mevcuttur (1 Kredi = 10 TL):\n- **10 Kredi**: 100 TL\n- **50 Kredi (En Popüler)**: 500 TL\n- **150 Kredi**: 1500 TL\n\nKredi yüklemek için sol menünün en altında yer alan **'Kredi Satın Al / Yükle'** butonuna tıklayarak iyzico güvenli simülatörü üzerinden test kartı bilgileriyle saniyeler içinde yükleme yapabilirsiniz. Başlangıçta tanımlanan 5 ücretsiz krediniz bittiğinde buralardan yükleme yapabilirsiniz.";
+        return "Sistemimizde ödeme miktarı yükseldikçe kredi avantajının arttığı 3 farklı kredi paketi mevcuttur:\n- **10 Kredi**: 100 TL (Kredi başı 10 TL)\n- **50 Kredi (En Popüler)**: 400 TL (Kredi başı 8 TL - %20 İndirimli!)\n- **150 Kredi**: 900 TL (Kredi başı 6 TL - %40 İndirimli!)\n\nKredi yüklemek için sol menünün en altında yer alan **'Kredi Satın Al / Yükle'** butonuna tıklayarak iyzico güvenli simülatörü üzerinden test kartı bilgileriyle saniyeler içinde yükleme yapabilirsiniz. Başlangıçta tanımlanan 5 ücretsiz krediniz bittiğinde buralardan yükleme yapabilirsiniz.";
     }
     
     if (q.includes('api') || q.includes('key') || q.includes('anahtar') || q.includes('gemini') || q.includes('bağlantı') || q.includes('ayar')) {
