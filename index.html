@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI İlan - Akıllı İlan Asistanı (aiilan.com)</title>
+    <link rel="stylesheet" href="style.css?v=1.2.7">
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- IMMERSIVE BACKGROUNDS -->
+    <div id="bg-container" class="bg-container default-bg"></div>
+    <div id="bg-overlay" class="bg-overlay"></div>
+
+    <!-- SIDEBAR DRAWER -->
+    <div id="sidebar-drawer" class="sidebar-drawer hide-sidebar">
+        <div class="sidebar-header">
+            <div class="logo-area">
+                <div class="logo-icon">🤖✨</div>
+                <div class="logo-text">AI<span>İlan</span> <span class="badge-ai">.com</span></div>
+            </div>
+            <button id="btn-close-sidebar" class="btn-close-sidebar">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            <button id="sidebar-tab-home" class="sidebar-menu-item active" onclick="showWelcomeState()">
+                <i data-lucide="layout"></i>
+                <span>Ana Sayfa</span>
+            </button>
+            <div class="sidebar-menu-divider"></div>
+            <div class="sidebar-menu-title">İlan Kategorileri</div>
+            <button id="sidebar-tab-emlak" class="sidebar-menu-item" onclick="selectNicheAndClose('emlak')">
+                <i data-lucide="home"></i>
+                <span>Emlak İlanı</span>
+            </button>
+            <button id="sidebar-tab-oto" class="sidebar-menu-item" onclick="selectNicheAndClose('oto')">
+                <i data-lucide="car"></i>
+                <span>Oto Galeri</span>
+            </button>
+            <button id="sidebar-tab-appraisal" class="sidebar-menu-item" onclick="selectNicheAndClose('appraisal')">
+                <i data-lucide="file-text"></i>
+                <span>Ekspertiz Analizi</span>
+            </button>
+
+            <div class="sidebar-menu-divider"></div>
+            <div class="sidebar-menu-title">Kullanıcı İşlemleri</div>
+            <button id="sidebar-btn-projects" class="sidebar-menu-item">
+                <i data-lucide="folder-open"></i>
+                <span>Kayıtlı İlanlar</span>
+            </button>
+            <button id="sidebar-btn-settings" class="sidebar-menu-item">
+                <i data-lucide="settings"></i>
+                <span>API Ayarları</span>
+            </button>
+            <button id="sidebar-btn-credits" class="sidebar-menu-item">
+                <i data-lucide="credit-card"></i>
+                <span>Kredi Yükle</span>
+            </button>
+        </div>
+        <div class="sidebar-footer">
+            <div class="sidebar-credits">
+                <i data-lucide="credit-card"></i>
+                <span>Kredi: <strong id="sidebar-credits-val">5</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo-area">
+                <button id="btn-open-sidebar" class="btn-hamburger">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="logo-icon">🤖✨</div>
+                <div class="logo-text">AI<span>İlan</span> <span class="badge-ai">.com</span></div>
+                <span class="logo-divider">|</span>
+                <span class="header-slogan"><i data-lucide="sparkles" class="slogan-icon"></i> Detayları Gir, Fotoğrafları Yükle, Yapay Zeka İlanını Anında Hazırlasın!</span>
+            </div>
+            
+            <div class="header-actions">
+                <div id="credit-badge" class="api-status-badge credit-badge">
+                    <i data-lucide="credit-card"></i>
+                    <span>Kredi: <strong id="user-credits-val">5</strong></span>
+                </div>
+                <div id="api-status-indicator" class="api-status-badge status-disconnected">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Gemini Bağlı Değil</span>
+                </div>
+                <button id="btn-open-projects" class="btn btn-secondary">
+                    <i data-lucide="folder-open"></i>
+                    <span>Kayıtlı İlanlar</span>
+                </button>
+                <button id="btn-open-settings" class="btn btn-secondary">
+                    <i data-lucide="settings"></i>
+                    <span>API Ayarları</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <main id="app-content-area" class="app-content">
+            <!-- WELCOME/EMPTY STATE -->
+            <div id="welcome-state" class="welcome-state">
+                <div class="welcome-card">
+                    <div class="welcome-icon">🤖✨</div>
+                    <h1 class="welcome-title">AI İlan Asistanına Hoş Geldiniz</h1>
+                    <p class="welcome-subtitle">Detayları girin, fotoğrafları yükleyin; yapay zeka saniyeler içinde sahibinden, arabam.com ve hepsiemlak uyumlu profesyonel ilanlarınızı hazırlasın.</p>
+                    <div class="welcome-actions">
+                        <button class="btn btn-primary welcome-niche-btn" onclick="selectNicheAndClose('emlak')">
+                            <i data-lucide="home"></i> Emlak İlanı Hazırla
+                        </button>
+                        <button class="btn btn-secondary welcome-niche-btn" onclick="selectNicheAndClose('oto')">
+                            <i data-lucide="car"></i> Oto Galeri İlanı Hazırla
+                        </button>
+                        <button class="btn btn-secondary welcome-niche-btn" onclick="selectNicheAndClose('appraisal')">
+                            <i data-lucide="file-text"></i> PDF Ekspertiz Raporu Analiz Et
+                        </button>
+                    </div>
+                </div>
+                <!-- Slogan Display Container on the right -->
+                <div id="welcome-slogan-area" class="welcome-slogan-area">
+                    <div class="slogan-badge" id="slogan-badge">Yapay Zeka</div>
+                    <h2 class="slogan-text" id="slogan-text">Akıllı İlan Asistanı: Yapay zekayla saniyeler içinde profesyonel ilanlar hazırlayın!</h2>
+                </div>
+            </div>
+
+            <!-- LEFT COLUMN: INPUT FORM -->
+            <section class="panel form-panel hide-panel">
+                <div class="panel-header-row" style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; width: 100%;">
+                    <h2 class="panel-title" style="border-bottom: none; padding-bottom: 0; margin-bottom: 0;"><i data-lucide="sliders"></i> İlan Detayları</h2>
+                    <button type="button" onclick="window.showWelcomeState()" class="btn btn-text btn-sm" style="color:var(--text-muted); cursor:pointer; display:flex; align-items:center; gap:4px; font-weight:600; border:none; background:transparent;">
+                        <i data-lucide="x-circle" style="width:16px; height:16px;"></i> <span>Kapat</span>
+                    </button>
+                </div>
+                
+                <!-- Edit Project Indicator -->
+                <div id="edit-indicator" class="edit-indicator hide">
+                    <span>Düzenlenen: <strong id="edit-project-title">...</strong></span>
+                    <button type="button" onclick="resetToNewProject()" class="btn-text btn-sm" style="padding:0; margin-left:8px; color:var(--color-primary); display:inline-flex; align-items:center; gap:4px;">
+                        <i data-lucide="plus-circle" style="width:14px; height:14px;"></i> Yeni Başlat
+                    </button>
+                </div>
+
+                <!-- Emlak Form -->
+                <form id="form-emlak" class="niche-form active">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emlak-fiyat">Fiyat (TL)</label>
+                            <input type="number" id="emlak-fiyat" placeholder="Örn: 3500000">
+                        </div>
+                        <div class="form-group">
+                            <label for="emlak-alan">Alan (m²)</label>
+                            <input type="number" id="emlak-alan" placeholder="m²">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emlak-oda">Oda Sayısı</label>
+                            <select id="emlak-oda">
+                                <option value="">Seçiniz</option>
+                                <option value="1+0">1+0 (Stüdyo)</option>
+                                <option value="1+1">1+1</option>
+                                <option value="2+1">2+1</option>
+                                <option value="3+1">3+1</option>
+                                <option value="4+1">4+1</option>
+                                <option value="Dubleks">Dubleks</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emlak-isitma">Isıtma</label>
+                            <select id="emlak-isitma">
+                                <option value="">Seçiniz</option>
+                                <option value="Doğalgaz Kombi">Doğalgaz Kombi</option>
+                                <option value="Merkezi Sistem">Merkezi Sistem</option>
+                                <option value="Yerden Isıtma">Yerden Isıtma</option>
+                                <option value="Soba">Sobalı</option>
+                                <option value="Klima">Klimalı</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Bina Yaşı (Zero Keyboard Radio Chips) -->
+                    <div class="form-group">
+                        <label>Bina Yaşı</label>
+                        <div class="chips-grid">
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="0 (Sıfır)" class="chip-checkbox">
+                                <span class="chip-label">0 (Sıfır)</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="1" class="chip-checkbox">
+                                <span class="chip-label">1</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="2" class="chip-checkbox">
+                                <span class="chip-label">2</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="3" class="chip-checkbox">
+                                <span class="chip-label">3</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="4" class="chip-checkbox">
+                                <span class="chip-label">4</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="5" class="chip-checkbox">
+                                <span class="chip-label">5</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="5-10" class="chip-checkbox">
+                                <span class="chip-label">5-10</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="11-15" class="chip-checkbox">
+                                <span class="chip-label">11-15</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="radio" name="emlak-yas" value="15 ve üzeri" class="chip-checkbox">
+                                <span class="chip-label">15 ve Üzeri</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Emlak Zero Keyboard Features -->
+                    <div class="form-group">
+                        <label>Özellikler (Dokun ve Seç)</label>
+                        <div class="chips-grid">
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-balkon" class="chip-checkbox">
+                                <span class="chip-label">Balkon Var</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-esyali" class="chip-checkbox">
+                                <span class="chip-label">Eşyalı</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-asansor" class="chip-checkbox">
+                                <span class="chip-label">Asansör Var</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-otopark" class="chip-checkbox">
+                                <span class="chip-label">Otopark Var</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-site" class="chip-checkbox">
+                                <span class="chip-label">Site İçinde</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-havuz" class="chip-checkbox">
+                                <span class="chip-label">Havuzlu</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-bahce" class="chip-checkbox">
+                                <span class="chip-label">Bahçeli</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-boyali" class="chip-checkbox">
+                                <span class="chip-label">Yeni Boyalı</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-kredi" class="chip-checkbox">
+                                <span class="chip-label">Krediye Uygun</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="emlak-acil" class="chip-checkbox">
+                                <span class="chip-label">Acil / Fırsat</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emlak-konum">Konum (İl/İlçe/Mahalle)</label>
+                        <input type="text" id="emlak-konum" placeholder="Örn: İstanbul, Kadıköy, Caddebostan">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="emlak-notlar">Ekstra Notlar (Opsiyonel)</label>
+                        <textarea id="emlak-notlar" rows="2" placeholder="Varsa diğer özellikleri yazabilirsiniz..."></textarea>
+                    </div>
+                    
+                    <!-- Action Buttons for Emlak -->
+                    <div class="action-buttons-group" style="display:flex; flex-direction:row; gap:10px; width:100%; margin-top:12px;">
+                        <button type="button" class="btn btn-primary btn-generate" style="flex:1.2; padding:12px 6px; font-size:13px; border-radius:var(--radius-sm);" disabled>
+                            <i data-lucide="sparkles"></i>
+                            <span>Yapay Zeka ile Oluştur</span>
+                        </button>
+                        <button class="btn btn-secondary btn-save-project" style="flex:0.8; padding:12px 6px; font-size:13px; border-radius:var(--radius-sm);" type="button">
+                            <i data-lucide="save"></i>
+                            <span class="btn-save-text">Taslak Kaydet</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Oto Galeri Form -->
+                <form id="form-oto" class="niche-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="oto-marka">Marka / Model</label>
+                            <input type="text" id="oto-marka" placeholder="Örn: BMW 320d">
+                        </div>
+                        <div class="form-group">
+                            <label for="oto-yil">Yıl</label>
+                            <input type="number" id="oto-yil" placeholder="2020">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="oto-km">Kilometre (KM)</label>
+                            <input type="number" id="oto-km" placeholder="KM girin">
+                        </div>
+                        <div class="form-group">
+                            <label for="oto-fiyat">Fiyat (TL)</label>
+                            <input type="number" id="oto-fiyat" placeholder="Fiyat girin">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="oto-yakit">Yakıt Türü</label>
+                            <select id="oto-yakit">
+                                <option value="">Seçiniz</option>
+                                <option value="Benzin">Benzin</option>
+                                <option value="Dizel">Dizel</option>
+                                <option value="LPG">LPG / Benzin</option>
+                                <option value="Hibrit">Hibrit</option>
+                                <option value="Elektrik">Elektrik</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="oto-vites">Vites Türü</label>
+                            <select id="oto-vites">
+                                <option value="">Seçiniz</option>
+                                <option value="Manuel">Manuel</option>
+                                <option value="Otomatik">Otomatik</option>
+                                <option value="Yarı Otomatik">Yarı Otomatik</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Oto Zero Keyboard Features -->
+                    <div class="form-group">
+                        <label>Özellikler & Donanım (Dokun ve Seç)</label>
+                        <div class="chips-grid">
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-sunroof" class="chip-checkbox">
+                                <span class="chip-label">Cam Tavan/Sunroof</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-deri" class="chip-checkbox">
+                                <span class="chip-label">Deri Koltuk</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-kamera" class="chip-checkbox">
+                                <span class="chip-label">Geri Görüş Kam.</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-koltukisitma" class="chip-checkbox">
+                                <span class="chip-label">Koltuk Isıtma</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-anahtarsiz" class="chip-checkbox">
+                                <span class="chip-label">Anahtarsız Çalış.</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-takas" class="chip-checkbox">
+                                <span class="chip-label">Takasa Uygun</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-hatasiz" class="chip-checkbox">
+                                <span class="chip-label">Hatasız / Boyasız</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-bakimli" class="chip-checkbox">
+                                <span class="chip-label">Servis Bakımlı</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-yedek" class="chip-checkbox">
+                                <span class="chip-label">Yedek Anahtar Var</span>
+                            </label>
+                            <label class="chip-container">
+                                <input type="checkbox" id="oto-garanti" class="chip-checkbox">
+                                <span class="chip-label">Garantili</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2px;">
+                            <label for="oto-hasar" style="margin-bottom:0;">Ekspertiz / Hasar Durumu</label>
+                            <button type="button" onclick="setNiche('appraisal')" class="btn-text btn-sm" style="padding:0; color:var(--color-primary); font-weight:600; display:inline-flex; align-items:center; gap:4px; border:none; background:transparent; cursor:pointer;">
+                                <i data-lucide="file-text" style="width:13px; height:13px;"></i> Ekspertiz Analizi
+                            </button>
+                        </div>
+                        <input type="text" id="oto-hasar" placeholder="Örn: Değişensiz, sağ kapı boyalı">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="oto-notlar">Ekstra Notlar (Opsiyonel)</label>
+                        <textarea id="oto-notlar" rows="2" placeholder="Varsa diğer donanımları yazabilirsiniz..."></textarea>
+                    </div>
+                    
+                    <!-- Action Buttons for Oto -->
+                    <div class="action-buttons-group" style="display:flex; flex-direction:row; gap:10px; width:100%; margin-top:12px;">
+                        <button type="button" class="btn btn-primary btn-generate" style="flex:1.2; padding:12px 6px; font-size:13px; border-radius:var(--radius-sm);" disabled>
+                            <i data-lucide="sparkles"></i>
+                            <span>Yapay Zeka ile Oluştur</span>
+                        </button>
+                        <button class="btn btn-secondary btn-save-project" style="flex:0.8; padding:12px 6px; font-size:13px; border-radius:var(--radius-sm);" type="button">
+                            <i data-lucide="save"></i>
+                            <span class="btn-save-text">Taslak Kaydet</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Ekspertiz Analiz Formu -->
+                <form id="form-appraisal" class="niche-form" style="gap:12px;">
+                    <p style="font-size:12.5px; color:var(--text-secondary); line-height:1.4; margin-bottom:4px;">
+                        Aracınızın oto ekspertiz raporunu (PDF) yükleyin. Yapay zeka boya, değişen, tramer ve motor kondisyonunu analiz ederek ilanınız için özet bir rapor hazırlayacaktır.
+                    </p>
+                    
+                    <!-- PDF Drag and drop zone -->
+                    <div id="appraisal-upload-zone" class="upload-zone" style="padding: 24px 16px; border: 2px dashed var(--border-color); background: rgba(255,255,255,0.01);">
+                        <i data-lucide="file-text" class="upload-icon" style="width: 36px; height: 36px; margin-bottom: 4px;"></i>
+                        <p class="upload-main-text" style="font-size: 13px; font-weight: 600; margin: 0;">Ekspertiz PDF Raporunu Sürükleyin veya Seçin</p>
+                        <p class="upload-sub-text" style="font-size: 11px; color:var(--text-muted); margin: 2px 0 0 0;">Sadece PDF Formatında (Maks. 10MB)</p>
+                        <input type="file" id="appraisal-file-input" accept="application/pdf" style="display: none;">
+                    </div>
+
+                    <!-- PDF File Preview Area -->
+                    <div id="appraisal-file-preview" class="hide" style="border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); padding: 10px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; font-size: 12.5px;">
+                        <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
+                            <i data-lucide="file-check" style="color:var(--color-primary); flex-shrink:0;"></i>
+                            <div style="display:flex; flex-direction:column; overflow:hidden;">
+                                <span id="appraisal-file-name" style="font-weight:600; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; color:var(--text-primary);">rapor.pdf</span>
+                                <span id="appraisal-file-size" style="font-size:10.5px; color:var(--text-muted);">1.2 MB</span>
+                            </div>
+                        </div>
+                        <button type="button" id="btn-remove-appraisal-file" class="btn btn-text btn-sm" style="padding:4px; min-width:auto; color:var(--color-danger); border:none; background:transparent; cursor:pointer;">
+                            <i data-lucide="x" style="width:16px; height:16px;"></i>
+                        </button>
+                    </div>
+
+                    <!-- AI Analysis Button -->
+                    <button type="button" id="btn-analyze-appraisal" class="btn btn-primary btn-block hide" style="padding:12px; font-size:13.5px; margin-top:4px;">
+                        <i data-lucide="sparkles"></i>
+                        <span>Yapay Zeka ile PDF Analiz Et</span>
+                    </button>
+
+                    <!-- Loading / Analysis Progress Area -->
+                    <div id="appraisal-loading" class="hide" style="text-align:center; padding: 20px 10px; display:flex; flex-direction:column; align-items:center; gap:12px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                        <div class="spinner" style="width:32px; height:32px; border-width:3px; margin: 0 auto;"></div>
+                        <div style="display:flex; flex-direction:column; gap:4px;">
+                            <h4 id="appraisal-loading-title" style="font-size:13.5px; font-weight:600; color:var(--text-primary); margin:0;">PDF Dosyası Okunuyor...</h4>
+                            <p id="appraisal-loading-subtitle" style="font-size:11.5px; color:var(--text-secondary); line-height:1.4; margin:0;">Araç hasar ve boya detayları çözümleniyor.</p>
+                        </div>
+                    </div>
+
+                    <!-- Detail Analysis Result Area (Hidden by default) -->
+                    <div id="appraisal-result" class="hide" style="display:flex; flex-direction:column; gap:10px;">
+                        <div style="border: 1px solid rgba(16,185,129,0.2); background: rgba(16,185,129,0.02); padding: 12px; border-radius: var(--radius-sm); font-size:12.5px;">
+                            <h4 style="color:var(--color-success); font-weight:700; display:flex; align-items:center; gap:6px; margin-bottom:8px; text-transform:uppercase; font-size:11px; letter-spacing:0.5px;">
+                                <i data-lucide="check-circle-2" style="width:14px; height:14px;"></i> Ekspertiz Analiz Özeti
+                            </h4>
+                            <div style="display:flex; flex-direction:column; gap:8px; color:var(--text-primary);">
+                                <div style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;">
+                                    <span style="font-size:10.5px; color:var(--text-muted); text-transform:uppercase; display:block; margin-bottom:2px;">Araç Bilgisi</span>
+                                    <strong id="res-car-brand" style="font-size:13px; color:var(--color-primary);">BMW 320d (2020)</strong>
+                                </div>
+                                <div style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;">
+                                    <span style="font-size:10.5px; color:var(--text-muted); text-transform:uppercase; display:block; margin-bottom:2px;">Kaporta & Boya Durumu</span>
+                                    <div id="res-car-body" style="line-height:1.4; font-size:12px;">Sol ön çamurluk değişmiş, sağ iki kapı çizik boyalı, harici hatasız.</div>
+                                </div>
+                                <div style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;">
+                                    <span style="font-size:10.5px; color:var(--text-muted); text-transform:uppercase; display:block; margin-bottom:2px;">Motor & Mekanik</span>
+                                    <div id="res-car-engine" style="line-height:1.4; font-size:12px;">Performans %92, yağ kaçağı yok, şanzıman geçişleri kusursuz.</div>
+                                </div>
+                                <div style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;">
+                                    <span style="font-size:10.5px; color:var(--text-muted); text-transform:uppercase; display:block; margin-bottom:2px;">Şasi / Podye / Airbag</span>
+                                    <div id="res-car-chassis" style="line-height:1.4; font-size:12px; color:var(--color-success); font-weight:500;">Şasi, podye, direkler ve airbagler tamamen orijinal ve işlemsizdir.</div>
+                                </div>
+                                <div style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;">
+                                    <span style="font-size:10.5px; color:var(--text-muted); text-transform:uppercase; display:block; margin-bottom:2px;">Kilometre & Tramer</span>
+                                    <div id="res-car-tramer" style="line-height:1.4; font-size:12px;">148,000 KM (Orijinal). Toplam Tramer: 17,250 TL.</div>
+                                </div>
+                                <div>
+                                    <span style="font-size:10.5px; color:var(--text-muted); text-transform:uppercase; display:block; margin-bottom:2px;">Yapay Zeka İlan Sonuç Raporu</span>
+                                    <div id="res-car-summary" style="line-height:1.4; font-style:italic; background:rgba(255,255,255,0.02); padding:8px; border-radius:4px; font-size:11.5px; border-left:2px solid var(--color-primary);">BMW 320d, sol ön çamurluk değişimi ve sağ kapılardaki yüzeysel boyalar dışında tamamen orijinaldir. Motor performansı %92 olup tüm mekanik aksamı sorunsuzdur. Şasiler ve airbagler hatasızdır. Toplam 17.250 TL tramer kaydı vardır.</div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" id="btn-apply-appraisal" class="btn btn-secondary btn-block" style="padding:10px; font-size:12px; margin-top:12px; background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.2); color:var(--color-success);">
+                                <i data-lucide="copy"></i> Verileri Oto Formuna Aktar ve Dön
+                            </button>
+                        </div>
+                    </div>
+
+                <!-- Action Buttons removed from here, now placed inside respective forms -->
+            </section>
+
+            <!-- MIDDLE COLUMN: AI CONSOLE / OUTPUT -->
+            <section class="panel result-panel hide-panel">
+                <h2 class="panel-title"><i data-lucide="terminal"></i> Yapay Zeka Sonuç Paneli</h2>
+                
+                <!-- Welcome/Placeholder State -->
+                <div id="result-placeholder" class="result-placeholder">
+                    <div class="placeholder-icon">🤖</div>
+                    <h3>İlan Analizine Hazır</h3>
+                    <p>Sol taraftan bilgileri doldurun, fotoğrafları yükleyin ve "İlanı Yapay Zeka ile Oluştur" butonuna basın.</p>
+                </div>
+
+                <!-- Loading State -->
+                <div id="result-loading" class="result-loading hide">
+                    <div class="spinner"></div>
+                    <h3>Görseller Analiz Ediliyor...</h3>
+                    <p>Gemini AI fotoğrafları inceliyor ve en çekici ilan metnini hazırlıyor. Lütfen bekleyin.</p>
+                    <div class="loading-skeleton">
+                        <div class="skeleton-line title"></div>
+                        <div class="skeleton-line text"></div>
+                        <div class="skeleton-line text"></div>
+                        <div class="skeleton-line text"></div>
+                    </div>
+                </div>
+
+                <!-- Real Output State -->
+                <div id="result-output" class="result-output hide">
+                    <!-- Title Section -->
+                    <div class="output-group">
+                        <div class="output-header">
+                            <label>Önerilen İlan Başlığı</label>
+                            <button class="btn btn-icon-text btn-sm" onclick="copyText('output-title')">
+                                <i data-lucide="copy"></i> Kopyala
+                            </button>
+                        </div>
+                        <div id="output-title" class="output-box title-box" contenteditable="true"></div>
+                    </div>
+
+                    <!-- Description Section -->
+                    <div class="output-group">
+                        <div class="output-header">
+                            <label>Oluşturulan İlan Açıklaması</label>
+                            <button class="btn btn-icon-text btn-sm" onclick="copyText('output-description')">
+                                <i data-lucide="copy"></i> Kopyala
+                            </button>
+                        </div>
+                        <div id="output-description" class="output-box desc-box" contenteditable="true"></div>
+                    </div>
+
+                    <!-- Tags Section -->
+                    <div class="output-group">
+                        <label>Önerilen Anahtar Kelimeler / Etiketler</label>
+                        <div id="output-tags" class="tag-container"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: PHOTO MANAGER -->
+            <section class="panel photo-panel hide-panel">
+                <div class="panel-header-row">
+                    <h2 class="panel-title"><i data-lucide="image"></i> İlan Fotoğrafları</h2>
+                    <button id="btn-clear-photos" class="btn btn-text btn-sm hide">
+                        <i data-lucide="trash-2"></i> Temizle
+                    </button>
+                </div>
+
+                <!-- Drag and drop zone -->
+                <div id="upload-zone" class="upload-zone">
+                    <i data-lucide="cloud-upload" class="upload-icon"></i>
+                    <p class="upload-main-text">Fotoğrafları buraya sürükleyin veya tıklayın</p>
+                    <p class="upload-sub-text">PNG, JPG formatlarında en fazla 10 adet fotoğraf</p>
+                    <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                </div>
+
+                <!-- Sortable photo list -->
+                <div id="photo-grid" class="photo-grid"></div>
+                
+                <div class="photo-tips">
+                    <i data-lucide="info"></i>
+                    <span>Sürükleyip bırakarak fotoğrafların sırasını değiştirebilirsiniz. İlk sıradaki fotoğraf <strong>Kapak Görseli</strong> olacaktır.</span>
+                </div>
+            </section>
+        </main>
+
+        <!-- API SETTINGS MODAL -->
+        <div id="settings-modal" class="modal-overlay hide">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Gemini API Ayarları</h3>
+                    <button id="btn-close-modal" class="btn-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Uygulamanın çalışması için Google AI Studio'dan alacağınız bir Gemini API Anahtarı gereklidir.</p>
+                    <div class="form-group">
+                        <label for="api-key-input">Gemini API Anahtarı (API KEY)</label>
+                        <input type="password" id="api-key-input" placeholder="AIzaSy...">
+                        <small class="form-tip">Anahtarınız tamamen tarayıcınızda (localStorage) saklanır ve doğrudan Google sunucularıyla güvenli bir şekilde haberleşmek için kullanılır.</small>
+                    </div>
+                    <div class="api-help-link">
+                        <i data-lucide="external-link"></i>
+                        <a href="https://aistudio.google.com/" target="_blank">Google AI Studio'dan Ücretsiz API Key Al</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-cancel-settings" class="btn btn-secondary">İptal</button>
+                    <button id="btn-save-settings" class="btn btn-primary">Kaydet ve Test Et</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SAVED PROJECTS MODAL -->
+        <div id="projects-modal" class="modal-overlay hide">
+            <div class="modal" style="max-width: 600px;">
+                <div class="modal-header">
+                    <h3>Kayıtlı İlanlarım</h3>
+                    <button id="btn-close-projects-modal" class="btn-close">&times;</button>
+                </div>
+                <div class="modal-body" style="max-height: 480px; overflow-y: auto;">
+                    <div id="projects-list" class="project-list">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-close-projects-footer" class="btn btn-secondary">Kapat</button>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <div class="footer-links">
+                <a href="#" onclick="showLegalModal('sales')">Mesafeli Satış Sözleşmesi</a>
+                <span class="footer-divider">•</span>
+                <a href="#" onclick="showLegalModal('refund')">İade ve İptal Koşulları</a>
+                <span class="footer-divider">•</span>
+                <a href="#" onclick="showLegalModal('privacy')">Gizlilik ve KVKK Politikası</a>
+            </div>
+            <div class="footer-contact">
+                <span>E-posta: <a href="mailto:info@aiilan.com">info@aiilan.com</a></span>
+                <span class="footer-divider">•</span>
+                <span>Tel: +90 (544) 670 41 31</span>
+                <span class="footer-divider">•</span>
+                <span>Adres: Emre Mahallesi, 3839 Sokak, No:14 Merkez / ISPARTA</span>
+            </div>
+            <div class="footer-copyright">
+                <span>&copy; 2026 aiilan.com. Tüm hakları saklıdır.</span>
+                <span class="footer-company-info">ilaxdia Bilişim ve Teknoloji Hizmetleri</span>
+            </div>
+            <div class="footer-payment-logos">
+                <span class="footer-payment-logo-item" title="Visa">
+                    <svg width="36" height="22" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:white; border-radius:3px; padding:2px 3px;">
+                        <path d="M15.42 16.58l1.62-9.92h2.58l-1.62 9.92h-2.58zm8.68-9.64c-.52-.2-1.34-.42-2.34-.42-2.58 0-4.4 1.34-4.42 3.28-.02 1.42 1.3 2.22 2.28 2.7.98.48 1.32.78 1.32 1.22 0 .66-.82.96-1.58.96-1.06 0-1.62-.16-2.5-.56l-.34-.16-.36 2.22c.62.28 1.76.52 2.94.54 2.74 0 4.52-1.32 4.54-3.38.02-1.12-.68-1.98-2.18-2.68-.9-.46-1.46-.78-1.46-1.24 0-.42.48-.86 1.52-.86.86-.02 1.48.18 1.96.38l.24.1.38-2.26zm6.34 9.64l2.4-6.46.46 2.18c.28 1.28 1.02 4.28 1.02 4.28h2.66l-3.92-9.92h-2.76l-5.06 9.92h2.6v.08zm-15.68 0l-2.48-6.76c-.28-.94-.78-1.28-1.58-1.58L8.3 7.82l.06-.24h4.52c.58 0 1.06.38 1.2 1.02l1.1 5.86 2.62-6.88h2.72l-4.14 9.92h-2.64z" fill="#1A1F71"/>
+                    </svg>
+                </span>
+                <span class="footer-payment-logo-item" title="Mastercard">
+                    <svg width="36" height="22" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#11101d; border: 1px solid rgba(255,255,255,0.08); border-radius:3px; padding:1px 2px;">
+                        <circle cx="16" cy="12" r="7" fill="#EB001B" />
+                        <circle cx="24" cy="12" r="7" fill="#F79E1B" fill-opacity="0.85" />
+                    </svg>
+                </span>
+                <span class="footer-payment-logo-item" title="Troy">
+                    <div style="background:white; border-radius:3px; padding:1px 5px; font-weight:900; font-size:9px; color:#005c53; font-family:'Outfit', sans-serif; display:flex; align-items:center; height:22px; letter-spacing:-0.5px; border:1px solid #ddd; line-height:1; text-transform:lowercase; box-sizing:border-box;">
+                        troy
+                    </div>
+                </span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- CREDIT PURCHASE / IYZICO MODAL -->
+    <div id="credit-modal" class="modal-overlay hide">
+        <div class="modal" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3><i data-lucide="credit-card" style="display:inline-block; vertical-align:middle; margin-right:6px;"></i> Kredi Yükle</h3>
+                <button id="btn-close-credit-modal" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Step 1: Package Selection -->
+                <div id="credit-packages-view" class="credit-packages-view">
+                    <p style="margin-bottom:16px; font-size:13px; line-height:1.5; color:var(--text-secondary);">
+                        AI İlan Asistanı ile ilan oluşturmak ve PDF raporlarını analiz etmek için bakiye yükleyin. Her işlem 1 kredi harcar.
+                    </p>
+                    <div class="packages-grid" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-bottom:16px;">
+                        <div class="package-card" onclick="selectPackage(10, 49)">
+                            <div class="package-amount">10 Kredi</div>
+                            <div class="package-price">49 TL</div>
+                            <div class="package-details">İlan başı 4.9 TL</div>
+                        </div>
+                        <div class="package-card popular" onclick="selectPackage(50, 199)">
+                            <span class="pop-badge">EN POPÜLER</span>
+                            <div class="package-amount">50 Kredi</div>
+                            <div class="package-price">199 TL</div>
+                            <div class="package-details">İlan başı 3.9 TL</div>
+                        </div>
+                        <div class="package-card" onclick="selectPackage(100, 349)">
+                            <div class="package-amount">100 Kredi</div>
+                            <div class="package-price">349 TL</div>
+                            <div class="package-details">İlan başı 3.4 TL</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: iyzico Simülatörü Ödeme Formu -->
+                <div id="credit-payment-view" class="hide" style="display:flex; flex-direction:column; gap:16px;">
+                    <button type="button" id="btn-back-to-packages" class="btn-text btn-sm" style="align-self:flex-start; color:var(--color-primary); display:inline-flex; align-items:center; gap:4px; font-weight:600; background:transparent; border:none; cursor:pointer;">
+                        <i data-lucide="arrow-left" style="width:14px; height:14px;"></i> Paketlere Dön
+                    </button>
+                    
+                    <div class="iyzico-summary-card">
+                        <div style="display:flex; flex-direction:column;">
+                            <span id="selected-package-info" style="font-weight:700; color:var(--text-primary); font-size:14px;">50 Kredi Paketi</span>
+                            <span style="font-size:11px; color:var(--text-muted);">iyzico Güvenli Altyapısıyla Ödeyin</span>
+                        </div>
+                        <strong id="selected-package-price" style="font-size:18px; color:var(--color-primary);">199 TL</strong>
+                    </div>
+
+                    <!-- iyzico Secure Checkout Layout (Simulated) -->
+                    <div class="iyzico-iframe-container">
+                        <div class="iyzico-header">
+                            <div class="iyzico-logo">iyzi<span>co</span></div>
+                            <span class="iyzico-ssl-badge"><i data-lucide="shield-check" style="width:12px; height:12px; color:var(--color-success);"></i> 256-Bit SSL</span>
+                        </div>
+                        
+                        <div class="iyzico-form">
+                            <div class="form-group">
+                                <label>Kart Üzerindeki İsim</label>
+                                <input type="text" id="card-holder" placeholder="Örn: Ahmet Yılmaz">
+                            </div>
+                            <div class="form-group">
+                                <label>Kart Numarası</label>
+                                <div style="position:relative;">
+                                    <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19">
+                                    <span id="card-brand-logo" class="card-brand-logo"></span>
+                                </div>
+                            </div>
+                            <div class="form-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                                <div class="form-group">
+                                    <label>Son Kullanma Tarihi</label>
+                                    <input type="text" id="card-expiry" placeholder="AA/YY" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label>Güvenlik Kodu (CVC)</label>
+                                    <input type="password" id="card-cvc" placeholder="***" maxlength="3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2.5: 3D Secure Verification Dialog (Simulated) -->
+                <div id="credit-3d-view" class="hide" style="text-align:center; padding:12px; display:flex; flex-direction:column; align-items:center; gap:12px;">
+                    <div class="secure-3d-header" style="background:#f3f4f6; color:#1f2937; padding:8px; border-radius:4px; font-weight:700; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
+                        🔒 BKM 3D Secure İşlem Onayı
+                    </div>
+                    <p style="font-size:12px; color:var(--text-secondary); line-height:1.4;">
+                        Lütfen bankanızda kayıtlı cep telefonunuza gönderilen **6 haneli onay kodunu** giriniz.
+                    </p>
+                    <div class="form-group" style="max-width:180px; margin:0 auto;">
+                        <input type="text" id="sms-code" placeholder="123456" maxlength="6" style="text-align:center; font-size:20px; font-weight:700; letter-spacing:4px; padding:8px; width:100%; border:1px solid var(--border-color); border-radius:var(--radius-sm); background:rgba(255,255,255,0.02); color:white;">
+                    </div>
+                    <div style="font-size:11px; color:var(--text-muted);">
+                        Simülasyon için herhangi bir 6 haneli kod girip onaylayabilirsiniz.
+                    </div>
+                </div>
+
+                <!-- Step 3: Success Screen -->
+                <div id="credit-success-view" class="hide" style="text-align:center; padding:20px 0; display:flex; flex-direction:column; align-items:center; gap:12px;">
+                    <div class="success-glow-icon">🎉</div>
+                    <h3 style="color:var(--text-primary); font-family:var(--font-heading); font-size:18px; font-weight:700;">Ödeme Başarılı!</h3>
+                    <p id="success-message" style="font-size:13px; color:var(--text-secondary); line-height:1.5; max-width:300px; margin:0 auto;">
+                        Hesabınıza 50 Kredi yüklenmiştir. Keyifli ilan oluşturmalar dileriz!
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer" id="credit-modal-footer">
+                <button id="btn-cancel-credit" class="btn btn-secondary">İptal</button>
+                <button id="btn-pay-credit" class="btn btn-primary hide" disabled>Güvenli Ödeme Yap (49 TL)</button>
+                <button id="btn-verify-3d" class="btn btn-primary hide" disabled>Kodu Doğrula ve Tamamla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGAL AGREEMENTS MODAL -->
+    <div id="legal-modal" class="modal-overlay hide">
+        <div class="modal" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 id="legal-modal-title">Sözleşmeler</h3>
+                <button id="btn-close-legal-modal" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto; font-size:12px; line-height:1.6; color:var(--text-secondary); text-align:left;">
+                <div id="legal-modal-content">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-close-legal-footer" class="btn btn-secondary">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT -->
+    <script src="app.js?v=1.2.5"></script>
+</body>
+</html>
