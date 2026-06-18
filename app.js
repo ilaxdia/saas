@@ -1622,7 +1622,7 @@ async function saveCurrentProject(silent = false) {
         aiResult: null
     };
 
-    let title = 'Yeni İlan';
+    let autoTitle = 'Yeni İlan';
 
     if (currentNiche === 'emlak') {
         const fiyat = document.getElementById('emlak-fiyat').value || '';
@@ -1644,10 +1644,10 @@ async function saveCurrentProject(silent = false) {
 
         project.formData = { fiyat, alan, oda, isitma, konum, notlar, yas, checkboxState };
         
-        // Generate title
+        // Generate auto title
         const loc = konum ? konum.split(',')[0].trim() : 'Emlak';
-        title = `${loc} ${oda ? oda : ''} ${fiyat ? formatPrice(fiyat) + ' TL' : 'İlanı'}`;
-    } else {
+        autoTitle = `${loc} ${oda ? oda : ''} ${fiyat ? formatPrice(fiyat) + ' TL' : 'İlanı'}`;
+    } else if (currentNiche === 'oto') {
         const marka = document.getElementById('oto-marka').value || '';
         const yil = document.getElementById('oto-yil').value || '';
         const km = document.getElementById('oto-km').value || '';
@@ -1666,11 +1666,27 @@ async function saveCurrentProject(silent = false) {
 
         project.formData = { marka, yil, km, fiyat, yakit, vites, hasar, notlar, checkboxState };
         
-        // Generate title
-        title = `${marka ? marka : 'Araç'} ${yil ? yil : ''} ${fiyat ? formatPrice(fiyat) + ' TL' : 'İlanı'}`;
+        // Generate auto title
+        autoTitle = `${marka ? marka : 'Araç'} ${yil ? yil : ''} ${fiyat ? formatPrice(fiyat) + ' TL' : 'İlanı'}`;
+    } else if (currentNiche === 'appraisal') {
+        // Handle appraisal PDF analysis saving
+        const brand = document.getElementById('res-car-brand')?.innerText || '';
+        const summary = document.getElementById('res-car-summary')?.innerText || '';
+        project.formData = { brand, summary };
+        autoTitle = brand ? `${brand} Ekspertiz Analizi` : 'Ekspertiz Raporu Analizi';
     }
 
-    project.title = title;
+    // Prompt user for custom file name/title
+    let customTitle = '';
+    if (!silent) {
+        customTitle = prompt('Lütfen bu ilan/analiz kaydı için bir isim girin:', autoTitle);
+        if (customTitle === null) {
+            // Cancelled
+            return;
+        }
+    }
+    
+    project.title = customTitle.trim() || autoTitle;
 
     // Check if AI output is active and save it
     const isOutputVisible = !resultOutput.classList.contains('hide');
@@ -1743,7 +1759,7 @@ window.loadProjectById = async function(id) {
                 const el = document.getElementById(chkId);
                 if (el) el.checked = checkboxState[chkId];
             });
-        } else {
+        } else if (project.niche === 'oto') {
             document.getElementById('oto-marka').value = data.marka || '';
             document.getElementById('oto-yil').value = data.yil || '';
             document.getElementById('oto-km').value = data.km || '';
@@ -1759,6 +1775,17 @@ window.loadProjectById = async function(id) {
                 const el = document.getElementById(chkId);
                 if (el) el.checked = checkboxState[chkId];
             });
+        } else if (project.niche === 'appraisal') {
+            // Restore appraisal results
+            document.getElementById('appraisal-upload-zone').classList.add('hide');
+            document.getElementById('appraisal-file-preview').classList.add('hide');
+            document.getElementById('appraisal-loading').classList.add('hide');
+            
+            const resultPanel = document.getElementById('appraisal-result');
+            resultPanel.classList.remove('hide');
+            
+            document.getElementById('res-car-brand').innerText = data.brand || 'Belirtilmedi';
+            document.getElementById('res-car-summary').innerText = data.summary || 'Belirtilmedi';
         }
 
         // Load Photos
@@ -1769,9 +1796,11 @@ window.loadProjectById = async function(id) {
         if (project.aiResult) {
             displayResults(project.aiResult);
         } else {
-            resultPlaceholder.classList.remove('hide');
-            resultOutput.classList.add('hide');
-            resultLoading.classList.add('hide');
+            if (project.niche !== 'appraisal') {
+                resultPlaceholder.classList.remove('hide');
+                resultOutput.classList.add('hide');
+                resultLoading.classList.add('hide');
+            }
         }
 
         // Set editing state
