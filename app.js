@@ -1939,3 +1939,169 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ==========================================
+// AI CHATBOT WIDGET INTEGRATION
+// ==========================================
+let chatHistory = [];
+
+window.toggleChatbotWidget = function() {
+    const chatWindow = document.getElementById('chatbot-window');
+    if (chatWindow) {
+        chatWindow.classList.toggle('hide');
+        // Auto focus input when opened
+        if (!chatWindow.classList.contains('hide')) {
+            const input = document.getElementById('chatbot-input');
+            if (input) input.focus();
+        }
+    }
+};
+
+window.sendChatbotMessageWidget = async function() {
+    const input = document.getElementById('chatbot-input');
+    const messagesContainer = document.getElementById('chatbot-messages');
+    if (!input || !messagesContainer) return;
+
+    const text = input.value.trim();
+    if (!text) return;
+
+    // Clear input
+    input.value = '';
+
+    // Append User Message to Chat UI
+    const userBubble = document.createElement('div');
+    userBubble.className = 'flex items-start gap-2.5 justify-end';
+    userBubble.innerHTML = `
+        <div class="bg-primary/20 border border-primary/30 p-3 rounded-[6px] text-white leading-relaxed max-w-[85%]">
+            ${escapeHtml(text)}
+        </div>
+    `;
+    messagesContainer.appendChild(userBubble);
+    scrollChatToBottom();
+
+    // Append Typing Indicator
+    const typingIndicator = document.createElement('div');
+    typingIndicator.id = 'chatbot-typing';
+    typingIndicator.className = 'flex items-start gap-2.5 max-w-[85%]';
+    typingIndicator.innerHTML = `
+        <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 flex-shrink-0">
+            <span class="material-symbols-outlined text-primary text-[14px]">smart_toy</span>
+        </div>
+        <div class="bg-white/5 border border-white/10 p-3 rounded-[6px] text-on-surface-variant/70 leading-relaxed italic flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.2s]"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.4s]"></span>
+        </div>
+    `;
+    messagesContainer.appendChild(typingIndicator);
+    scrollChatToBottom();
+
+    // Get response
+    let botResponse = '';
+    const hasKeyActive = (geminiApiKey || isSystemApiKeyActive);
+
+    if (hasKeyActive) {
+        try {
+            botResponse = await getChatbotAIResponse(text);
+        } catch (error) {
+            console.error('Chatbot AI response failed, using fallback:', error);
+            botResponse = getChatbotLocalFallback(text);
+        }
+    } else {
+        botResponse = getChatbotLocalFallback(text);
+    }
+
+    // Remove Typing Indicator
+    const indicator = document.getElementById('chatbot-typing');
+    if (indicator) indicator.remove();
+
+    // Append Bot Message
+    const botBubble = document.createElement('div');
+    botBubble.className = 'flex items-start gap-2.5 max-w-[85%]';
+    botBubble.innerHTML = `
+        <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 flex-shrink-0">
+            <span class="material-symbols-outlined text-primary text-[14px]">smart_toy</span>
+        </div>
+        <div class="bg-white/5 border border-white/10 p-3 rounded-[6px] text-white leading-relaxed">
+            ${markdownToSimpleHtml(botResponse)}
+        </div>
+    `;
+    messagesContainer.appendChild(botBubble);
+    scrollChatToBottom();
+};
+
+function scrollChatToBottom() {
+    const container = document.getElementById('chatbot-messages');
+    if (container) {
+        container.scrollTop = container.scrollHeight;
+    }
+}
+
+function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function markdownToSimpleHtml(text) {
+    // Basic Markdown transformations (bold and line breaks)
+    return escapeHtml(text)
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n/g, '<br>');
+}
+
+async function getChatbotAIResponse(userMessage) {
+    const systemInstruction = `Sen AI İlan sitesinin Canlı Destek yapay zeka asistanısın. Görevin, kullanıcılara platformun kullanımı, kredi paketleri, iyzico ödemeleri ve Gemini API ayarları konusunda yardımcı olmaktır.
+Sitedeki güncel bilgiler:
+- Başlangıçta 5 adet ücretsiz deneme kredisi verilir.
+- Kredi Paketleri: 10 Kredi 99 TL, 50 Kredi 299 TL, 150 Kredi 499 TL'dir.
+- Kredi yüklemek için sol menünün en altında yer alan "Kredi Satın Al / Yükle" butonuna tıklanmalıdır. Ödeme ekranında iyzico simülasyonu çalışmaktadır, rastgele kart bilgileri girilebilir.
+- API Key Ayarları: Sistem arka planda Vercel API Proxy (ortak sistem anahtarı) kullanır. Kullanıcılar kendi özel anahtarlarını da sağ üstteki bağlantı göstergesine tıklayarak girebilirler.
+- Emlak, Oto Galeri ilan yazımı ve PDF oto ekspertiz raporu analizi yapılabilir.
+- Her işlem 1 kredi tüketir.
+Yanıtlarını samimi, kibar, kısa ve tam olarak Türkçe ver. Yanıtları doğrudan markdown formatında verebilirsin.`;
+
+    const chatHistoryPayload = [...chatHistory, { role: 'user', parts: [{ text: userMessage }] }];
+    
+    const requestBody = {
+        contents: chatHistoryPayload,
+        systemInstruction: {
+            parts: [{ text: systemInstruction }]
+        },
+        generationConfig: {
+            maxOutputTokens: 300
+        }
+    };
+    
+    const response = await callGemini(requestBody);
+    if (!response.ok) {
+        throw new Error('Gemini API proxy error');
+    }
+    const data = await response.json();
+    const botText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!botText) throw new Error('Empty response');
+    
+    // Save history
+    chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
+    chatHistory.push({ role: 'model', parts: [{ text: botText }] });
+    if (chatHistory.length > 10) {
+        chatHistory = chatHistory.slice(-10);
+    }
+    return botText;
+}
+
+function getChatbotLocalFallback(query) {
+    const q = query.toLowerCase();
+    if (q.includes('kredi') || q.includes('fiyat') || q.includes('paket') || q.includes('satın') || q.includes('yükle') || q.includes('ödeme') || q.includes('iyzico')) {
+        return "Sistemimizde 3 farklı kredi paketi mevcuttur:\n- **10 Kredi**: 99 TL\n- **50 Kredi (En Popüler)**: 299 TL\n- **150 Kredi**: 499 TL\n\nKredi yüklemek için sol menünün en altında yer alan **'Kredi Satın Al / Yükle'** butonuna tıklayarak iyzico güvenli simülatörü üzerinden test kartı bilgileriyle saniyeler içinde yükleme yapabilirsiniz.";
+    }
+    if (q.includes('api') || q.includes('key') || q.includes('anahtar') || q.includes('gemini') || q.includes('bağlantı') || q.includes('ayar')) {
+        return "Sistemimiz şu anda **Vercel API Proxy** (ortak sistem anahtarı) üzerinden çalışmaktadır. Ek bir API anahtarı girmeden ilan oluşturabilirsiniz. \n\nEğer kendinize ait özel bir API anahtarı kullanmak isterseniz, sağ üstteki göstergeye tıklayarak kendi anahtarınızı tanımlayabilir ve kaydedebilirsiniz.";
+    }
+    if (q.includes('emlak') || q.includes('oto') || q.includes('pdf') || q.includes('ekspertiz') || q.includes('analiz') || q.includes('nasıl')) {
+        return "AI İlan ile 3 farklı alanda asistan desteği alabilirsiniz:\n1. **Emlak İlanı:** Fotoğrafları yükleyip oda sayısı, konum ve fiyat belirterek akıcı emlak açıklamaları üretin.\n2. **Oto Galeri İlanı:** Aracın marka, model, vites, yakıt ve donanım bilgilerini girerek etkileyici oto ilanları üretin.\n3. **PDF Ekspertiz Analizi:** Oto ekspertiz raporunuzu (PDF) yükleyerek boya, değişen, tramer ve motor verilerini saniyeler içinde otomatik olarak özetleyin.";
+    }
+    if (q.includes('selam') || q.includes('merhaba') || q.includes('hey') || q.includes('nasıl') || q.includes('yardım')) {
+        return "Merhaba! Size nasıl yardımcı olabilirim? Kredi yükleme, API ayarları veya ilan oluşturma hakkında soru sorabilirsiniz.";
+    }
+    return "Sorunuzu tam olarak anlayamadım kralım. Ancak size şu konularda yardımcı olabilirim:\n- Kredi yükleme ve iyzico paket fiyatları\n- Gemini API Key ayarları ve bağlantısı\n- Emlak, Oto ve PDF Ekspertiz formlarının kullanımı";
+}
+
