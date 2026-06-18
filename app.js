@@ -32,7 +32,7 @@ const btnClearPhotos = document.getElementById('btn-clear-photos');
 const formEmlak = document.getElementById('form-emlak');
 const formOto = document.getElementById('form-oto');
 
-// Action Buttons (Multiple forms have their own buttons now to prevent overflow issues)
+// Action Buttons
 const btnGenerates = document.querySelectorAll('.btn-generate');
 const btnSaveProjects = document.querySelectorAll('.btn-save-project');
 
@@ -67,7 +67,7 @@ const outputDescription = document.getElementById('output-description');
 const outputTags = document.getElementById('output-tags');
 
 // Sidebar Drawer Elements
-const sidebarDrawer = document.getElementById('sidebar-drawer');
+const sidebarDrawer = document.getElementById('sidebar-drawer') || document.getElementById('sidebar-menu');
 const btnOpenSidebar = document.getElementById('btn-open-sidebar');
 const btnCloseSidebar = document.getElementById('btn-close-sidebar');
 
@@ -75,7 +75,7 @@ const btnCloseSidebar = document.getElementById('btn-close-sidebar');
 const creditBadge = document.getElementById('credit-badge');
 const sidebarBtnCredits = document.getElementById('sidebar-btn-credits');
 const creditModal = document.getElementById('credit-modal');
-const btnCloseCreditModal = document.getElementById('btn-close-credit-modal');
+const btnCloseCreditModal = document.getElementById('btn-close-credit-modal') || document.getElementById('btn-close-credit-modal');
 const btnCancelCredit = document.getElementById('btn-cancel-credit');
 const btnPayCredit = document.getElementById('btn-pay-credit');
 const btnVerify3d = document.getElementById('btn-verify-3d');
@@ -88,12 +88,16 @@ const btnCloseLegalFooter = document.getElementById('btn-close-legal-footer');
 
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
+    // Run header auth status first to write the API indicator to DOM
+    updateHeaderLoginStatus();
+
     // Check if there is a system-wide API key active on Vercel
     try {
         const statusRes = await fetch('/api/status');
         const statusData = await statusRes.json();
         if (statusData && statusData.configured) {
             isSystemApiKeyActive = true;
+            updateHeaderLoginStatus(); // Update DOM to reflect found backend key immediately
         }
     } catch (err) {
         console.error("System API status check failed:", err);
@@ -108,8 +112,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         updateApiStatus(false, 'Gemini Bağlı Değil');
     }
-
-
 
     // Initialize Database
     await initDB();
@@ -207,14 +209,17 @@ function getProjectFromDB(id) {
 
 // Update API Status Indicator
 function updateApiStatus(connected, message) {
-    if (!apiStatusIndicator) return;
+    const indicator = document.getElementById('api-status-indicator');
+    if (!indicator) return;
     if (connected) {
-        apiStatusIndicator.className = 'api-status-badge status-connected';
-        const txtEl = apiStatusIndicator.querySelector('.status-text') || document.getElementById('api-status-text');
+        indicator.classList.remove('status-disconnected');
+        indicator.classList.add('status-connected');
+        const txtEl = indicator.querySelector('.status-text') || document.getElementById('api-status-text');
         if (txtEl) txtEl.innerText = 'Gemini Hazır';
     } else {
-        apiStatusIndicator.className = 'api-status-badge status-disconnected';
-        const txtEl = apiStatusIndicator.querySelector('.status-text') || document.getElementById('api-status-text');
+        indicator.classList.remove('status-connected');
+        indicator.classList.add('status-disconnected');
+        const txtEl = indicator.querySelector('.status-text') || document.getElementById('api-status-text');
         if (txtEl) txtEl.innerText = message || 'Gemini Bağlı Değil';
     }
     checkFormValidation();
@@ -391,9 +396,12 @@ window.showWelcomeState = function() {
     const welcomeState = document.getElementById('welcome-state');
     if (welcomeState) welcomeState.classList.remove('hide-panel');
     
-    document.querySelector('.form-panel').classList.add('hide-panel');
-    document.querySelector('.result-panel').classList.add('hide-panel');
-    document.querySelector('.photo-panel').classList.add('hide-panel');
+    const formPanel = document.querySelector('.form-panel');
+    if (formPanel) formPanel.classList.add('hide-panel');
+    const resultPanel = document.querySelector('.result-panel');
+    if (resultPanel) resultPanel.classList.add('hide-panel');
+    const photoPanel = document.querySelector('.photo-panel');
+    if (photoPanel) photoPanel.classList.add('hide-panel');
 
     // Start background slideshow
     startBackgroundSlideshow();
@@ -423,9 +431,12 @@ window.setNiche = function(niche) {
     const welcomeState = document.getElementById('welcome-state');
     if (welcomeState) welcomeState.classList.add('hide-panel');
 
-    document.querySelector('.form-panel').classList.remove('hide-panel');
-    document.querySelector('.result-panel').classList.remove('hide-panel');
-    document.querySelector('.photo-panel').classList.remove('hide-panel');
+    const formPanel = document.querySelector('.form-panel');
+    if (formPanel) formPanel.classList.remove('hide-panel');
+    const resultPanel = document.querySelector('.result-panel');
+    if (resultPanel) resultPanel.classList.remove('hide-panel');
+    const photoPanel = document.querySelector('.photo-panel');
+    if (photoPanel) photoPanel.classList.remove('hide-panel');
 
     // Update dynamic background class on #bg-container
     const bgContainer = document.getElementById('bg-container');
@@ -1751,8 +1762,8 @@ window.resetToNewProject = function() {
     currentProjectId = null;
     
     // Reset Emlak & Oto & Appraisal forms
-    formEmlak.reset();
-    formOto.reset();
+    if (formEmlak) formEmlak.reset();
+    if (formOto) formOto.reset();
     if (formAppraisal) formAppraisal.reset();
 
     // Reset radio buttons
@@ -1853,6 +1864,10 @@ async function loadAndRenderProjects() {
         lucide.createIcons();
 
     } catch (error) {
+        console.error('Load projects error:', error);
+    }
+};
+
 // QUICK AUTH/LOGIN SIMULATION
 window.openAuthModal = function() {
     const authModal = document.getElementById('auth-modal');
@@ -1864,13 +1879,94 @@ window.closeAuthModal = function() {
     if (authModal) authModal.classList.add('hide');
 };
 
-window.handleQuickLogin = function(provider, photoUrl) {
+// AUTH/LOGIN MODE TOGGLE & SUBMIT HANDLING
+let isLoginMode = false; // Default is Sign Up (Kaydet)
+
+window.toggleAuthMode = function() {
+    isLoginMode = !isLoginMode;
+    const modalTitle = document.getElementById('auth-modal-title');
+    const toggleBtn = document.getElementById('btn-toggle-auth-mode');
+    const form = document.getElementById('auth-registration-form');
+    
+    if (!form || !modalTitle || !toggleBtn) return;
+    
+    if (isLoginMode) {
+        modalTitle.innerText = 'Giriş Yap';
+        toggleBtn.innerText = 'Hesabınız yok mu? Kaydolun';
+        form.innerHTML = `
+            <div class="space-y-1">
+                <label class="text-[10px] text-on-surface-variant/80 font-bold block">E-mail Adresi</label>
+                <input type="email" id="reg-email" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Orn: ahmet@mail.com">
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre</label>
+                <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+            </div>
+            <button type="submit" class="w-full mt-4 py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all duration-300">
+                Giriş Yap
+            </button>
+        `;
+    } else {
+        modalTitle.innerText = 'Hesap Oluştur';
+        toggleBtn.innerText = 'Zaten bir hesabım var? Giriş Yap';
+        form.innerHTML = `
+            <div class="space-y-1">
+                <label class="text-[10px] text-on-surface-variant/80 font-bold block">Kullanıcı Adı</label>
+                <input type="text" id="reg-username" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Orn: ahmet123">
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] text-on-surface-variant/80 font-bold block">E-mail Adresi</label>
+                <input type="email" id="reg-email" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Orn: ahmet@mail.com">
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre</label>
+                <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre Tekrar</label>
+                <input type="password" id="reg-password-confirm" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+            </div>
+            <button type="submit" class="w-full mt-4 py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all duration-300">
+                Kaydet ve Giriş Yap
+            </button>
+        `;
+    }
+};
+
+window.handleAuthSubmit = function(event) {
+    event.preventDefault();
+    const emailInput = document.getElementById('reg-email');
+    const passInput = document.getElementById('reg-password');
+    const userInput = document.getElementById('reg-username');
+    const confirmInput = document.getElementById('reg-password-confirm');
+
+    if (!emailInput || !passInput) return;
+
+    const email = emailInput.value.trim();
+    const password = passInput.value.trim();
+
+    if (!isLoginMode) {
+        // Sign Up Mode: check password match
+        if (confirmInput && password !== confirmInput.value.trim()) {
+            alert("Girdiğiniz şifreler eşleşmiyor, lütfen tekrar kontrol edin!");
+            return;
+        }
+    }
+
+    // Success Authentication Simulator
     localStorage.setItem('is_logged_in', 'true');
-    localStorage.setItem('user_email', provider === 'Google' ? 'ilaxdia@gmail.com' : 'apple@aiilan.com');
-    localStorage.setItem('user_photo', photoUrl);
+    localStorage.setItem('user_email', email);
+    localStorage.setItem('user_photo', 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n');
+    
     window.closeAuthModal();
     updateHeaderLoginStatus();
-    alert(`${provider} ile başarıyla giriş yapıldı!`);
+    
+    if (isLoginMode) {
+        alert(`Giriş Başarılı!\nHoş Geldiniz: ${email}`);
+    } else {
+        const username = userInput ? userInput.value.trim() : 'Kullanıcı';
+        alert(`Kayıt Başarılı!\nHesabınız oluşturuldu: ${username} (${email})`);
+    }
 };
 
 window.handleLogout = function() {
@@ -1910,34 +2006,43 @@ function updateHeaderLoginStatus() {
 
     // Check if we have dashboard auth section (dashboard.html)
     const headerAuthSection = document.getElementById('header-auth-section');
-    if (isLoggedIn && headerAuthSection) {
-        headerAuthSection.innerHTML = `
-            <div id="api-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer" onclick="openSettingsModal()">
-                <span class="w-1.5 h-1.5 rounded-full bg-red-500" id="api-status-dot"></span>
-                <span id="api-status-text">Gemini Durumu</span>
-            </div>
-            <div class="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
-                <img src="${userPhoto || 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n'}" class="w-8 h-8 rounded-full border border-primary/20 object-cover" />
-                <div class="text-left leading-tight hidden md:block">
-                    <p class="text-xs text-white font-bold">Hoş Geldiniz</p>
-                    <p class="text-[10px] text-on-surface-variant">${userEmail}</p>
+    if (headerAuthSection) {
+        const hasKey = !!(geminiApiKey || isSystemApiKeyActive);
+        if (isLoggedIn) {
+            headerAuthSection.innerHTML = `
+                <div id="api-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer ${hasKey ? 'status-connected' : 'status-disconnected'}" onclick="openSettingsModal()">
+                    <span class="w-1.5 h-1.5 rounded-full ${hasKey ? 'bg-emerald-500' : 'bg-red-500'}" id="api-status-dot"></span>
+                    <span id="api-status-text">${hasKey ? 'Gemini Hazır' : 'API Bağlı Değil'}</span>
                 </div>
-                <button onclick="handleLogout()" class="material-symbols-outlined text-sm text-on-surface-variant hover:text-primary ml-1 cursor-pointer" title="Çıkış Yap">logout</button>
-            </div>
-        `;
+                <div class="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
+                    <img src="${userPhoto || 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n'}" class="w-8 h-8 rounded-full border border-primary/20 object-cover" />
+                    <div class="text-left leading-tight hidden md:block">
+                        <p class="text-xs text-white font-bold">Hoş Geldiniz</p>
+                        <p class="text-[10px] text-on-surface-variant">${userEmail}</p>
+                    </div>
+                    <button onclick="handleLogout()" class="material-symbols-outlined text-sm text-on-surface-variant hover:text-primary ml-1 cursor-pointer" title="Çıkış Yap">logout</button>
+                </div>
+            `;
+        } else {
+            // Unauthenticated: update the status indicator inside the default header section if it exists
+            const indicator = document.getElementById('api-status-indicator');
+            if (indicator) {
+                indicator.className = `hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer ${hasKey ? 'status-connected' : 'status-disconnected'}`;
+                const apiDot = document.getElementById('api-status-dot');
+                const apiText = document.getElementById('api-status-text');
+                if (apiDot) apiDot.className = `w-1.5 h-1.5 rounded-full ${hasKey ? 'bg-emerald-500' : 'bg-red-500'}`;
+                if (apiText) apiText.innerText = hasKey ? 'Gemini Hazır' : 'API Bağlı Değil';
+            }
+        }
     }
 }
 
-// Check and update auth on DOMContentLoaded inside app.js
-document.addEventListener('DOMContentLoaded', () => {
-    updateHeaderLoginStatus();
-    
-    // Add close button event listener for auth modal on index.html
-    const btnCloseAuth = document.getElementById('btn-close-auth-modal');
-    if (btnCloseAuth) {
-        btnCloseAuth.addEventListener('click', window.closeAuthModal);
-    }
-});
+// Check and update auth setup inside app.js
+// Add close button event listener for auth modal on index.html if it exists immediately
+const btnCloseAuth = document.getElementById('btn-close-auth-modal');
+if (btnCloseAuth) {
+    btnCloseAuth.addEventListener('click', window.closeAuthModal);
+}
 
 // ==========================================
 // AI CHATBOT WIDGET INTEGRATION

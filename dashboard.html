@@ -706,37 +706,38 @@
 
     <!-- QUICK AUTH/LOGIN MODAL -->
     <div id="auth-modal" class="modal-overlay hide">
-        <div class="modal" style="max-width: 400px; background: rgba(31, 31, 34, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg);">
+        <div class="modal" style="max-width: 400px; background: rgba(31, 31, 34, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px;">
             <div class="modal-header">
-                <h3 style="font-family: var(--font-heading); font-weight: 700; color: white;">Hızlı Giriş Yap</h3>
+                <h3 id="auth-modal-title" style="font-family: var(--font-heading); font-weight: 700; color: white;">Hesap Oluştur</h3>
                 <button id="btn-close-auth-modal" class="btn-close" onclick="closeAuthModal()">&times;</button>
             </div>
-            <div class="modal-body" style="padding: 24px 0 12px; display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center;">
-                <div style="font-size: 32px; animation: pulse 2s infinite;">🤖✨</div>
-                <div>
-                    <h4 style="font-weight: 700; color: white; font-size: 16px; margin-bottom: 4px;">AI İlan Asistanı'na Katılın</h4>
-                    <p style="font-size: 12px; color: var(--text-muted); max-width: 280px; margin: 0 auto; line-height: 1.5;">Tek tıkla hesabınızı oluşturun ve ilanlarınızı bulutta saklayın.</p>
-                </div>
-                <div style="width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-                    <button onclick="handleQuickLogin('Google', 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n')" class="btn flex items-center justify-center gap-3 w-full py-3 px-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-semibold transition-all duration-300">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24">
-                            <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.68 1.54 15.02 1 12 1 7.24 1 3.2 3.74 1.25 7.74l3.96 3.07C6.15 7.72 8.85 5.04 12 5.04z"/>
-                            <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.34H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.76 2.91c2.2-2.03 3.67-5.01 3.67-8.66z"/>
-                            <path fill="#FBBC05" d="M5.21 10.81c-.25-.74-.39-1.53-.39-2.31s.14-1.57.39-2.31L1.25 3.12C.45 4.74 0 6.57 0 8.5s.45 3.76 1.25 5.38l3.96-3.07z"/>
-                            <path fill="#34A853" d="M12 16.51c-3.15 0-5.85-2.68-6.79-5.77l-3.96 3.07C3.2 17.8 7.24 21 12 21c3.15 0 6.02-1.07 8.21-2.91l-3.76-2.91c-1.22.82-2.77 1.33-4.45 1.33z"/>
-                        </svg>
-                        <span>Google ile Giriş Yap</span>
+            <div class="modal-body" style="padding: 16px 20px; text-align: left;">
+                <!-- Registration Form -->
+                <form id="auth-registration-form" onsubmit="handleAuthSubmit(event)" class="space-y-3">
+                    <div class="space-y-1">
+                        <label class="text-[10px] text-on-surface-variant/80 font-bold block">Kullanıcı Adı</label>
+                        <input type="text" id="reg-username" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Orn: ahmet123">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] text-on-surface-variant/80 font-bold block">E-mail Adresi</label>
+                        <input type="email" id="reg-email" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Orn: ahmet@mail.com">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre</label>
+                        <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre Tekrar</label>
+                        <input type="password" id="reg-password-confirm" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full mt-4 py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all duration-300">
+                        Kaydet ve Giriş Yap
                     </button>
-                    <button onclick="handleQuickLogin('Apple', '')" class="btn flex items-center justify-center gap-3 w-full py-3 px-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-semibold transition-all duration-300">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.57 2.95-1.39z"/>
-                        </svg>
-                        <span>Apple ile Giriş Yap</span>
-                    </button>
+                </form>
+                
+                <div class="mt-4 pt-3 border-t border-white/5 text-center">
+                    <button type="button" onclick="toggleAuthMode()" id="btn-toggle-auth-mode" class="text-[10px] text-primary hover:underline">Zaten bir hesabım var? Giriş Yap</button>
                 </div>
-            </div>
-            <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; display: flex; justify-content: center;">
-                <span style="font-size: 10px; color: var(--text-muted);">Giriş yaparak kullanım şartlarımızı kabul etmiş olursunuz.</span>
             </div>
         </div>
     </div>
@@ -934,7 +935,7 @@
     </div>
 
     <!-- MAIN JAVASCRIPT -->
-    <script src="app.js?v=1.3.2"></script>
+    <script src="app.js?v=1.3.3"></script>
     <script>
         // Workspace Switch logic
         window.switchNiche = function(niche) {
@@ -1100,10 +1101,12 @@
             const headerAuthSection = document.getElementById('header-auth-section');
 
             if (isLoggedIn && headerAuthSection) {
+                // Ensure we don't stamp out the API badge state from app.js by using classes and status checks
+                const hasKey = typeof isSystemApiKeyActive !== 'undefined' ? (geminiApiKey || isSystemApiKeyActive) : false;
                 headerAuthSection.innerHTML = `
-                    <div id="api-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer" onclick="openSettingsModal()">
-                        <span class="w-1.5 h-1.5 rounded-full bg-red-500" id="api-status-dot"></span>
-                        <span id="api-status-text">Gemini Durumu</span>
+                    <div id="api-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer ${hasKey ? 'status-connected' : 'status-disconnected'}" onclick="openSettingsModal()">
+                        <span class="w-1.5 h-1.5 rounded-full ${hasKey ? 'bg-emerald-500' : 'bg-red-500'}" id="api-status-dot"></span>
+                        <span id="api-status-text">${hasKey ? 'Gemini Hazır' : 'API Bağlı Değil'}</span>
                     </div>
                     <div class="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
                         <img src="${userPhoto || 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n'}" class="w-8 h-8 rounded-full border border-primary/20 object-cover" />
