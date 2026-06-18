@@ -3,7 +3,7 @@
 // State Management
 let currentNiche = 'emlak';
 let photosArray = [];
-let geminiApiKey = localStorage.getItem('gemini_api_key') || 'AQ.Ab8RN6LbZrnYSWPhcA6OhkV1brs0tHdYzqdsg5AWO_ks7vxzAQ';
+let geminiApiKey = localStorage.getItem('gemini_api_key') || '';
 let db;
 let currentProjectId = null;
 let appraisalPdfFile = null;
