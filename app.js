@@ -530,7 +530,8 @@ function openCreditModal(message) {
     document.getElementById('card-brand-logo').innerHTML = '';
     
     if (message) {
-        alert(message);
+        // Log or show inline if necessary, but no alert dialog to block flow
+        console.log("Credit modal opened:", message);
     }
     
     creditModal.classList.remove('hide');
@@ -1022,7 +1023,7 @@ function getSimulationData(filename) {
 
 async function analyzeAppraisalPDF() {
     if (userCredits <= 0) {
-        openCreditModal('PDF Analizi yapabilmek için yeterli krediniz bulunmamaktadır. Lütfen kredi yükleyin.');
+        openCreditModal();
         return;
     }
 
@@ -1343,7 +1344,7 @@ function checkFormValidation() {
 // Call Gemini API and generate the description
 async function generateListing() {
     if (userCredits <= 0) {
-        openCreditModal('İlan oluşturabilmek için yeterli krediniz bulunmamaktadır. Lütfen kredi yükleyin.');
+        openCreditModal();
         return;
     }
 
