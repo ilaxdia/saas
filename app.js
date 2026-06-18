@@ -4,6 +4,7 @@
 let currentNiche = 'emlak';
 let photosArray = [];
 let geminiApiKey = localStorage.getItem('gemini_api_key') || '';
+let selectedGeminiModel = localStorage.getItem('selected_gemini_model') || 'gemini-2.5-flash';
 let db;
 let currentProjectId = null;
 let appraisalPdfFile = null;
@@ -230,7 +231,7 @@ async function callGemini(requestBody) {
     let response;
     if (geminiApiKey) {
         // Direct call using custom API key
-        response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
+        response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedGeminiModel}:generateContent?key=${geminiApiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -252,7 +253,7 @@ async function callGemini(requestBody) {
 async function validateApiKey(key) {
     updateApiStatus(false, 'Test Ediliyor...');
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+        let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -262,15 +263,35 @@ async function validateApiKey(key) {
         });
 
         if (response.ok) {
+            selectedGeminiModel = 'gemini-2.5-flash';
+            localStorage.setItem('selected_gemini_model', selectedGeminiModel);
             updateApiStatus(true);
             return true;
         } else {
-            const errData = await response.json();
-            const errMsg = errData.error?.message || 'Bilinmeyen Hata';
-            console.error('Gemini API validation error response:', errData);
-            window.lastApiError = errMsg;
-            updateApiStatus(false, 'Hatalı API Key');
-            return false;
+            // Try fallback model
+            console.log("gemini-2.5-flash failed, trying gemini-1.5-flash...");
+            response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: 'Merhaba' }] }],
+                    generationConfig: { maxOutputTokens: 5 }
+                })
+            });
+            
+            if (response.ok) {
+                selectedGeminiModel = 'gemini-1.5-flash';
+                localStorage.setItem('selected_gemini_model', selectedGeminiModel);
+                updateApiStatus(true);
+                return true;
+            } else {
+                const errData = await response.json();
+                const errMsg = errData.error?.message || 'Bilinmeyen Hata';
+                console.error('Gemini API validation error response:', errData);
+                window.lastApiError = errMsg;
+                updateApiStatus(false, 'Hatalı API Key');
+                return false;
+            }
         }
     } catch (error) {
         console.error('API validation error:', error);
@@ -1927,7 +1948,7 @@ window.toggleAuthMode = function() {
                 <input type="password" id="reg-password-confirm" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
             </div>
             <button type="submit" class="w-full mt-4 py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all duration-300">
-                Kaydet ve Giriş Yap
+                Kaydet
             </button>
         `;
     }

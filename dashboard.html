@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <!-- Lucide Icons for compatibility -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="style.css?v=1.3.4" rel="stylesheet"/>
     
     <script id="tailwind-config">
       tailwind.config = {
@@ -731,7 +732,7 @@
                         <input type="password" id="reg-password-confirm" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
                     </div>
                     <button type="submit" class="w-full mt-4 py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all duration-300">
-                        Kaydet ve Giriş Yap
+                        Kaydet
                     </button>
                 </form>
                 
@@ -763,7 +764,7 @@
             </div>
             <div class="modal-footer">
                 <button id="btn-cancel-settings" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-xs" onclick="closeSettingsModal()">İptal</button>
-                <button id="btn-save-settings" class="px-4 py-2 bg-primary text-on-primary hover:bg-primary/90 rounded-lg text-xs font-bold" onclick="saveSettings()">Kaydet ve Test Et</button>
+                <button id="btn-save-settings" class="px-4 py-2 bg-primary text-on-primary hover:bg-primary/90 rounded-lg text-xs font-bold">Kaydet ve Test Et</button>
             </div>
         </div>
     </div>
@@ -935,7 +936,7 @@
     </div>
 
     <!-- MAIN JAVASCRIPT -->
-    <script src="app.js?v=1.3.3"></script>
+    <script src="app.js?v=1.3.4"></script>
     <script>
         // Workspace Switch logic
         window.switchNiche = function(niche) {
