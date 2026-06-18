@@ -211,7 +211,8 @@
                 <h1 class="text-headline-lg font-headline-lg font-bold text-primary tracking-tighter cursor-pointer" onclick="resetToHome()">AI İlan</h1>
             </div>
             <div class="hidden md:flex items-center gap-8 font-label-sm text-label-sm">
-                <button id="nav-btn-emlak" class="text-primary font-bold border-b-2 border-primary pb-1" onclick="switchNiche('emlak')">Emlak</button>
+                <button id="nav-btn-home" class="text-primary font-bold border-b-2 border-primary pb-1" onclick="switchNiche('home')">Dashboard</button>
+                <button id="nav-btn-emlak" class="text-on-surface-variant font-medium hover:text-primary transition-all" onclick="switchNiche('emlak')">Emlak</button>
                 <button id="nav-btn-oto" class="text-on-surface-variant font-medium hover:text-primary transition-all" onclick="switchNiche('oto')">Otomobil</button>
                 <button id="nav-btn-appraisal" class="text-on-surface-variant font-medium hover:text-primary transition-all" onclick="switchNiche('appraisal')">Ekspertiz Analizi</button>
             </div>
@@ -235,9 +236,13 @@
             <p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/50 mb-4">AI Asistan Menüsü</p>
         </div>
         <nav class="flex flex-col flex-1 overflow-y-auto">
-            <div id="side-tab-emlak" class="bg-primary-container text-on-primary-container rounded-lg mx-2 my-1 flex items-center gap-4 p-4 shadow-[0_0_15px_rgba(255,178,186,0.3)] cursor-pointer" onclick="switchNiche('emlak')">
+            <div id="side-tab-home" class="bg-primary-container/20 text-primary border-r-4 border-primary rounded-lg mx-2 my-1 flex items-center gap-4 p-4 shadow-[0_0_15px_rgba(255,178,186,0.3)] cursor-pointer" onclick="switchNiche('home')">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                <span class="font-label-sm text-label-sm font-bold">Genel Bakış</span>
+            </div>
+            <div id="side-tab-emlak" class="text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 flex items-center gap-4 p-4 hover:translate-x-1 transition-all cursor-pointer" onclick="switchNiche('emlak')">
                 <span class="material-symbols-outlined">home_work</span>
-                <span class="font-label-sm text-label-sm font-bold">Emlak İlanı Hazırla</span>
+                <span class="font-label-sm text-label-sm">Emlak İlanı Hazırla</span>
             </div>
             <div id="side-tab-oto" class="text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 flex items-center gap-4 p-4 hover:translate-x-1 transition-all cursor-pointer" onclick="switchNiche('oto')">
                 <span class="material-symbols-outlined">directions_car</span>
@@ -265,24 +270,147 @@
 
     <!-- Main Workspace Canvas -->
     <main class="md:pl-80 pt-24 min-h-screen px-4 md:px-margin-desktop pb-20 max-w-container-max mx-auto">
-        <header class="mb-8">
-            <h2 id="workspace-title" class="font-display-lg text-display-lg mb-2">Emlak İlanı Hazırla</h2>
-            <p id="workspace-subtitle" class="text-on-surface-variant font-body-md">Fotoğraflarınızı yükleyin ve detayları girin; AI sizin için mükemmel satışı yapacak metni kurgulasın.</p>
+        <!-- Welcome state panel (Genel Bakış) -->
+        <div id="welcome-state" class="space-y-12">
+            <!-- Hero Section -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+                <div class="lg:col-span-7 space-y-8">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-primary/20 rounded-xl glass-panel">
+                            <span class="material-symbols-outlined text-primary scale-125" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+                        </div>
+                        <div class="flex gap-1">
+                            <span class="material-symbols-outlined text-tertiary text-sm">spark</span>
+                            <span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+                        </div>
+                    </div>
+                    <h2 class="font-display-lg text-display-lg text-on-surface leading-tight max-w-2xl text-[32px] md:text-[48px] font-bold">
+                        AI İlan Asistanına Hoş Geldiniz
+                    </h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-xl leading-relaxed">
+                        Detayları girin, fotoğrafları yükleyin; yapay zeka saniyeler içinde sahibinden, arabam.com ve hepsiemlak uyumlu profesyonel ilanlarınızı hazırlasın.
+                    </p>
+                    <!-- Primary Action Group -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                        <button onclick="switchNiche('emlak')" class="primary-gradient-btn flex flex-col items-center justify-center gap-3 p-6 rounded-2xl group text-center cursor-pointer text-white">
+                            <span class="material-symbols-outlined text-3xl">home_work</span>
+                            <span class="font-body-md text-body-md font-bold">Emlak İlanı</span>
+                        </button>
+                        <button onclick="switchNiche('oto')" class="secondary-glass-btn flex flex-col items-center justify-center gap-3 p-6 rounded-2xl group text-center cursor-pointer">
+                            <span class="material-symbols-outlined text-3xl">directions_car</span>
+                            <span class="font-body-md text-body-md font-bold">Oto Galeri</span>
+                        </button>
+                        <button onclick="switchNiche('appraisal')" class="secondary-glass-btn flex flex-col items-center justify-center gap-3 p-6 rounded-2xl group text-center cursor-pointer">
+                            <span class="material-symbols-outlined text-3xl">description</span>
+                            <span class="font-body-md text-body-md font-bold">PDF Analizi</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 hidden lg:block">
+                    <div class="glass-panel rounded-[2rem] p-4 overflow-hidden shadow-2xl relative aspect-square">
+                        <img class="w-full h-full object-cover rounded-[1.5rem]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0KcPTZ5gibJVicukwAJn8ZnamAqvmbl1GuY1_Phxu8RENU0e_ccynSLch0vnp868HD8jsQraISKOibq7WPP1ekHS3GTei36tANACdGW_RkgJRENVpbOMMV-TklxEbdsvLY3dU7S4_fg84zpbosxB7GgTi9sLVzhqL_VZYLmM2_FXl__yTOHp-jmCA3YYr1fy2NbZFpCF_MzutD1tHs7HCVCaIryqzi1hI6zZrXkVDaG-ZXrtAvmjAKZckePRE3CNY25ZRqcQM5K0x"/>
+                        <div class="absolute bottom-8 left-8 right-8 glass-panel p-6 rounded-2xl border border-primary/20 ai-glow">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-label-sm font-label-sm text-primary uppercase tracking-widest text-[10px]">Hızlı Analiz</p>
+                                    <p class="text-on-surface font-bold text-sm">Veriler İşleniyor...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
             
-            <!-- Edit Project Banner -->
-            <div id="edit-indicator" class="hidden mt-4 p-3 bg-primary/10 border border-primary/20 rounded-lg flex justify-between items-center">
-                <span class="text-xs">Düzenlenen Taslak: <strong id="edit-project-title" class="text-primary">Yeni Taslak</strong></span>
-                <button onclick="resetToNewProject()" class="text-xs text-tertiary hover:underline flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">add_circle</span> Yeni İlan Başlat
-                </button>
-            </div>
-        </header>
+            <!-- Feature Grid -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+                <div class="glass-panel p-8 rounded-3xl group hover:border-primary/50 transition-all duration-500 border border-white/5 text-left">
+                    <div class="w-12 h-12 bg-tertiary/10 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 0;">real_estate_agent</span>
+                    </div>
+                    <h3 class="font-headline-lg text-xl text-on-surface mb-3">Emlak Uzmanı</h3>
+                    <p class="font-body-md text-sm text-on-surface-variant">Konut, arsa ve ticari mülkler için lokasyon bazlı, ikna edici metinler üretir.</p>
+                </div>
+                <div class="glass-panel p-8 rounded-3xl group hover:border-primary/50 transition-all duration-500 border border-white/5 text-left">
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 0;">garage</span>
+                    </div>
+                    <h3 class="font-headline-lg text-xl text-on-surface mb-3">Oto Galeri</h3>
+                    <p class="font-body-md text-sm text-on-surface-variant">Araç donanımlarını ve ekspertiz detaylarını teknik bir dille satışa hazır hale getirir.</p>
+                </div>
+                <div class="glass-panel p-8 rounded-3xl group hover:border-primary/50 transition-all duration-500 border border-white/5 text-left">
+                    <div class="w-12 h-12 bg-secondary-container/10 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 0;">analytics</span>
+                    </div>
+                    <h3 class="font-headline-lg text-xl text-on-surface mb-3">PDF Tarayıcı</h3>
+                    <p class="font-body-md text-sm text-on-surface-variant">Karmaşık ekspertiz raporlarını saniyeler içinde özetleyerek ilan açıklamasına entegre eder.</p>
+                </div>
+            </section>
+            
+            <!-- Recent Activity -->
+            <section class="space-y-6 text-left">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-headline-lg text-2xl text-on-surface">Son İşlemleriniz</h2>
+                    <button onclick="openProjectsModal()" class="text-primary font-bold hover:underline font-label-sm text-label-sm flex items-center gap-1 cursor-pointer bg-transparent border-none">
+                        Tümünü Gör <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <div onclick="switchNiche('emlak')" class="glass-panel p-6 rounded-2xl flex flex-wrap items-center justify-between hover:bg-white/5 transition-all cursor-pointer border border-white/5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-tertiary/10 rounded-xl flex items-center justify-center">
+                                <span class="material-symbols-outlined text-tertiary">home</span>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-on-surface font-bold text-sm">Kadıköy 3+1 Daire İlanı</p>
+                                <p class="text-label-sm font-label-sm text-on-surface-variant text-[11px]">2 saat önce oluşturuldu • Emlak</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6 mt-4 sm:mt-0">
+                            <span class="px-3 py-1 rounded-full bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase tracking-wider">Yayında</span>
+                            <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+                        </div>
+                    </div>
+                    <div onclick="switchNiche('oto')" class="glass-panel p-6 rounded-2xl flex flex-wrap items-center justify-between hover:bg-white/5 transition-all cursor-pointer border border-white/5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary">directions_car</span>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-on-surface font-bold text-sm">BMW 320d M-Sport Analizi</p>
+                                <p class="text-label-sm font-label-sm text-on-surface-variant text-[11px]">Dün • Oto Galeri</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6 mt-4 sm:mt-0">
+                            <span class="px-3 py-1 rounded-full bg-outline-variant/30 text-on-surface-variant text-[10px] font-bold uppercase tracking-wider">Taslak</span>
+                            <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-            <!-- Left Column: Input -->
-            <div class="lg:col-span-7 space-y-8">
-                <!-- Upload Photos -->
-                <section class="glass-panel p-6 rounded-xl">
+        <div id="workspace-content" class="hidden">
+            <header class="mb-8">
+                <h2 id="workspace-title" class="font-display-lg text-display-lg mb-2">Emlak İlanı Hazırla</h2>
+                <p id="workspace-subtitle" class="text-on-surface-variant font-body-md">Fotoğraflarınızı yükleyin ve detayları girin; AI sizin için mükemmel satışı yapacak metni kurgulasın.</p>
+                
+                <!-- Edit Project Banner -->
+                <div id="edit-indicator" class="hidden mt-4 p-3 bg-primary/10 border border-primary/20 rounded-lg flex justify-between items-center">
+                    <span class="text-xs">Düzenlenen Taslak: <strong id="edit-project-title" class="text-primary">Yeni Taslak</strong></span>
+                    <button onclick="resetToNewProject()" class="text-xs text-tertiary hover:underline flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">add_circle</span> Yeni İlan Başlat
+                    </button>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                <!-- Left Column: Input -->
+                <div class="lg:col-span-7 space-y-8">
+                    <!-- Upload Photos -->
+                    <section class="glass-panel p-6 rounded-xl">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-headline-lg text-xl flex items-center gap-2">
                             <span class="material-symbols-outlined text-primary">add_a_photo</span> Fotoğrafları Yükle
@@ -688,9 +816,9 @@
                         <!-- Loaded dynamically -->
                     </div>
                 </section>
-            </div>
         </div>
-    </main>
+    </div>
+</main>
 
     <!-- Footer -->
     <footer class="bg-surface-container-lowest text-on-surface-variant/60 font-label-sm text-label-sm border-t border-outline-variant/10 shadow-none z-30 md:pl-80">
@@ -939,57 +1067,71 @@
     <script>
         // Workspace Switch logic
         window.switchNiche = function(niche) {
-            // Check if app.js functions are loaded
-            if (typeof setNiche === 'function') {
-                setNiche(niche);
-            }
-            
-            // Toggle view visibility
-            const formEmlak = document.getElementById('form-emlak');
-            const formOto = document.getElementById('form-oto');
-            const formAppraisal = document.getElementById('form-appraisal');
-            
-            if (formEmlak) formEmlak.classList.add('hidden');
-            if (formOto) formOto.classList.add('hidden');
-            if (formAppraisal) formAppraisal.classList.add('hidden');
-            
-            const targetForm = document.getElementById(`form-${niche}`);
-            if (targetForm) targetForm.classList.remove('hidden');
-            
-            // Adjust title/subtitle
+            const welcomeState = document.getElementById('welcome-state');
+            const workspaceContent = document.getElementById('workspace-content');
             const workspaceTitle = document.getElementById('workspace-title');
             const workspaceSubtitle = document.getElementById('workspace-subtitle');
             
-            if (niche === 'emlak') {
-                workspaceTitle.innerText = "Emlak İlanı Hazırla";
-                workspaceSubtitle.innerText = "Fotoğraflarınızı yükleyin ve detayları girin; AI sizin için mükemmel satışı yapacak metni kurgulasın.";
-            } else if (niche === 'oto') {
-                workspaceTitle.innerText = "Oto Galeri İlanı Hazırla";
-                workspaceSubtitle.innerText = "Araç donanımlarını ve özelliklerini girin; yapay zeka en detaylı ve alıcı çeken açıklamayı hazırlasın.";
-            } else if (niche === 'appraisal') {
-                workspaceTitle.innerText = "PDF Ekspertiz Raporu Analiz Et";
-                workspaceSubtitle.innerText = "Aracın ekspertiz PDF belgesini yükleyin; motor performansı, kaporta durumu ve tramer verilerini yapay zeka ile özetleyin.";
+            if (niche === 'home') {
+                if (welcomeState) welcomeState.classList.remove('hidden');
+                if (workspaceContent) workspaceContent.classList.add('hidden');
+                if (workspaceTitle) workspaceTitle.classList.add('hidden');
+                if (workspaceSubtitle) workspaceSubtitle.classList.add('hidden');
+            } else {
+                if (welcomeState) welcomeState.classList.add('hidden');
+                if (workspaceContent) workspaceContent.classList.remove('hidden');
+                if (workspaceTitle) workspaceTitle.classList.remove('hidden');
+                if (workspaceSubtitle) workspaceSubtitle.classList.remove('hidden');
+                
+                // Check if app.js functions are loaded
+                if (typeof setNiche === 'function') {
+                    setNiche(niche);
+                }
+                
+                // Toggle view visibility
+                const formEmlak = document.getElementById('form-emlak');
+                const formOto = document.getElementById('form-oto');
+                const formAppraisal = document.getElementById('form-appraisal');
+                
+                if (formEmlak) formEmlak.classList.add('hidden');
+                if (formOto) formOto.classList.add('hidden');
+                if (formAppraisal) formAppraisal.classList.add('hidden');
+                
+                const targetForm = document.getElementById(`form-${niche}`);
+                if (targetForm) targetForm.classList.remove('hidden');
+                
+                // Adjust title/subtitle
+                if (niche === 'emlak') {
+                    workspaceTitle.innerText = "Emlak İlanı Hazırla";
+                    workspaceSubtitle.innerText = "Fotoğraflarınızı yükleyin ve detayları girin; AI sizin için mükemmel satışı yapacak metni kurgulasın.";
+                } else if (niche === 'oto') {
+                    workspaceTitle.innerText = "Oto Galeri İlanı Hazırla";
+                    workspaceSubtitle.innerText = "Araç donanımlarını ve özelliklerini girin; yapay zeka en detaylı ve alıcı çeken açıklamayı hazırlasın.";
+                } else if (niche === 'appraisal') {
+                    workspaceTitle.innerText = "PDF Ekspertiz Raporu Analiz Et";
+                    workspaceSubtitle.innerText = "Aracın ekspertiz PDF belgesini yükleyin; motor performansı, kaporta durumu ve tramer verilerini yapay zeka ile özetleyin.";
+                }
             }
             
             // Sync navigation active states
-            const navTabs = ['emlak', 'oto', 'appraisal'];
+            const navTabs = ['home', 'emlak', 'oto', 'appraisal'];
             navTabs.forEach(t => {
                 const navBtn = document.getElementById(`nav-btn-${t}`);
                 const sideTab = document.getElementById(`side-tab-${t}`);
                 
                 if (navBtn) {
                     if (t === niche) {
-                        navBtn.className = "text-primary font-bold border-b-2 border-primary pb-1";
+                        navBtn.className = "text-primary font-bold border-b-2 border-primary pb-1 font-label-sm text-label-sm";
                     } else {
-                        navBtn.className = "text-on-surface-variant font-medium hover:text-primary transition-all";
+                        navBtn.className = "text-on-surface-variant font-medium hover:text-primary transition-all font-label-sm text-label-sm";
                     }
                 }
                 
                 if (sideTab) {
                     if (t === niche) {
-                        sideTab.className = "bg-primary-container text-on-primary-container rounded-lg mx-2 my-1 flex items-center gap-4 p-4 shadow-[0_0_15px_rgba(255,178,186,0.3)] cursor-pointer";
+                        sideTab.className = "bg-primary-container/20 text-primary border-r-4 border-primary rounded-lg mx-2 my-1 flex items-center gap-4 p-4 shadow-[0_0_15px_rgba(255,178,186,0.3)] cursor-pointer";
                     } else {
-                        sideTab.className = "text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 flex items-center gap-4 p-4 hover:translate-x-1 transition-all cursor-pointer";
+                        sideTab.className = "text-on-surface-variant hover:bg-surface-variant/30 rounded-lg mx-2 my-1 flex items-center gap-4 p-4 hover:translate-x-1 transition-all cursor-pointer";
                     }
                 }
             });
@@ -1068,10 +1210,7 @@
         };
 
         window.resetToHome = function() {
-            switchNiche('emlak');
-            if (typeof resetToNewProject === 'function') {
-                resetToNewProject();
-            }
+            switchNiche('home');
         };
 
         // Mobile Sidebar Toggle
