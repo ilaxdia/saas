@@ -584,6 +584,17 @@ window.showLegalModal = function(type) {
             <p>3. Ödeme Bilgileri: Ödeme sırasında girdiğiniz kredi kartı bilgileri doğrudan iyzico güvenli ödeme altyapısına iletilir. <strong>aiilan.com</strong> hiçbir şekilde kredi kartı bilgilerinizi kaydetmez veya saklamaz.</p>
             <p>4. Haklarınız: KVKK Madde 11 uyarınca, <strong>info@aiilan.com</strong> adresine başvurarak kişisel verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini veya silinmesini talep etme hakkına sahipsiniz.</p>
         `;
+    } else if (type === 'contact') {
+        titleEl.innerText = 'İletişim Bilgileri';
+        contentEl.innerHTML = `
+            <h4>İLETİŞİM BİLGİLERİ</h4>
+            <p>Platformumuz ve hizmetlerimizle ilgili her türlü soru, görüş veya teknik destek talepleriniz için bizimle iletişime geçebilirsiniz.</p>
+            <br>
+            <p><strong>Şirket Ünvanı:</strong> ilaxdia Bilişim ve Teknoloji Hizmetleri</p>
+            <p><strong>E-Posta:</strong> <a href="mailto:info@aiilan.com" class="text-primary hover:underline">info@aiilan.com</a></p>
+            <p><strong>Destek Saatleri:</strong> Hafta içi ve Hafta sonu 09:00 - 22:00</p>
+            <p><strong>Canlı Destek:</strong> Sağ alttaki chat robotu üzerinden asistanımızla anında görüşebilirsiniz.</p>
+        `;
     }
     legalModal.classList.remove('hide');
 };
