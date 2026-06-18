@@ -558,7 +558,15 @@ window.showLegalModal = function(type) {
         titleEl.innerText = 'Mesafeli Satış Sözleşmesi';
         contentEl.innerHTML = `
             <h4>1. TARAFLAR</h4>
-            <p>İşbu Sözleşme, <strong>aiilan.com</strong> internet sitesi üzerinden hizmet alan ALICI ile <strong>ilaxdia Bilişim ve Teknoloji Hizmetleri</strong> (SATICI) arasında akdedilmiştir.</p>
+            <p>İşbu Sözleşme, <strong>aiilan.com</strong> internet sitesi üzerinden hizmet alan ALICI ile <strong>Hasan Korkmaz - ilaxdia Bilişim ve Teknoloji Hizmetleri</strong> (SATICI) arasında akdedilmiştir.</p>
+            <br>
+            <p><strong>SATICI BİLGİLERİ:</strong></p>
+            <p><strong>Unvan/Ad Soyad:</strong> Hasan Korkmaz (ilaxdia Bilişim ve Teknoloji Hizmetleri)</p>
+            <p><strong>Adres:</strong> Emre Mahallesi 3839 Sokak No:14 Isparta</p>
+            <p><strong>Telefon:</strong> 0544 670 41 31</p>
+            <p><strong>E-posta:</strong> info@aiilan.com</p>
+            <p><strong>Vergi Numarası:</strong> 5780436140</p>
+            <br>
             <h4>2. KONU</h4>
             <p>Sözleşme'nin konusu, ALICI'nın SATICI'ya ait web sitesinden elektronik ortamda siparişini verdiği dijital kredi paketinin satışı ve teslimi ile ilgili olarak 6502 sayılı Tüketicinin Korunması Hakkında Kanun hükümleri gereğince tarafların hak ve yükümlülüklerinin saptanmasıdır.</p>
             <h4>3. HİZMETİN TESLİMİ</h4>
@@ -579,7 +587,7 @@ window.showLegalModal = function(type) {
         titleEl.innerText = 'Gizlilik ve KVKK Politikası';
         contentEl.innerHTML = `
             <h4>GİZLİLİK VE KVKK POLİTİKASI</h4>
-            <p>1. Veri Sorumlusu: <strong>ilaxdia Bilişim ve Teknoloji Hizmetleri</strong></p>
+            <p>1. Veri Sorumlusu: <strong>Hasan Korkmaz - ilaxdia Bilişim ve Teknoloji Hizmetleri</strong></p>
             <p>2. Toplanan Veriler: İlan oluştururken girdiğiniz veriler (konum, alan, fiyat vb.) ve yüklediğiniz fotoğraflar sadece ilan metni oluşturmak amacıyla geçici olarak işlenir. API anahtarınız tarayıcınızda (localStorage) şifreli olarak saklanır ve sunucularımıza iletilmez.</p>
             <p>3. Ödeme Bilgileri: Ödeme sırasında girdiğiniz kredi kartı bilgileri doğrudan iyzico güvenli ödeme altyapısına iletilir. <strong>aiilan.com</strong> hiçbir şekilde kredi kartı bilgilerinizi kaydetmez veya saklamaz.</p>
             <p>4. Haklarınız: KVKK Madde 11 uyarınca, <strong>info@aiilan.com</strong> adresine başvurarak kişisel verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini veya silinmesini talep etme hakkına sahipsiniz.</p>
@@ -590,7 +598,10 @@ window.showLegalModal = function(type) {
             <h4>İLETİŞİM BİLGİLERİ</h4>
             <p>Platformumuz ve hizmetlerimizle ilgili her türlü soru, görüş veya teknik destek talepleriniz için bizimle iletişime geçebilirsiniz.</p>
             <br>
-            <p><strong>Şirket Ünvanı:</strong> ilaxdia Bilişim ve Teknoloji Hizmetleri</p>
+            <p><strong>Ad Soyad/Unvan:</strong> Hasan Korkmaz (ilaxdia Bilişim ve Teknoloji Hizmetleri)</p>
+            <p><strong>Adres:</strong> Emre Mahallesi 3839 Sokak No:14 Isparta</p>
+            <p><strong>Telefon:</strong> <a href="tel:05446704131" class="text-primary hover:underline">0544 670 41 31</a></p>
+            <p><strong>Vergi Numarası:</strong> 5780436140</p>
             <p><strong>E-Posta:</strong> <a href="mailto:info@aiilan.com" class="text-primary hover:underline">info@aiilan.com</a></p>
             <p><strong>Destek Saatleri:</strong> Hafta içi ve Hafta sonu 09:00 - 22:00</p>
             <p><strong>Canlı Destek:</strong> Sağ alttaki chat robotu üzerinden asistanımızla anında görüşebilirsiniz.</p>
