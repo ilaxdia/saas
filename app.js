@@ -109,6 +109,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Lucide Icons Initialization
     lucide.createIcons();
 
+    // Parse URL parameter to automatically switch tabs (from Dashboard links)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam === 'emlak' || tabParam === 'oto' || tabParam === 'appraisal') {
+        setTimeout(() => {
+            selectNicheAndClose(tabParam);
+        }, 100);
+    }
+
     // Event Listeners
     initEventListeners();
 });
@@ -230,8 +239,16 @@ async function validateApiKey(key) {
 function updateCreditsDisplay() {
     const userCreditsVal = document.getElementById('user-credits-val');
     const sidebarCreditsVal = document.getElementById('sidebar-credits-val');
+    const creditStatusText = document.getElementById('credit-status-text');
+    const creditProgressBar = document.getElementById('credit-progress-bar');
+    
     if (userCreditsVal) userCreditsVal.innerText = userCredits;
     if (sidebarCreditsVal) sidebarCreditsVal.innerText = userCredits;
+    if (creditStatusText) creditStatusText.innerText = `${userCredits} / 5 İlan Hakkı`;
+    if (creditProgressBar) {
+        const progressPercent = (userCredits / 5) * 100;
+        creditProgressBar.style.width = `${progressPercent}%`;
+    }
 }
 
 function spendCredit() {
@@ -494,40 +511,42 @@ window.showLegalModal = function(type) {
 function initEventListeners() {
     // Settings Modal
     const openSettings = () => {
-        apiKeyInput.value = geminiApiKey;
-        settingsModal.classList.remove('hide');
+        if (apiKeyInput) apiKeyInput.value = geminiApiKey;
+        if (settingsModal) settingsModal.classList.remove('hide');
     };
     if (btnOpenSettings) btnOpenSettings.addEventListener('click', openSettings);
     if (apiStatusIndicator) apiStatusIndicator.addEventListener('click', openSettings);
 
-    const closeModal = () => settingsModal.classList.add('hide');
-    btnCloseModal.addEventListener('click', closeModal);
-    btnCancelSettings.addEventListener('click', closeModal);
+    const closeModal = () => { if (settingsModal) settingsModal.classList.add('hide'); };
+    if (btnCloseModal) btnCloseModal.addEventListener('click', closeModal);
+    if (btnCancelSettings) btnCancelSettings.addEventListener('click', closeModal);
 
-    btnSaveSettings.addEventListener('click', async () => {
-        const newKey = apiKeyInput.value.trim();
-        if (!newKey) {
-            alert('Lütfen geçerli bir API Anahtarı girin.');
-            return;
-        }
-        
-        btnSaveSettings.innerText = 'Kontrol Ediliyor...';
-        btnSaveSettings.disabled = true;
-        window.lastApiError = null;
+    if (btnSaveSettings) {
+        btnSaveSettings.addEventListener('click', async () => {
+            const newKey = apiKeyInput.value.trim();
+            if (!newKey) {
+                alert('Lütfen geçerli bir API Anahtarı girin.');
+                return;
+            }
+            
+            btnSaveSettings.innerText = 'Kontrol Ediliyor...';
+            btnSaveSettings.disabled = true;
+            window.lastApiError = null;
 
-        const isValid = await validateApiKey(newKey);
-        btnSaveSettings.innerText = 'Kaydet ve Test Et';
-        btnSaveSettings.disabled = false;
+            const isValid = await validateApiKey(newKey);
+            btnSaveSettings.innerText = 'Kaydet ve Test Et';
+            btnSaveSettings.disabled = false;
 
-        if (isValid) {
-            geminiApiKey = newKey;
-            localStorage.setItem('gemini_api_key', newKey);
-            closeModal();
-        } else {
-            const detail = window.lastApiError ? `\n\nHata Detayı: ${window.lastApiError}` : '';
-            alert('API Anahtarı doğrulanamadı. Lütfen kontrol edip tekrar deneyin.' + detail);
-        }
-    });
+            if (isValid) {
+                geminiApiKey = newKey;
+                localStorage.setItem('gemini_api_key', newKey);
+                closeModal();
+            } else {
+                const detail = window.lastApiError ? `\n\nHata Detayı: ${window.lastApiError}` : '';
+                alert('API Anahtarı doğrulanamadı. Lütfen kontrol edip tekrar deneyin.' + detail);
+            }
+        });
+    }
 
     // Saved Projects Modal Trigger Buttons
     const btnOpenProjects = document.getElementById('btn-open-projects');
@@ -535,51 +554,67 @@ function initEventListeners() {
     const btnCloseProjectsModal = document.getElementById('btn-close-projects-modal');
     const btnCloseProjectsFooter = document.getElementById('btn-close-projects-footer');
 
-    btnOpenProjects.addEventListener('click', () => {
-        projectsModal.classList.remove('hide');
-        loadAndRenderProjects();
-    });
+    if (btnOpenProjects) {
+        btnOpenProjects.addEventListener('click', () => {
+            if (projectsModal) {
+                projectsModal.classList.remove('hide');
+                loadAndRenderProjects();
+            }
+        });
+    }
 
-    const closeProjectsModal = () => projectsModal.classList.add('hide');
+    const closeProjectsModal = () => { if (projectsModal) projectsModal.classList.add('hide'); };
     window.closeProjectsModal = closeProjectsModal;
-    btnCloseProjectsModal.addEventListener('click', closeProjectsModal);
-    btnCloseProjectsFooter.addEventListener('click', closeProjectsModal);
+    if (btnCloseProjectsModal) btnCloseProjectsModal.addEventListener('click', closeProjectsModal);
+    if (btnCloseProjectsFooter) btnCloseProjectsFooter.addEventListener('click', closeProjectsModal);
 
-    btnSaveProjects.forEach(btn => btn.addEventListener('click', () => saveCurrentProject()));
+    if (btnSaveProjects) {
+        btnSaveProjects.forEach(btn => btn.addEventListener('click', () => saveCurrentProject()));
+    }
 
     // File Upload Handlers
-    uploadZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', handleFileSelect);
+    if (uploadZone) {
+        uploadZone.addEventListener('click', () => { if (fileInput) fileInput.click(); });
+    }
+    if (fileInput) {
+        fileInput.addEventListener('change', handleFileSelect);
+    }
 
     // Drag and Drop Zone
-    ['dragenter', 'dragover'].forEach(eventName => {
-        uploadZone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            uploadZone.classList.add('dragover');
-        }, false);
-    });
+    if (uploadZone) {
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                uploadZone.classList.add('dragover');
+            }, false);
+        });
 
-    ['dragleave', 'drop'].forEach(eventName => {
-        uploadZone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            uploadZone.classList.remove('dragover');
-        }, false);
-    });
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+            }, false);
+        });
 
-    uploadZone.addEventListener('drop', (e) => {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFiles(files);
-    });
+        uploadZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        });
+    }
 
     // Clear Photos
-    btnClearPhotos.addEventListener('click', () => {
-        photosArray = [];
-        renderPhotos();
-    });
+    if (btnClearPhotos) {
+        btnClearPhotos.addEventListener('click', () => {
+            photosArray = [];
+            renderPhotos();
+        });
+    }
 
     // Generate Buttons
-    btnGenerates.forEach(btn => btn.addEventListener('click', generateListing));
+    if (btnGenerates) {
+        btnGenerates.forEach(btn => btn.addEventListener('click', generateListing));
+    }
 
     // Appraisal PDF Upload Olayları
     if (appraisalUploadZone) {
@@ -1788,7 +1823,89 @@ async function loadAndRenderProjects() {
         lucide.createIcons();
 
     } catch (error) {
-        console.error('Render list error:', error);
-        listContainer.innerHTML = '<div style="color:var(--color-danger); text-align:center; padding:30px;">Kayıtlar listelenirken bir hata oluştu.</div>';
+// QUICK AUTH/LOGIN SIMULATION
+window.openAuthModal = function() {
+    const authModal = document.getElementById('auth-modal');
+    if (authModal) authModal.classList.remove('hide');
+};
+
+window.closeAuthModal = function() {
+    const authModal = document.getElementById('auth-modal');
+    if (authModal) authModal.classList.add('hide');
+};
+
+window.handleQuickLogin = function(provider, photoUrl) {
+    localStorage.setItem('is_logged_in', 'true');
+    localStorage.setItem('user_email', provider === 'Google' ? 'ilaxdia@gmail.com' : 'apple@aiilan.com');
+    localStorage.setItem('user_photo', photoUrl);
+    window.closeAuthModal();
+    updateHeaderLoginStatus();
+    alert(`${provider} ile başarıyla giriş yapıldı!`);
+};
+
+window.handleLogout = function() {
+    localStorage.removeItem('is_logged_in');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_photo');
+    location.reload();
+};
+
+function updateHeaderLoginStatus() {
+    const isLoggedIn = localStorage.getItem('is_logged_in') === 'true';
+    const userEmail = localStorage.getItem('user_email') || '';
+    const userPhoto = localStorage.getItem('user_photo') || '';
+    
+    // Check if we have header actions (index.html)
+    const headerActions = document.querySelector('.header-actions');
+    if (isLoggedIn && headerActions) {
+        let profileBadge = document.getElementById('user-profile-badge');
+        if (!profileBadge) {
+            profileBadge = document.createElement('div');
+            profileBadge.id = 'user-profile-badge';
+            profileBadge.className = 'api-status-badge';
+            profileBadge.style.cssText = 'background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: var(--radius-lg);';
+            profileBadge.innerHTML = `
+                <img src="${userPhoto || 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n'}" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;" />
+                <span style="font-size: 11px; font-weight: 600; color: white;">${userEmail}</span>
+                <i data-lucide="log-out" onclick="handleLogout()" style="width: 14px; height: 14px; color: var(--text-muted); cursor: pointer;" title="Çıkış Yap"></i>
+            `;
+            headerActions.appendChild(profileBadge);
+            lucide.createIcons();
+        }
+        
+        // Hide standard login button on index.html if visible
+        const loginBtn = document.getElementById('btn-header-login');
+        if (loginBtn) loginBtn.classList.add('hide');
+    }
+
+    // Check if we have dashboard auth section (dashboard.html)
+    const headerAuthSection = document.getElementById('header-auth-section');
+    if (isLoggedIn && headerAuthSection) {
+        headerAuthSection.innerHTML = `
+            <div id="api-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer" onclick="openSettingsModal()">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-500" id="api-status-dot"></span>
+                <span id="api-status-text">Gemini Durumu</span>
+            </div>
+            <div class="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
+                <img src="${userPhoto || 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n'}" class="w-8 h-8 rounded-full border border-primary/20 object-cover" />
+                <div class="text-left leading-tight hidden md:block">
+                    <p class="text-xs text-white font-bold">Hoş Geldiniz</p>
+                    <p class="text-[10px] text-on-surface-variant">${userEmail}</p>
+                </div>
+                <button onclick="handleLogout()" class="material-symbols-outlined text-sm text-on-surface-variant hover:text-primary ml-1 cursor-pointer" title="Çıkış Yap">logout</button>
+            </div>
+        `;
     }
 }
+
+// Check and update auth on DOMContentLoaded inside app.js
+document.addEventListener('DOMContentLoaded', () => {
+    updateHeaderLoginStatus();
+    
+    // Add close button event listener for auth modal on index.html
+    const btnCloseAuth = document.getElementById('btn-close-auth-modal');
+    if (btnCloseAuth) {
+        btnCloseAuth.addEventListener('click', window.closeAuthModal);
+    }
+});
+

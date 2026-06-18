@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html class="dark" lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AI İlan - İlan Hazırlama Paneli (aiilan.com)</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700;800&amp;family=Geist:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- Lucide Icons for compatibility -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#d1bcff",
+                    "surface-container-low": "#1b1b1e",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0e0e11",
+                    "primary-fixed": "#ffd9dc",
+                    "on-surface-variant": "#e5bdc0",
+                    "primary-container": "#ff4f73",
+                    "surface-variant": "#353438",
+                    "outline-variant": "#5c3f42",
+                    "on-tertiary": "#00363a",
+                    "on-tertiary-fixed": "#002022",
+                    "on-surface": "#e4e1e6",
+                    "on-tertiary-fixed-variant": "#004f54",
+                    "tertiary-fixed": "#74f5ff",
+                    "primary-fixed-dim": "#ffb2ba",
+                    "tertiary-container": "#00a0a9",
+                    "outline": "#ac888b",
+                    "surface-dim": "#131316",
+                    "error": "#ffb4ab",
+                    "secondary-container": "#7000ff",
+                    "inverse-on-surface": "#303033",
+                    "tertiary": "#00dbe7",
+                    "primary": "#ffb2ba",
+                    "on-primary-fixed": "#400011",
+                    "on-background": "#e4e1e6",
+                    "inverse-primary": "#bd0042",
+                    "surface-container-highest": "#353438",
+                    "surface-container": "#1f1f22",
+                    "secondary": "#d1bcff",
+                    "background": "#131316",
+                    "surface-container-high": "#2a2a2d",
+                    "error-container": "#93000a",
+                    "on-primary-fixed-variant": "#910030",
+                    "on-tertiary-container": "#002f32",
+                    "on-secondary": "#3c0090",
+                    "on-secondary-container": "#ddcdff",
+                    "on-primary-container": "#5a001b",
+                    "on-primary": "#670020",
+                    "surface-tint": "#ffb2ba",
+                    "inverse-surface": "#e4e1e6",
+                    "secondary-fixed": "#e9ddff",
+                    "tertiary-fixed-dim": "#00dbe7",
+                    "surface-bright": "#39393c",
+                    "on-error-container": "#ffdad6",
+                    "surface": "#131316",
+                    "on-secondary-fixed": "#23005b",
+                    "on-secondary-fixed-variant": "#5700c9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1200px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "64px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "label-sm": ["Geist"],
+                    "headline-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+        body {
+            background-color: #0F0F12;
+            color: #e4e1e6;
+            font-family: 'Hanken Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+        .glass-card-hover:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 178, 186, 0.3);
+            box-shadow: 0 0 20px rgba(255, 178, 186, 0.05);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        .ai-gradient-border {
+            position: relative;
+            border-radius: 8px;
+        }
+        .ai-gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border-radius: 9px;
+            padding: 1px;
+            background: linear-gradient(45deg, #ffb2ba, #00dbe7);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glow-button {
+            background: linear-gradient(90deg, #ff4f73, #ffb2ba);
+            box-shadow: 0 0 15px rgba(255, 79, 115, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(255, 79, 115, 0.5);
+            transform: scale(1.02);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        
+        /* Modal Style compatibility */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.hide {
+            display: none !important;
+        }
+        .modal {
+            width: 100%;
+            margin: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .modal-footer {
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .btn-close:hover {
+            color: white;
+        }
+        .hide { display: none !important; }
+    </style>
+</head>
+<body class="bg-surface">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm fixed top-0 left-0 right-0 z-50 w-full h-16 md:h-20">
+        <div class="flex justify-between items-center w-full px-6 md:px-margin-desktop h-full max-w-container-max mx-auto">
+            <div class="flex items-center gap-4">
+                <span class="material-symbols-outlined text-3xl cursor-pointer md:hidden" onclick="toggleSidebar()">menu</span>
+                <h1 class="text-headline-lg font-headline-lg font-bold text-primary tracking-tighter cursor-pointer" onclick="resetToHome()">AI İlan</h1>
+            </div>
+            <div class="hidden md:flex items-center gap-8 font-label-sm text-label-sm">
+                <button id="nav-btn-emlak" class="text-primary font-bold border-b-2 border-primary pb-1" onclick="switchNiche('emlak')">Emlak</button>
+                <button id="nav-btn-oto" class="text-on-surface-variant font-medium hover:text-primary transition-all" onclick="switchNiche('oto')">Otomobil</button>
+                <button id="nav-btn-appraisal" class="text-on-surface-variant font-medium hover:text-primary transition-all" onclick="switchNiche('appraisal')">Ekspertiz Analizi</button>
+            </div>
+            
+            <div class="flex items-center gap-3" id="header-auth-section">
+                <!-- Toggle status indicator -->
+                <div id="api-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer" onclick="openSettingsModal()">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500" id="api-status-dot"></span>
+                    <span id="api-status-text">Gemini Bağlı Değil</span>
+                </div>
+                <button onclick="openAuthModal()" id="btn-header-login-main" class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-label-sm text-label-sm hover:bg-primary/10 transition-all duration-300">
+                    Giriş Yap / Kayıt Ol
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar (Navigation Drawer) -->
+    <aside id="sidebar-menu" class="fixed left-0 top-0 h-screen flex flex-col pt-20 bg-surface-container-low/95 backdrop-blur-2xl w-80 border-r border-outline-variant/20 shadow-2xl z-40 hidden md:flex">
+        <div class="p-6">
+            <p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/50 mb-4">AI Asistan Menüsü</p>
+        </div>
+        <nav class="flex flex-col flex-1 overflow-y-auto">
+            <div id="side-tab-emlak" class="bg-primary-container text-on-primary-container rounded-lg mx-2 my-1 flex items-center gap-4 p-4 shadow-[0_0_15px_rgba(255,178,186,0.3)] cursor-pointer" onclick="switchNiche('emlak')">
+                <span class="material-symbols-outlined">home_work</span>
+                <span class="font-label-sm text-label-sm font-bold">Emlak İlanı Hazırla</span>
+            </div>
+            <div id="side-tab-oto" class="text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 flex items-center gap-4 p-4 hover:translate-x-1 transition-all cursor-pointer" onclick="switchNiche('oto')">
+                <span class="material-symbols-outlined">directions_car</span>
+                <span class="font-label-sm text-label-sm">Oto Galeri İlanı Hazırla</span>
+            </div>
+            <div id="side-tab-appraisal" class="text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 flex items-center gap-4 p-4 hover:translate-x-1 transition-all cursor-pointer" onclick="switchNiche('appraisal')">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-label-sm text-label-sm">PDF Ekspertiz Analizi</span>
+            </div>
+            <div class="mt-auto p-4">
+                <div class="glass-panel p-4 rounded-xl ai-gradient-border">
+                    <p class="font-label-sm text-[10px] text-tertiary mb-1">KREDİ DURUMU</p>
+                    <p id="credit-status-desc" class="font-body-md text-xs mb-3">Sistem denemesi için 5 ücretsiz ilan krediniz tanımlıdır.</p>
+                    <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                        <div id="credit-progress-bar" class="bg-tertiary h-full" style="width: 100%"></div>
+                    </div>
+                    <p id="credit-status-text" class="text-[10px] text-on-surface-variant/60 mt-1.5">5 / 5 İlan Hakkı</p>
+                    <button onclick="openCreditModal()" class="w-full mt-3 py-2 px-3 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 text-[11px] font-bold text-white rounded-[6px] transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">add_card</span> Kredi Satın Al / Yükle
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Workspace Canvas -->
+    <main class="md:pl-80 pt-24 min-h-screen px-4 md:px-margin-desktop pb-20 max-w-container-max mx-auto">
+        <header class="mb-8">
+            <h2 id="workspace-title" class="font-display-lg text-display-lg mb-2">Emlak İlanı Hazırla</h2>
+            <p id="workspace-subtitle" class="text-on-surface-variant font-body-md">Fotoğraflarınızı yükleyin ve detayları girin; AI sizin için mükemmel satışı yapacak metni kurgulasın.</p>
+            
+            <!-- Edit Project Banner -->
+            <div id="edit-indicator" class="hidden mt-4 p-3 bg-primary/10 border border-primary/20 rounded-lg flex justify-between items-center">
+                <span class="text-xs">Düzenlenen Taslak: <strong id="edit-project-title" class="text-primary">Yeni Taslak</strong></span>
+                <button onclick="resetToNewProject()" class="text-xs text-tertiary hover:underline flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">add_circle</span> Yeni İlan Başlat
+                </button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+            <!-- Left Column: Input -->
+            <div class="lg:col-span-7 space-y-8">
+                <!-- Upload Photos -->
+                <section class="glass-panel p-6 rounded-xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-headline-lg text-xl flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">add_a_photo</span> Fotoğrafları Yükle
+                        </h3>
+                        <button id="btn-clear-photos" class="hidden text-xs text-red-400 hover:underline">Temizle</button>
+                    </div>
+                    
+                    <div id="upload-zone" class="border-2 border-dashed border-outline-variant/40 rounded-xl p-10 flex flex-col items-center justify-center bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+                        <span class="material-symbols-outlined text-5xl text-on-surface-variant/50 group-hover:text-primary transition-colors mb-4">cloud_upload</span>
+                        <p class="font-label-sm text-on-surface-variant">Sürükle ve bırak veya <span class="text-primary font-bold">Göz At</span></p>
+                        <p class="text-[10px] text-on-surface-variant/40 mt-2 uppercase tracking-widest">PNG, JPG (En fazla 10 fotoğraf)</p>
+                        <input type="file" id="file-input" multiple accept="image/*" class="hidden">
+                    </div>
+                    
+                    <!-- Previews grid -->
+                    <div id="photo-grid" class="grid grid-cols-4 gap-4 mt-6">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </section>
+
+                <!-- Form Details -->
+                <section class="glass-panel p-6 rounded-xl">
+                    <h3 class="font-headline-lg text-xl mb-6">İlan Detaylarını Girin</h3>
+                    
+                    <!-- Emlak Form -->
+                    <form id="form-emlak" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Fiyat (TL)</label>
+                                <input id="emlak-fiyat" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="Örn: 5.500.000" type="number"/>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Net Alan (m²)</label>
+                                <input id="emlak-alan" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="Örn: 120" type="number"/>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Oda Sayısı</label>
+                                <select id="emlak-oda" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md">
+                                    <option value="">Seçiniz</option>
+                                    <option value="1+0">1+0 (Stüdyo)</option>
+                                    <option value="1+1">1+1</option>
+                                    <option value="2+1">2+1</option>
+                                    <option value="3+1" selected>3+1</option>
+                                    <option value="4+1">4+1</option>
+                                    <option value="Dubleks">Dubleks</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Isıtma Türü</label>
+                                <select id="emlak-isitma" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Doğalgaz Kombi" selected>Doğalgaz Kombi</option>
+                                    <option value="Merkezi Sistem">Merkezi Sistem</option>
+                                    <option value="Yerden Isıtma">Yerden Isıtma</option>
+                                    <option value="Klima">Klimalı</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Emlak Bina Yaşı Chips -->
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant">Bina Yaşı</label>
+                            <div class="flex flex-wrap gap-2">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="emlak-yas" value="0 (Sıfır)" class="sr-only peer" checked>
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">0 (Sıfır)</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="emlak-yas" value="1" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">1</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="emlak-yas" value="2" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">2</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="emlak-yas" value="3" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">3</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="emlak-yas" value="5-10" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">5-10</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="emlak-yas" value="15 ve üzeri" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">15+</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Emlak Zero Keyboard Features -->
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant">Özellikler (Dokun ve Seç)</label>
+                            <div class="flex flex-wrap gap-2">
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-balkon" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Balkon Var</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-esyali" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Eşyalı</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-asansor" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Asansör Var</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-otopark" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Otopark Var</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-site" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Site İçinde</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-havuz" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Havuzlu</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-bahce" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Bahçeli</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-boyali" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Yeni Boyalı</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-kredi" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Krediye Uygun</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="emlak-acil" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Acil / Fırsat</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant">Konum (İl/İlçe/Mahalle)</label>
+                            <input id="emlak-konum" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="Örn: İstanbul, Kadıköy, Caddebostan" type="text"/>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant">Ekstra Notlar (Opsiyonel)</label>
+                            <textarea id="emlak-notlar" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="Merkezi konum, ebeveyn banyosu, yeni tadilat..." rows="3"></textarea>
+                        </div>
+                    </form>
+
+                    <!-- Oto Form -->
+                    <form id="form-oto" class="hidden space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Marka / Model</label>
+                                <input id="oto-marka" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="Örn: BMW 320d" type="text"/>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Model Yılı</label>
+                                <input id="oto-yil" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="2020" type="number"/>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Kilometre (KM)</label>
+                                <input id="oto-km" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="KM girin" type="number"/>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Fiyat (TL)</label>
+                                <input id="oto-fiyat" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="Fiyat girin" type="number"/>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Yakıt Türü</label>
+                                <select id="oto-yakit" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Benzin">Benzin</option>
+                                    <option value="Dizel">Dizel</option>
+                                    <option value="LPG">LPG / Benzin</option>
+                                    <option value="Hibrit">Hibrit</option>
+                                    <option value="Elektrik">Elektrik</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Vites Türü</label>
+                                <select id="oto-vites" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Manuel">Manuel</option>
+                                    <option value="Otomatik">Otomatik</option>
+                                    <option value="Yarı Otomatik">Yarı Otomatik</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Oto Features -->
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant">Donanım & Özellikler (Dokun ve Seç)</label>
+                            <div class="flex flex-wrap gap-2">
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-sunroof" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Cam Tavan/Sunroof</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-deri" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Deri Koltuk</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-kamera" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Geri Görüş Kam.</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-koltukisitma" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Koltuk Isıtma</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-anahtarsiz" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Anahtarsız Çalış.</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-takas" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Takasa Uygun</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-hatasiz" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Hatasız / Boyasız</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-bakimli" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Servis Bakımlı</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-yedek" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Yedek Anahtar</span>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" id="oto-garanti" class="sr-only peer">
+                                    <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs peer-checked:border-primary peer-checked:bg-primary/20 block transition-all">Garantili</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">Ekspertiz / Hasar Durumu</label>
+                                <button type="button" onclick="switchNiche('appraisal')" class="text-xs text-primary hover:underline flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">description</span> PDF Analizinden Getir
+                                </button>
+                            </div>
+                            <input id="oto-hasar" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="Örn: Değişensiz, sağ kapı çizik boyalı" type="text"/>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant">Ekstra Notlar (Opsiyonel)</label>
+                            <textarea id="oto-notlar" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="Varsa diğer donanımları yazabilirsiniz..." rows="3"></textarea>
+                        </div>
+                    </form>
+
+                    <!-- Appraisal (PDF) Form -->
+                    <form id="form-appraisal" class="hidden space-y-6">
+                        <p class="text-xs text-on-surface-variant/80 leading-relaxed">
+                            Aracınızın oto ekspertiz raporunu (PDF) yükleyin. Yapay zeka boya, değişen, tramer ve motor kondisyonunu analiz ederek ilanınız için özet bir rapor hazırlayacaktır.
+                        </p>
+                        
+                        <!-- PDF Upload Zone -->
+                        <div id="appraisal-upload-zone" class="border-2 border-dashed border-outline-variant/40 rounded-xl p-10 flex flex-col items-center justify-center bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+                            <span class="material-symbols-outlined text-5xl text-on-surface-variant/50 group-hover:text-primary transition-colors mb-4">description</span>
+                            <p class="font-label-sm text-on-surface-variant">Ekspertiz PDF Raporunu Sürükleyin veya <span class="text-primary font-bold">Seçiniz</span></p>
+                            <p class="text-[10px] text-on-surface-variant/40 mt-2 uppercase tracking-widest">Sadece PDF (Maks. 10MB)</p>
+                            <input type="file" id="appraisal-file-input" accept="application/pdf" class="hidden">
+                        </div>
+
+                        <!-- PDF Preview -->
+                        <div id="appraisal-file-preview" class="hidden flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
+                            <div class="flex items-center gap-3 overflow-hidden">
+                                <span class="material-symbols-outlined text-primary">article</span>
+                                <div class="flex flex-col overflow-hidden">
+                                    <span id="appraisal-file-name" class="text-sm font-semibold truncate text-white">rapor.pdf</span>
+                                    <span id="appraisal-file-size" class="text-[10px] text-on-surface-variant/60">1.2 MB</span>
+                                </div>
+                            </div>
+                            <button type="button" id="btn-remove-appraisal-file" class="text-red-400 hover:text-red-300">
+                                <span class="material-symbols-outlined text-sm">close</span>
+                            </button>
+                        </div>
+
+                        <!-- AI PDF Analysis Trigger -->
+                        <button type="button" id="btn-analyze-appraisal" class="hidden w-full py-3 px-4 bg-primary text-on-primary font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 hover:bg-primary/95">
+                            <span class="material-symbols-outlined">sparkles</span> Yapay Zeka ile PDF Analiz Et
+                        </button>
+
+                        <!-- Analysis Progress -->
+                        <div id="appraisal-loading" class="hidden p-6 bg-white/5 border border-white/10 rounded-xl text-center space-y-4 flex flex-col items-center">
+                            <div class="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
+                            <div>
+                                <h4 id="appraisal-loading-title" class="text-sm font-bold text-white">PDF Dosyası Okunuyor...</h4>
+                                <p id="appraisal-loading-subtitle" class="text-[10px] text-on-surface-variant/60">Araç hasar ve boya detayları çözümleniyor.</p>
+                            </div>
+                        </div>
+
+                        <!-- Analysis Results -->
+                        <div id="appraisal-result" class="hidden space-y-4 p-5 bg-[#16b981]/5 border border-[#16b981]/20 rounded-xl">
+                            <h4 class="text-xs font-bold text-[#16b981] uppercase tracking-wider flex items-center gap-1.5 border-b border-white/5 pb-2">
+                                <span class="material-symbols-outlined text-sm">check_circle</span> Ekspertiz Analiz Özeti
+                            </h4>
+                            <div class="space-y-3.5 text-xs text-on-surface/90">
+                                <div>
+                                    <span class="text-[10px] text-on-surface-variant/50 uppercase block">Araç Bilgisi</span>
+                                    <strong id="res-car-brand" class="text-primary font-bold text-sm">BMW 320d (2020)</strong>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-on-surface-variant/50 uppercase block">Kaporta & Boya</span>
+                                    <p id="res-car-body">Sol ön çamurluk değişmiş, sağ iki kapı boyalı, harici hatasız.</p>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-on-surface-variant/50 uppercase block">Motor & Mekanik</span>
+                                    <p id="res-car-engine">Performans %92, yağ kaçağı yok, şanzıman geçişleri kusursuz.</p>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-on-surface-variant/50 uppercase block">Şasi / Podye / Airbag</span>
+                                    <p id="res-car-chassis" class="text-[#16b981] font-semibold">Şasi, podye, direkler ve airbagler orijinaldir.</p>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-on-surface-variant/50 uppercase block">Kilometre & Tramer</span>
+                                    <p id="res-car-tramer">148,000 KM (Orijinal). Toplam Tramer: 17,250 TL.</p>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-on-surface-variant/50 uppercase block">Yapay Zeka Sonuç Özeti</span>
+                                    <p id="res-car-summary" class="italic bg-white/5 p-3 rounded-lg border-l-2 border-primary mt-1">Özet metin...</p>
+                                </div>
+                            </div>
+                            
+                            <button type="button" id="btn-apply-appraisal" class="w-full mt-2 py-3 px-4 bg-[#16b981]/20 hover:bg-[#16b981]/30 text-[#16b981] border border-[#16b981]/30 font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">copy</span> Verileri Oto Formuna Aktar ve Dön
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Generate Actions -->
+                    <div id="general-action-buttons" class="mt-8 flex gap-4">
+                        <button type="button" id="btn-generate-main" class="flex-1 glow-button text-on-primary-container font-headline-lg text-lg py-4 rounded-xl flex items-center justify-center gap-3" onclick="triggerMainGeneration()" disabled>
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                            İlanı Hazırla
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Results & Drafts -->
+            <div class="lg:col-span-5 space-y-8">
+                <!-- AI Results Area -->
+                <section class="glass-panel p-6 rounded-xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-tertiary to-primary animate-pulse"></div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-headline-lg text-xl flex items-center gap-2">
+                            <span class="material-symbols-outlined text-tertiary">spark</span> AI Sonuçları
+                        </h3>
+                        <div class="flex gap-2" id="result-action-header" style="display: none;">
+                            <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-on-surface-variant transition-colors" title="Kopyala" onclick="copyResultText()">
+                                <span class="material-symbols-outlined text-sm">content_copy</span>
+                            </button>
+                            <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-on-surface-variant transition-colors" title="Taslağı Kaydet" onclick="triggerSaveProject()">
+                                <span class="material-symbols-outlined text-sm">save</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-surface-container-highest/30 p-6 rounded-xl border border-white/5 min-h-[300px]">
+                        <!-- Welcome Placeholder -->
+                        <div id="result-placeholder" class="flex flex-col items-center justify-center text-center py-20 space-y-4">
+                            <span class="material-symbols-outlined text-5xl text-on-surface-variant/40">smart_toy</span>
+                            <h4 class="font-bold text-white text-base">İlan Analizine Hazır</h4>
+                            <p class="text-xs text-on-surface-variant/70 max-w-[240px]">Sol taraftan bilgileri doldurun, fotoğrafları yükleyin ve "İlanı Hazırla" butonuna basın.</p>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="result-loading" class="hidden flex flex-col items-center justify-center text-center py-20 space-y-4">
+                            <div class="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                            <p class="font-label-sm animate-pulse text-primary">AI Analiz Ediyor...</p>
+                        </div>
+
+                        <!-- Real Output State -->
+                        <div id="result-output" class="hidden space-y-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] uppercase text-on-surface-variant/60 tracking-wider">Önerilen İlan Başlığı</label>
+                                <div id="output-title" class="p-3 bg-white/5 border border-white/5 rounded-lg text-sm font-bold text-white select-all" contenteditable="true"></div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="text-[10px] uppercase text-on-surface-variant/60 tracking-wider">Oluşturulan İlan Açıklaması</label>
+                                <div id="output-description" class="p-4 bg-white/5 border border-white/5 rounded-lg text-xs leading-relaxed text-on-surface/90 whitespace-pre-wrap select-all" contenteditable="true" style="max-height: 280px; overflow-y: auto;"></div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-[10px] uppercase text-on-surface-variant/60 tracking-wider">Önerilen Anahtar Kelimeler / Etiketler</label>
+                                <div id="output-tags" class="flex flex-wrap gap-1.5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Saved Drafts -->
+                <section class="glass-panel p-6 rounded-xl">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-headline-lg text-xl">Kayıtlı Taslaklar</h3>
+                        <button class="font-label-sm text-primary hover:underline cursor-pointer" onclick="openProjectsModal()">Tümünü Gör</button>
+                    </div>
+                    <div id="projects-list-dashboard" class="space-y-3">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface-container-lowest text-on-surface-variant/60 font-label-sm text-label-sm border-t border-outline-variant/10 shadow-none z-30 md:pl-80">
+        <div class="flex flex-col md:flex-row justify-between items-center px-6 md:px-margin-desktop py-8 gap-4 max-w-container-max mx-auto">
+            <p>© 2026 AI İlan Asistanı. Tüm Hakları Saklıdır.</p>
+            <div class="flex gap-6">
+                <a class="hover:text-primary transition-colors" href="#" onclick="showLegalModal('sales')">Satış Sözleşmesi</a>
+                <a class="hover:text-primary transition-colors" href="#" onclick="showLegalModal('privacy')">Gizlilik Politikası</a>
+                <a class="hover:text-primary transition-colors" href="#">İletişim</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- QUICK AUTH/LOGIN MODAL -->
+    <div id="auth-modal" class="modal-overlay hide">
+        <div class="modal" style="max-width: 400px; background: rgba(31, 31, 34, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg);">
+            <div class="modal-header">
+                <h3 style="font-family: var(--font-heading); font-weight: 700; color: white;">Hızlı Giriş Yap</h3>
+                <button id="btn-close-auth-modal" class="btn-close" onclick="closeAuthModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 24px 0 12px; display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center;">
+                <div style="font-size: 32px; animation: pulse 2s infinite;">🤖✨</div>
+                <div>
+                    <h4 style="font-weight: 700; color: white; font-size: 16px; margin-bottom: 4px;">AI İlan Asistanı'na Katılın</h4>
+                    <p style="font-size: 12px; color: var(--text-muted); max-width: 280px; margin: 0 auto; line-height: 1.5;">Tek tıkla hesabınızı oluşturun ve ilanlarınızı bulutta saklayın.</p>
+                </div>
+                <div style="width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <button onclick="handleQuickLogin('Google', 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n')" class="btn flex items-center justify-center gap-3 w-full py-3 px-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-semibold transition-all duration-300">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                            <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.68 1.54 15.02 1 12 1 7.24 1 3.2 3.74 1.25 7.74l3.96 3.07C6.15 7.72 8.85 5.04 12 5.04z"/>
+                            <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.34H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.76 2.91c2.2-2.03 3.67-5.01 3.67-8.66z"/>
+                            <path fill="#FBBC05" d="M5.21 10.81c-.25-.74-.39-1.53-.39-2.31s.14-1.57.39-2.31L1.25 3.12C.45 4.74 0 6.57 0 8.5s.45 3.76 1.25 5.38l3.96-3.07z"/>
+                            <path fill="#34A853" d="M12 16.51c-3.15 0-5.85-2.68-6.79-5.77l-3.96 3.07C3.2 17.8 7.24 21 12 21c3.15 0 6.02-1.07 8.21-2.91l-3.76-2.91c-1.22.82-2.77 1.33-4.45 1.33z"/>
+                        </svg>
+                        <span>Google ile Giriş Yap</span>
+                    </button>
+                    <button onclick="handleQuickLogin('Apple', '')" class="btn flex items-center justify-center gap-3 w-full py-3 px-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-semibold transition-all duration-300">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.57 2.95-1.39z"/>
+                        </svg>
+                        <span>Apple ile Giriş Yap</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; display: flex; justify-content: center;">
+                <span style="font-size: 10px; color: var(--text-muted);">Giriş yaparak kullanım şartlarımızı kabul etmiş olursunuz.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- API SETTINGS MODAL -->
+    <div id="settings-modal" class="modal-overlay hide">
+        <div class="modal" style="max-width: 500px; background: rgba(31, 31, 34, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg);">
+            <div class="modal-header">
+                <h3 style="font-family: var(--font-heading); font-weight: 700; color: white;">Gemini API Ayarları</h3>
+                <button id="btn-close-modal" class="btn-close" onclick="closeSettingsModal()">&times;</button>
+            </div>
+            <div class="modal-body space-y-4">
+                <p class="text-xs text-on-surface-variant/80">Uygulamanın çalışması için Google AI Studio'dan alacağınız bir Gemini API Anahtarı gereklidir.</p>
+                <div class="space-y-2">
+                    <label for="api-key-input" class="text-xs text-on-surface-variant">Gemini API Anahtarı (API KEY)</label>
+                    <input type="password" id="api-key-input" class="w-full bg-[#1A1A1E] border-outline-variant/30 text-on-surface rounded-[6px] focus:ring-1 focus:ring-primary focus:border-primary transition-all p-3 font-body-md" placeholder="AIzaSy...">
+                    <small class="text-[10px] text-on-surface-variant/50 block">Anahtarınız tamamen tarayıcınızda (localStorage) saklanır ve doğrudan Google sunucularıyla güvenli bir şekilde haberleşmek için kullanılır.</small>
+                </div>
+                <div class="flex items-center gap-1.5 text-xs text-primary pt-2">
+                    <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    <a href="https://aistudio.google.com/" target="_blank" class="hover:underline">Google AI Studio'dan Ücretsiz API Key Al</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancel-settings" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-xs" onclick="closeSettingsModal()">İptal</button>
+                <button id="btn-save-settings" class="px-4 py-2 bg-primary text-on-primary hover:bg-primary/90 rounded-lg text-xs font-bold" onclick="saveSettings()">Kaydet ve Test Et</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CREDIT/PAYMENT MODAL (iyzico Simulation) -->
+    <div id="credit-modal" class="modal-overlay hide">
+        <div class="modal" style="max-width: 550px; background: rgba(31, 31, 34, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px;">
+            <div class="modal-header">
+                <h3 class="font-headline-lg text-lg text-white font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">add_card</span> Kredi Yükle
+                </h3>
+                <button id="btn-close-credit-modal" class="btn-close" onclick="closeCreditModal()">&times;</button>
+            </div>
+            
+            <div class="modal-body space-y-6">
+                <!-- Step 1: Packages List -->
+                <div id="credit-packages-view" class="space-y-4">
+                    <p class="text-xs text-on-surface-variant/80">
+                        Deneme hakkınız bittiğinde veya daha fazla ilan/analiz yapmak istediğinizde uygun paketlerimizden birini seçebilirsiniz.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- 10 Credits -->
+                        <div class="border border-white/10 hover:border-primary/50 bg-white/5 hover:bg-white/10 p-4 rounded-[6px] text-center cursor-pointer transition-all flex flex-col justify-between h-36" onclick="selectPackage(10, 99)">
+                            <div>
+                                <div class="text-sm font-bold text-white">10 Kredi</div>
+                                <div class="text-[10px] text-on-surface-variant mt-1">İlan başı 9.9 TL</div>
+                            </div>
+                            <div class="text-lg font-extrabold text-primary">99 TL</div>
+                        </div>
+                        
+                        <!-- 50 Credits (Popular) -->
+                        <div class="border-2 border-primary bg-primary/10 hover:bg-primary/20 p-4 rounded-[6px] text-center cursor-pointer transition-all relative flex flex-col justify-between h-36" onclick="selectPackage(50, 299)">
+                            <span class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-on-primary text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Popüler</span>
+                            <div>
+                                <div class="text-sm font-bold text-white mt-1">50 Kredi</div>
+                                <div class="text-[10px] text-on-surface-variant mt-1">İlan başı 5.9 TL</div>
+                            </div>
+                            <div class="text-lg font-extrabold text-primary">299 TL</div>
+                        </div>
+                        
+                        <!-- 150 Credits -->
+                        <div class="border border-white/10 hover:border-primary/50 bg-white/5 hover:bg-white/10 p-4 rounded-[6px] text-center cursor-pointer transition-all flex flex-col justify-between h-36" onclick="selectPackage(150, 499)">
+                            <div>
+                                <div class="text-sm font-bold text-white">150 Kredi</div>
+                                <div class="text-[10px] text-on-surface-variant mt-1">İlan başı 3.3 TL</div>
+                            </div>
+                            <div class="text-lg font-extrabold text-primary">499 TL</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Payment Form (iyzico Simulator) -->
+                <div id="credit-payment-view" class="hide space-y-4">
+                    <button type="button" id="btn-back-to-packages" class="text-xs text-primary hover:underline flex items-center gap-1">
+                        <span class="material-symbols-outlined text-xs">arrow_back</span> Paketlere Dön
+                    </button>
+                    
+                    <div class="flex justify-between items-center bg-white/5 border border-white/10 p-4 rounded-[6px]">
+                        <div>
+                            <span id="selected-package-info" class="text-sm font-bold text-white block">50 Kredi Paketi</span>
+                            <span class="text-[10px] text-on-surface-variant/60 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs text-emerald-500">shield</span> iyzico altyapısıyla güvenli ödeme
+                            </span>
+                        </div>
+                        <strong id="selected-package-price" class="text-lg font-extrabold text-primary">299 TL</strong>
+                    </div>
+
+                    <!-- Card Form Details -->
+                    <div class="bg-white/5 border border-white/10 p-4 rounded-[6px] space-y-4">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2 mb-2">
+                            <span class="text-xs font-bold text-white">Kart Bilgileri</span>
+                            <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">
+                                <span class="material-symbols-outlined text-xs">lock</span> 256-Bit SSL Secured
+                            </span>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="space-y-1">
+                                <label class="text-[10px] text-on-surface-variant/80 font-bold block">Kart Üzerindeki İsim</label>
+                                <input type="text" id="card-holder" class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Ahmet Yılmaz">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] text-on-surface-variant/80 font-bold block">Kart Numarası</label>
+                                <div class="relative">
+                                    <input type="text" id="card-number" class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-12 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="0000 0000 0000 0000" maxlength="19">
+                                    <span id="card-brand-logo" class="absolute right-3 top-2.5 text-xs text-on-surface-variant/50 font-bold"></span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="text-[10px] text-on-surface-variant/80 font-bold block">Son Kullanma (AA/YY)</label>
+                                    <input type="text" id="card-expiry" class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="AA/YY" maxlength="5">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-[10px] text-on-surface-variant/80 font-bold block">Güvenlik Kodu (CVC)</label>
+                                    <input type="password" id="card-cvc" class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="***" maxlength="3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: 3D Secure Code (iyzico Simulator) -->
+                <div id="credit-3d-view" class="hide text-center space-y-4 py-4">
+                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-primary font-bold">
+                        <span class="material-symbols-outlined text-xs">lock</span> 3D Secure İşlem Onayı
+                    </span>
+                    <p class="text-xs text-on-surface-variant/80 leading-relaxed max-w-sm mx-auto">
+                        Cep telefonunuza gönderilen **6 haneli onay kodunu** giriniz. Simülasyon için herhangi bir 6 haneli kod girip onaylayabilirsiniz.
+                    </p>
+                    <div class="max-w-[180px] mx-auto">
+                        <input type="text" id="sms-code" class="w-full bg-[#1A1A1E] border-white/10 text-center text-xl font-bold tracking-widest text-white rounded-[6px] p-3 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="123456" maxlength="6">
+                    </div>
+                </div>
+
+                <!-- Step 4: Success View -->
+                <div id="credit-success-view" class="hide text-center space-y-4 py-6">
+                    <div class="text-5xl animate-bounce">🎉</div>
+                    <h4 class="text-base font-bold text-emerald-500">Ödeme Başarılı!</h4>
+                    <p id="success-message" class="text-xs text-on-surface-variant/80 max-w-[280px] mx-auto leading-relaxed">
+                        Hesabınıza krediniz başarıyla yüklenmiştir. Keyifli ilan oluşturmalar dileriz!
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal-footer" id="credit-modal-footer">
+                <button id="btn-cancel-credit" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-[6px] text-xs transition-all" onclick="closeCreditModal()">İptal</button>
+                <button id="btn-pay-credit" class="px-4 py-2 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all hide" disabled>Güvenli Ödeme Yap</button>
+                <button id="btn-verify-3d" class="px-4 py-2 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all hide" disabled>Kodu Doğrula ve Tamamla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SAVED PROJECTS MODAL -->
+    <div id="projects-modal" class="modal-overlay hide">
+        <div class="modal" style="max-width: 600px; background: rgba(31, 31, 34, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg);">
+            <div class="modal-header">
+                <h3 style="font-family: var(--font-heading); font-weight: 700; color: white;">Kayıtlı İlanlarım</h3>
+                <button id="btn-close-projects-modal" class="btn-close" onclick="closeProjectsModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 480px; overflow-y: auto;">
+                <div id="projects-list" class="space-y-3">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-close-projects-footer" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-xs" onclick="closeProjectsModal()">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGAL AGREEMENTS MODAL -->
+    <div id="legal-modal" class="modal-overlay hide">
+        <div class="modal" style="max-width: 650px; background: rgba(31, 31, 34, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg);">
+            <div class="modal-header">
+                <h3 id="legal-modal-title" style="font-family: var(--font-heading); font-weight: 700; color: white;">Sözleşmeler</h3>
+                <button id="btn-close-legal-modal" class="btn-close" onclick="closeLegalModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto; font-size:12px; line-height:1.6; color:var(--text-secondary); text-align:left;">
+                <div id="legal-modal-content">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-close-legal-footer" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-xs" onclick="closeLegalModal()">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT -->
+    <script src="app.js?v=1.2.9"></script>
+    <script>
+        // Workspace Switch logic
+        window.switchNiche = function(niche) {
+            // Check if app.js functions are loaded
+            if (typeof setNiche === 'function') {
+                setNiche(niche);
+            }
+            
+            // Toggle view visibility
+            const formEmlak = document.getElementById('form-emlak');
+            const formOto = document.getElementById('form-oto');
+            const formAppraisal = document.getElementById('form-appraisal');
+            
+            if (formEmlak) formEmlak.classList.add('hidden');
+            if (formOto) formOto.classList.add('hidden');
+            if (formAppraisal) formAppraisal.classList.add('hidden');
+            
+            const targetForm = document.getElementById(`form-${niche}`);
+            if (targetForm) targetForm.classList.remove('hidden');
+            
+            // Adjust title/subtitle
+            const workspaceTitle = document.getElementById('workspace-title');
+            const workspaceSubtitle = document.getElementById('workspace-subtitle');
+            
+            if (niche === 'emlak') {
+                workspaceTitle.innerText = "Emlak İlanı Hazırla";
+                workspaceSubtitle.innerText = "Fotoğraflarınızı yükleyin ve detayları girin; AI sizin için mükemmel satışı yapacak metni kurgulasın.";
+            } else if (niche === 'oto') {
+                workspaceTitle.innerText = "Oto Galeri İlanı Hazırla";
+                workspaceSubtitle.innerText = "Araç donanımlarını ve özelliklerini girin; yapay zeka en detaylı ve alıcı çeken açıklamayı hazırlasın.";
+            } else if (niche === 'appraisal') {
+                workspaceTitle.innerText = "PDF Ekspertiz Raporu Analiz Et";
+                workspaceSubtitle.innerText = "Aracın ekspertiz PDF belgesini yükleyin; motor performansı, kaporta durumu ve tramer verilerini yapay zeka ile özetleyin.";
+            }
+            
+            // Sync navigation active states
+            const navTabs = ['emlak', 'oto', 'appraisal'];
+            navTabs.forEach(t => {
+                const navBtn = document.getElementById(`nav-btn-${t}`);
+                const sideTab = document.getElementById(`side-tab-${t}`);
+                
+                if (navBtn) {
+                    if (t === niche) {
+                        navBtn.className = "text-primary font-bold border-b-2 border-primary pb-1";
+                    } else {
+                        navBtn.className = "text-on-surface-variant font-medium hover:text-primary transition-all";
+                    }
+                }
+                
+                if (sideTab) {
+                    if (t === niche) {
+                        sideTab.className = "bg-primary-container text-on-primary-container rounded-lg mx-2 my-1 flex items-center gap-4 p-4 shadow-[0_0_15px_rgba(255,178,186,0.3)] cursor-pointer";
+                    } else {
+                        sideTab.className = "text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 flex items-center gap-4 p-4 hover:translate-x-1 transition-all cursor-pointer";
+                    }
+                }
+            });
+        };
+
+        // Functions for Modal Popups
+        window.openAuthModal = function() {
+            const authModal = document.getElementById('auth-modal');
+            if (authModal) authModal.classList.remove('hide');
+        };
+        window.closeAuthModal = function() {
+            const authModal = document.getElementById('auth-modal');
+            if (authModal) authModal.classList.add('hide');
+        };
+        
+        window.openSettingsModal = function() {
+            const apiInput = document.getElementById('api-key-input');
+            if (apiInput && typeof geminiApiKey !== 'undefined') apiInput.value = geminiApiKey;
+            document.getElementById('settings-modal').classList.remove('hide');
+        };
+        window.closeSettingsModal = function() {
+            document.getElementById('settings-modal').classList.add('hide');
+        };
+        window.saveSettings = function() {
+            const apiInput = document.getElementById('api-key-input');
+            if (apiInput && typeof validateApiKey === 'function') {
+                const btnSave = document.getElementById('btn-save-settings');
+                btnSave.innerText = "Test Ediliyor...";
+                btnSave.disabled = true;
+                
+                validateApiKey(apiInput.value.trim()).then(isValid => {
+                    btnSave.innerText = "Kaydet ve Test Et";
+                    btnSave.disabled = false;
+                    if (isValid) {
+                        geminiApiKey = apiInput.value.trim();
+                        localStorage.setItem('gemini_api_key', geminiApiKey);
+                        closeSettingsModal();
+                    } else {
+                        alert("API Key geçerli değil, lütfen tekrar kontrol edin.");
+                    }
+                });
+            }
+        };
+        
+        window.openProjectsModal = function() {
+            document.getElementById('projects-modal').classList.remove('hide');
+            if (typeof loadAndRenderProjects === 'function') loadAndRenderProjects();
+        };
+        window.closeProjectsModal = function() {
+            document.getElementById('projects-modal').classList.add('hide');
+        };
+        
+        window.closeLegalModal = function() {
+            document.getElementById('legal-modal').classList.add('hide');
+        };
+        
+        window.triggerMainGeneration = function() {
+            if (typeof generateListing === 'function') {
+                generateListing();
+            }
+        };
+        
+        window.triggerSaveProject = function() {
+            if (typeof saveCurrentProject === 'function') {
+                saveCurrentProject();
+            }
+        };
+
+        window.copyResultText = function() {
+            const outDesc = document.getElementById('output-description');
+            if (outDesc) {
+                navigator.clipboard.writeText(outDesc.innerText).then(() => {
+                    alert("Açıklama başarıyla kopyalandı!");
+                });
+            }
+        };
+
+        window.resetToHome = function() {
+            switchNiche('emlak');
+            if (typeof resetToNewProject === 'function') {
+                resetToNewProject();
+            }
+        };
+
+        // Mobile Sidebar Toggle
+        window.toggleSidebar = function() {
+            const sidebar = document.getElementById('sidebar-menu');
+            if (sidebar) {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            }
+        };
+
+        // Synchronize elements with LocalStorage
+        function syncCreditsAndAuth() {
+            const userCredits = parseInt(localStorage.getItem('user_credits') || '5');
+            const maxCredits = 5;
+            const progressPercent = (userCredits / maxCredits) * 100;
+            
+            const progressBar = document.getElementById('credit-progress-bar');
+            const statusText = document.getElementById('credit-status-text');
+            if (progressBar) progressBar.style.width = `${progressPercent}%`;
+            if (statusText) statusText.innerText = `${userCredits} / ${maxCredits} İlan Hakkı`;
+
+            // Auth status sync
+            const isLoggedIn = localStorage.getItem('is_logged_in') === 'true';
+            const userEmail = localStorage.getItem('user_email') || '';
+            const userPhoto = localStorage.getItem('user_photo') || '';
+            const headerAuthSection = document.getElementById('header-auth-section');
+
+            if (isLoggedIn && headerAuthSection) {
+                headerAuthSection.innerHTML = `
+                    <div id="api-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer" onclick="openSettingsModal()">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-500" id="api-status-dot"></span>
+                        <span id="api-status-text">Gemini Durumu</span>
+                    </div>
+                    <div class="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
+                        <img src="${userPhoto || 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n'}" class="w-8 h-8 rounded-full border border-primary/20 object-cover" />
+                        <div class="text-left leading-tight hidden md:block">
+                            <p class="text-xs text-white font-bold">Hoş Geldiniz</p>
+                            <p class="text-[10px] text-on-surface-variant">${userEmail}</p>
+                        </div>
+                        <button onclick="handleLogout()" class="material-symbols-outlined text-sm text-on-surface-variant hover:text-primary ml-1 cursor-pointer" title="Çıkış Yap">logout</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize status
+        document.addEventListener('DOMContentLoaded', () => {
+            syncCreditsAndAuth();
+            
+            // Listen to dynamic API key validator messages
+            setInterval(() => {
+                const apiDot = document.getElementById('api-status-dot');
+                const apiText = document.getElementById('api-status-text');
+                const apiIndicator = document.getElementById('api-status-indicator');
+                
+                if (apiIndicator && typeof apiStatusIndicator !== 'undefined') {
+                    const isConnected = apiStatusIndicator.classList.contains('status-connected');
+                    if (apiDot) {
+                        apiDot.className = `w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-emerald-500' : 'bg-red-500'}`;
+                    }
+                    if (apiText) {
+                        apiText.innerText = isConnected ? 'Gemini Hazır' : 'API Bağlı Değil';
+                    }
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
