@@ -370,6 +370,7 @@ function updateSlogan(bgClass) {
     const sloganArea = document.getElementById('welcome-slogan-area');
     const sloganBadge = document.getElementById('slogan-badge');
     const sloganText = document.getElementById('slogan-text');
+    const sloganBgLayer = document.getElementById('slogan-bg-layer');
     if (!sloganArea || !sloganBadge || !sloganText) return;
 
     const data = slogans[bgClass] || slogans['default-bg'];
@@ -378,6 +379,13 @@ function updateSlogan(bgClass) {
     setTimeout(() => {
         sloganBadge.innerText = data.badge;
         sloganText.innerText = data.text;
+        
+        // Sync inner-card background image with slogan
+        if (sloganBgLayer) {
+            const imgFile = bgClass.replace('-bg', '_bg.png'); // conversion from emlak-bg to emlak_bg.png
+            sloganBgLayer.style.backgroundImage = `url('${imgFile}')`;
+        }
+        
         sloganArea.classList.remove('fade-out');
     }, 400);
 }

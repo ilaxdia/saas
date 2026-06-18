@@ -310,11 +310,19 @@
                         </button>
                     </div>
                 </div>
-                <!-- Slogan Display Container on the right -->
+                <!-- Slogan Display Container on the right with rotating slide image -->
                 <div class="lg:col-span-5 hidden lg:block">
-                    <div id="welcome-slogan-area" class="glass-panel p-8 rounded-3xl border border-white/10 relative overflow-hidden flex flex-col justify-center min-h-[320px] transition-all duration-500">
-                        <span id="slogan-badge" class="px-3 py-1 bg-primary text-on-primary rounded-full text-[10px] font-bold self-start uppercase tracking-wider mb-4 shadow-[0_0_15px_rgba(255,178,186,0.4)]">Yapay Zeka</span>
-                        <h3 id="slogan-text" class="text-xl md:text-2xl font-bold text-white leading-relaxed text-left">Akıllı İlan Asistanı: Yapay zekayla saniyeler içinde sahibinden ve arabam uyumlu ilanlar hazırlayın!</h3>
+                    <div id="welcome-slogan-area" class="glass-panel rounded-3xl border border-white/10 relative overflow-hidden flex flex-col justify-end min-h-[360px] p-6 transition-all duration-500 shadow-2xl">
+                        <!-- Sliding Image Layer Inside Card -->
+                        <div id="slogan-bg-layer" class="absolute inset-0 bg-cover bg-center transition-all duration-700 z-0 scale-105" style="background-image: url('default_bg.png'); filter: brightness(0.65) contrast(1.15);"></div>
+                        <!-- Gradient Overlay to keep text readable -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-10 pointer-events-none"></div>
+
+                        <!-- Content on top of background -->
+                        <div class="relative z-20 space-y-3">
+                            <span id="slogan-badge" class="px-2.5 py-0.5 bg-primary text-on-primary rounded-full text-[9px] font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(255,178,186,0.4)] inline-block">Yapay Zeka</span>
+                            <h3 id="slogan-text" class="text-sm md:text-base font-bold text-white leading-relaxed text-left text-shadow-md">Akıllı İlan Asistanı: Yapay zekayla saniyeler içinde sahibinden ve arabam uyumlu ilanlar hazırlayın!</h3>
+                        </div>
                     </div>
                 </div>
             </section>
