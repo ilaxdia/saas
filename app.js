@@ -2176,14 +2176,27 @@ function markdownToSimpleHtml(text) {
 
 async function getChatbotAIResponse(userMessage) {
     const systemInstruction = `Sen AI İlan sitesinin Canlı Destek yapay zeka asistanısın. Görevin, kullanıcılara platformun kullanımı, kredi paketleri, iyzico ödemeleri ve Gemini API ayarları konusunda yardımcı olmaktır.
-Sitedeki güncel bilgiler:
-- Başlangıçta 5 adet ücretsiz deneme kredisi verilir.
-- Kredi Paketleri: 10 Kredi 99 TL, 50 Kredi 299 TL, 150 Kredi 499 TL'dir.
-- Kredi yüklemek için sol menünün en altında yer alan "Kredi Satın Al / Yükle" butonuna tıklanmalıdır. Ödeme ekranında iyzico simülasyonu çalışmaktadır, rastgele kart bilgileri girilebilir.
-- API Key Ayarları: Sistem arka planda Vercel API Proxy (ortak sistem anahtarı) kullanır. Kullanıcılar kendi özel anahtarlarını da sağ üstteki bağlantı göstergesine tıklayarak girebilirler.
-- Emlak, Oto Galeri ilan yazımı ve PDF oto ekspertiz raporu analizi yapılabilir.
-- Her işlem 1 kredi tüketir.
-Yanıtlarını samimi, kibar, kısa ve tam olarak Türkçe ver. Yanıtları doğrudan markdown formatında verebilirsin.`;
+Sitedeki güncel bilgiler ve sıkça sorulan soruların yanıtları:
+
+1. Kredi Yükleme Sorunu ("Kredi yükledim, hesabıma neden yüklenmedi?"):
+   - Sitemiz şu anda test/simülasyon aşamasındadır ve gerçek bir ödeme altyapısı yerine iyzico Test Simülatörü kullanmaktadır.
+   - Ödeme yapıldığında krediler anında yerel tarayıcınıza (tarayıcı belleğine) tanımlanır.
+   - Eğer bir aksaklık yaşandıysa sayfayı yenileyip (Ctrl + F5) tekrar kontrol ediniz. Sorun devam ederse destek için "info@aiilan.com" adresine yazabilirsiniz.
+
+2. Yapay Zekanın Çalışmaması Sorunu ("İlan oluşturdum ama yapay zeka çalışmadı/yazmadı"):
+   - Sağ üst köşede "Gemini Hazır" (yeşil ışık) yazdığından emin olun.
+   - Eğer "API Bağlı Değil" (kırmızı ışık) yazıyorsa, sistem genel anahtarında veya bağlantınızda sorun olabilir. Sağ üstteki göstergeye tıklayarak Google AI Studio'dan alacağınız ücretsiz kendi Gemini API Anahtarınızı girip kaydedebilirsiniz.
+   - İlan oluşturabilmek için en az 1 fotoğraf yüklediğinizden ve form detaylarını doldurduğunuzdan emin olun.
+
+3. Kredi Paketleri ve Ücretleri:
+   - Sitemizde 3 adet kredi paketi mevcuttur:
+     - 10 Kredi: 99 TL
+     - 50 Kredi (En Popüler): 299 TL
+     - 150 Kredi: 499 TL
+   - Satın almak için sol menünün en altında yer alan "Kredi Satın Al / Yükle" butonuna tıklayıp kart simülasyonuyla yükleme yapabilirsiniz.
+   - Başlangıçta sistem denemesi için herkese 5 adet ücretsiz ilan hakkı (kredi) verilir. Her ilan üretimi veya PDF analiz işlemi 1 kredi tüketir.
+
+Yanıtlarını samimi, kibar, kısa, net ve tam olarak Türkçe ver. Yanıtları doğrudan markdown formatında verebilirsin.`;
 
     const chatHistoryPayload = [...chatHistory, { role: 'user', parts: [{ text: userMessage }] }];
     
@@ -2216,9 +2229,22 @@ Yanıtlarını samimi, kibar, kısa ve tam olarak Türkçe ver. Yanıtları doğ
 
 function getChatbotLocalFallback(query) {
     const q = query.toLowerCase();
-    if (q.includes('kredi') || q.includes('fiyat') || q.includes('paket') || q.includes('satın') || q.includes('yükle') || q.includes('ödeme') || q.includes('iyzico')) {
-        return "Sistemimizde 3 farklı kredi paketi mevcuttur:\n- **10 Kredi**: 99 TL\n- **50 Kredi (En Popüler)**: 299 TL\n- **150 Kredi**: 499 TL\n\nKredi yüklemek için sol menünün en altında yer alan **'Kredi Satın Al / Yükle'** butonuna tıklayarak iyzico güvenli simülatörü üzerinden test kartı bilgileriyle saniyeler içinde yükleme yapabilirsiniz.";
+    
+    // 1. Kredi yükleme sorunu
+    if (q.includes('yükle') && (q.includes('neden') || q.includes('olmadı') || q.includes('hata') || q.includes('gelmedi') || q.includes('geçmedi') || q.includes('yüklenmedi'))) {
+        return "Sistemimiz şu anda test/simülasyon aşamasındadır ve gerçek bir ödeme altyapısı yerine **iyzico Test Simülatörü** kullanmaktadır. Kart bilgilerinizi girdiğinizde kredileriniz anında yerel tarayıcınıza tanımlanır.\n\nEğer sistemsel bir aksaklık yaşandıysa sayfayı yenileyip (F5) tekrar kontrol edebilir, sorun devam ederse **info@aiilan.com** adresine ulaşabilirsiniz.";
     }
+    
+    // 2. Yapay zeka çalışmadı sorunu
+    if (q.includes('çalışmadı') || q.includes('yazmadı') || q.includes('üreti') || q.includes('olmadı') || q.includes('hata') || q.includes('başarısız')) {
+        return "İlan oluşturma asistanının çalışabilmesi için sağ üstte **'Gemini Hazır'** (yeşil ışık) yazdığından emin olun. \n\nEğer **'API Bağlı Değil'** (kırmızı ışık) yazıyorsa sağ üstteki göstergeye tıklayarak Google AI Studio'dan alacağınız ücretsiz kendi **Gemini API Anahtarınızı** tanımlamalısınız. Ayrıca ilan oluştururken fotoğraf yüklediğinizden emin olun.";
+    }
+    
+    // 3. Kredi paketleri ve fiyatlar
+    if (q.includes('kredi') || q.includes('fiyat') || q.includes('paket') || q.includes('satın') || q.includes('yükle') || q.includes('ödeme') || q.includes('iyzico') || q.includes('ücret')) {
+        return "Sistemimizde 3 farklı kredi paketi mevcuttur:\n- **10 Kredi**: 99 TL\n- **50 Kredi (En Popüler)**: 299 TL\n- **150 Kredi**: 499 TL\n\nKredi yüklemek için sol menünün en altında yer alan **'Kredi Satın Al / Yükle'** butonuna tıklayarak iyzico güvenli simülatörü üzerinden test kartı bilgileriyle saniyeler içinde yükleme yapabilirsiniz. Başlangıçta tanımlanan 5 ücretsiz krediniz bittiğinde buralardan yükleme yapabilirsiniz.";
+    }
+    
     if (q.includes('api') || q.includes('key') || q.includes('anahtar') || q.includes('gemini') || q.includes('bağlantı') || q.includes('ayar')) {
         return "Sistemimiz şu anda **Vercel API Proxy** (ortak sistem anahtarı) üzerinden çalışmaktadır. Ek bir API anahtarı girmeden ilan oluşturabilirsiniz. \n\nEğer kendinize ait özel bir API anahtarı kullanmak isterseniz, sağ üstteki göstergeye tıklayarak kendi anahtarınızı tanımlayabilir ve kaydedebilirsiniz.";
     }
@@ -2226,8 +2252,8 @@ function getChatbotLocalFallback(query) {
         return "AI İlan ile 3 farklı alanda asistan desteği alabilirsiniz:\n1. **Emlak İlanı:** Fotoğrafları yükleyip oda sayısı, konum ve fiyat belirterek akıcı emlak açıklamaları üretin.\n2. **Oto Galeri İlanı:** Aracın marka, model, vites, yakıt ve donanım bilgilerini girerek etkileyici oto ilanları üretin.\n3. **PDF Ekspertiz Analizi:** Oto ekspertiz raporunuzu (PDF) yükleyerek boya, değişen, tramer ve motor verilerini saniyeler içinde otomatik olarak özetleyin.";
     }
     if (q.includes('selam') || q.includes('merhaba') || q.includes('hey') || q.includes('nasıl') || q.includes('yardım')) {
-        return "Merhaba! Size nasıl yardımcı olabilirim? Kredi yükleme, API ayarları veya ilan oluşturma hakkında soru sorabilirsiniz.";
+        return "Merhaba! Ben AI İlan Canlı Destek asistanıyım. Size nasıl yardımcı olabilirim? Kredi yükleme sorunları, yapay zekanın çalışmaması veya paket fiyatları hakkında soru sorabilirsiniz.";
     }
-    return "Sorunuzu tam olarak anlayamadım kralım. Ancak size şu konularda yardımcı olabilirim:\n- Kredi yükleme ve iyzico paket fiyatları\n- Gemini API Key ayarları ve bağlantısı\n- Emlak, Oto ve PDF Ekspertiz formlarının kullanımı";
+    return "Sorunuzu tam olarak anlayamadım kralım. Ancak size şu konularda yardımcı olabilirim:\n- Kredi yükleme sorunları (iyzico test ortamı)\n- Yapay zekanın çalışmaması durumunda Gemini API Key ayarları\n- Kredi paketleri ve fiyat detayları";
 }
 
