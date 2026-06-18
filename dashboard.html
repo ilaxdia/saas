@@ -207,7 +207,7 @@
     <header class="bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm fixed top-0 left-0 right-0 z-50 w-full h-16 md:h-20">
         <div class="flex justify-between items-center w-full px-6 md:px-margin-desktop h-full max-w-container-max mx-auto">
             <div class="flex items-center gap-4">
-                <span class="material-symbols-outlined text-3xl cursor-pointer md:hidden" onclick="toggleSidebar()">menu</span>
+                <span class="material-symbols-outlined text-3xl cursor-pointer flex" onclick="toggleSidebar()">menu</span>
                 <h1 class="text-headline-lg font-headline-lg font-bold text-primary tracking-tighter cursor-pointer" onclick="resetToHome()">AI İlan</h1>
             </div>
             <div class="hidden md:flex items-center gap-8 font-label-sm text-label-sm">
@@ -231,7 +231,7 @@
     </header>
 
     <!-- Sidebar (Navigation Drawer) -->
-    <aside id="sidebar-menu" class="fixed left-0 top-0 h-screen flex flex-col pt-20 bg-surface-container-low/95 backdrop-blur-2xl w-80 border-r border-outline-variant/20 shadow-2xl z-40 hidden md:flex">
+    <aside id="sidebar-menu" class="fixed left-0 top-0 h-screen flex-col pt-20 bg-surface-container-low/95 backdrop-blur-2xl w-80 border-r border-outline-variant/20 shadow-2xl z-40 hidden">
         <div class="p-6">
             <p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/50 mb-4">AI Asistan Menüsü</p>
         </div>
@@ -269,9 +269,13 @@
     </aside>
 
     <!-- Main Workspace Canvas -->
-    <main class="md:pl-80 pt-24 min-h-screen px-4 md:px-margin-desktop pb-20 max-w-container-max mx-auto">
+    <main id="main-content" class="pt-24 min-h-screen px-4 md:px-margin-desktop pb-20 max-w-container-max mx-auto transition-all duration-300">
         <!-- Welcome state panel (Genel Bakış) -->
         <div id="welcome-state" class="space-y-12">
+            <!-- Background Slideshow Container -->
+            <div id="bg-container" class="bg-container default-bg"></div>
+            <div class="bg-overlay"></div>
+
             <!-- Hero Section -->
             <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
                 <div class="lg:col-span-7 space-y-8">
@@ -306,20 +310,11 @@
                         </button>
                     </div>
                 </div>
+                <!-- Slogan Display Container on the right -->
                 <div class="lg:col-span-5 hidden lg:block">
-                    <div class="glass-panel rounded-[2rem] p-4 overflow-hidden shadow-2xl relative aspect-square">
-                        <img class="w-full h-full object-cover rounded-[1.5rem]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0KcPTZ5gibJVicukwAJn8ZnamAqvmbl1GuY1_Phxu8RENU0e_ccynSLch0vnp868HD8jsQraISKOibq7WPP1ekHS3GTei36tANACdGW_RkgJRENVpbOMMV-TklxEbdsvLY3dU7S4_fg84zpbosxB7GgTi9sLVzhqL_VZYLmM2_FXl__yTOHp-jmCA3YYr1fy2NbZFpCF_MzutD1tHs7HCVCaIryqzi1hI6zZrXkVDaG-ZXrtAvmjAKZckePRE3CNY25ZRqcQM5K0x"/>
-                        <div class="absolute bottom-8 left-8 right-8 glass-panel p-6 rounded-2xl border border-primary/20 ai-glow">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
-                                </div>
-                                <div class="text-left">
-                                    <p class="text-label-sm font-label-sm text-primary uppercase tracking-widest text-[10px]">Hızlı Analiz</p>
-                                    <p class="text-on-surface font-bold text-sm">Veriler İşleniyor...</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="welcome-slogan-area" class="glass-panel p-8 rounded-3xl border border-white/10 relative overflow-hidden flex flex-col justify-center min-h-[320px] transition-all duration-500">
+                        <span id="slogan-badge" class="px-3 py-1 bg-primary text-on-primary rounded-full text-[10px] font-bold self-start uppercase tracking-wider mb-4 shadow-[0_0_15px_rgba(255,178,186,0.4)]">Yapay Zeka</span>
+                        <h3 id="slogan-text" class="text-xl md:text-2xl font-bold text-white leading-relaxed text-left">Akıllı İlan Asistanı: Yapay zekayla saniyeler içinde sahibinden ve arabam uyumlu ilanlar hazırlayın!</h3>
                     </div>
                 </div>
             </section>
@@ -821,7 +816,7 @@
 </main>
 
     <!-- Footer -->
-    <footer class="bg-surface-container-lowest text-on-surface-variant/60 font-label-sm text-label-sm border-t border-outline-variant/10 shadow-none z-30 md:pl-80">
+    <footer id="app-footer" class="bg-surface-container-lowest text-on-surface-variant/60 font-label-sm text-label-sm border-t border-outline-variant/10 shadow-none z-30 transition-all duration-300">
         <div class="flex flex-col md:flex-row justify-between items-center px-6 md:px-margin-desktop py-8 gap-4 max-w-container-max mx-auto">
             <p>© 2026 AI İlan Asistanı. Tüm Hakları Saklıdır.</p>
             <div class="flex gap-6">
@@ -1213,12 +1208,22 @@
             switchNiche('home');
         };
 
-        // Mobile Sidebar Toggle
+        // Sidebar Toggle
         window.toggleSidebar = function() {
             const sidebar = document.getElementById('sidebar-menu');
+            const mainContent = document.getElementById('main-content');
+            const appFooter = document.getElementById('app-footer');
             if (sidebar) {
                 sidebar.classList.toggle('hidden');
                 sidebar.classList.toggle('flex');
+                
+                // Adjust main content & footer padding on desktop when sidebar opens
+                if (mainContent) {
+                    mainContent.classList.toggle('md:pl-80');
+                }
+                if (appFooter) {
+                    appFooter.classList.toggle('md:pl-80');
+                }
             }
         };
 
