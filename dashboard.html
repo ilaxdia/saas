@@ -280,11 +280,11 @@
             <section class="w-full">
                 <!-- Slogan Display Container with rotating slide image in 16:9 ratio -->
                 <div class="w-full">
-                    <div id="welcome-slogan-area" class="glass-panel rounded-3xl border border-white/10 relative overflow-hidden flex flex-col justify-end min-h-[420px] md:min-h-[480px] p-8 transition-all duration-500 shadow-2xl w-full aspect-video">
+                    <div id="welcome-slogan-area" class="glass-panel rounded-3xl border border-white/10 relative overflow-hidden flex flex-col justify-start min-h-[420px] md:min-h-[480px] p-8 transition-all duration-500 shadow-2xl w-full aspect-video">
                         <!-- Sliding Image Layer Inside Card -->
                         <div id="slogan-bg-layer" class="absolute inset-0 bg-cover bg-center transition-all duration-700 z-0 scale-105" style="background-image: url('default_bg.png'); filter: brightness(0.55) contrast(1.1);"></div>
-                        <!-- Gradient Overlay to keep text readable -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-transparent z-10 pointer-events-none"></div>
+                        <!-- Gradient Overlay starting from top to keep text readable at the top -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-black/95 via-black/35 to-transparent z-10 pointer-events-none"></div>
 
                         <!-- Content on top of background -->
                         <div class="relative z-20 space-y-4 max-w-2xl text-left">
