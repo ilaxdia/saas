@@ -1479,9 +1479,6 @@ textarea:focus {
         text-align: center;
         align-items: center;
     }
-    .welcome-slogan-area {
-        display: none !important;
-    }
 }
 
 /* FLOATING GLASS PANELS */

@@ -277,29 +277,20 @@
             <div class="bg-overlay"></div>
 
             <!-- Hero Section -->
-            <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
-                <div class="lg:col-span-7 space-y-8">
-                    <div class="flex items-center gap-3">
-                        <div class="p-3 bg-primary/20 rounded-xl glass-panel">
-                            <span class="material-symbols-outlined text-primary scale-125" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
-                        </div>
-                        <div class="flex gap-1">
-                            <span class="material-symbols-outlined text-tertiary text-sm">spark</span>
-                            <span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
-                        </div>
-                    </div>
-                    <h2 class="font-display-lg text-display-lg text-on-surface leading-tight max-w-2xl text-[32px] md:text-[48px] font-bold">
-                        AI İlan Asistanına Hoş Geldiniz
-                    </h2>
-                    <p class="font-body-md text-body-md text-on-surface-variant max-w-xl leading-relaxed">
-                        Detayları girin, fotoğrafları yükleyin; yapay zeka saniyeler içinde sahibinden, arabam.com ve hepsiemlak uyumlu profesyonel ilanlarınızı hazırlasın.
-                    </p>
-                </div>
-                <!-- Slogan Display Container on the right with rotating slide image -->
-                <div class="lg:col-span-5 hidden lg:block">
-                    <div id="welcome-slogan-area" class="glass-panel rounded-3xl border border-white/10 relative overflow-hidden aspect-video w-full transition-all duration-500 shadow-2xl">
+            <section class="w-full">
+                <!-- Slogan Display Container with rotating slide image in 16:9 ratio -->
+                <div class="w-full">
+                    <div id="welcome-slogan-area" class="glass-panel rounded-3xl border border-white/10 relative overflow-hidden flex flex-col justify-end min-h-[420px] md:min-h-[480px] p-8 transition-all duration-500 shadow-2xl w-full aspect-video">
                         <!-- Sliding Image Layer Inside Card -->
-                        <div id="slogan-bg-layer" class="absolute inset-0 bg-cover bg-center transition-all duration-700 z-0 scale-105" style="background-image: url('default_bg.png'); filter: brightness(0.85) contrast(1.05);"></div>
+                        <div id="slogan-bg-layer" class="absolute inset-0 bg-cover bg-center transition-all duration-700 z-0 scale-105" style="background-image: url('default_bg.png'); filter: brightness(0.55) contrast(1.1);"></div>
+                        <!-- Gradient Overlay to keep text readable -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-transparent z-10 pointer-events-none"></div>
+
+                        <!-- Content on top of background -->
+                        <div class="relative z-20 space-y-4 max-w-2xl text-left">
+                            <span id="slogan-badge" class="px-3 py-1 bg-primary text-on-primary rounded-full text-[10px] font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(255,178,186,0.4)] inline-block">Yapay Zeka</span>
+                            <h3 id="slogan-text" class="text-lg md:text-2xl font-bold text-white leading-relaxed text-shadow-md">Akıllı İlan Asistanı: Yapay zekayla saniyeler içinde sahibinden ve arabam uyumlu ilanlar hazırlayın!</h3>
+                        </div>
                     </div>
                 </div>
             </section>
