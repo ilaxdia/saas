@@ -1042,21 +1042,11 @@
                 if (workspaceContent) workspaceContent.classList.add('hidden');
                 if (workspaceTitle) workspaceTitle.classList.add('hidden');
                 if (workspaceSubtitle) workspaceSubtitle.classList.add('hidden');
-                
-                // Start background slideshow when returning home
-                if (typeof startBackgroundSlideshow === 'function') {
-                    startBackgroundSlideshow();
-                }
             } else {
                 if (welcomeState) welcomeState.classList.add('hidden');
                 if (workspaceContent) workspaceContent.classList.remove('hidden');
                 if (workspaceTitle) workspaceTitle.classList.remove('hidden');
                 if (workspaceSubtitle) workspaceSubtitle.classList.remove('hidden');
-                
-                // Stop background slideshow when leaving home
-                if (typeof stopBackgroundSlideshow === 'function') {
-                    stopBackgroundSlideshow();
-                }
                 
                 // Check if app.js functions are loaded
                 if (typeof setNiche === 'function') {
