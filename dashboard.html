@@ -297,17 +297,9 @@
                 </div>
                 <!-- Slogan Display Container on the right with rotating slide image -->
                 <div class="lg:col-span-5 hidden lg:block">
-                    <div id="welcome-slogan-area" class="glass-panel rounded-3xl border border-white/10 relative overflow-hidden flex flex-col justify-end min-h-[360px] p-6 transition-all duration-500 shadow-2xl">
+                    <div id="welcome-slogan-area" class="glass-panel rounded-3xl border border-white/10 relative overflow-hidden aspect-video w-full transition-all duration-500 shadow-2xl">
                         <!-- Sliding Image Layer Inside Card -->
-                        <div id="slogan-bg-layer" class="absolute inset-0 bg-cover bg-center transition-all duration-700 z-0 scale-105" style="background-image: url('default_bg.png'); filter: brightness(0.65) contrast(1.15);"></div>
-                        <!-- Gradient Overlay to keep text readable -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-10 pointer-events-none"></div>
-
-                        <!-- Content on top of background -->
-                        <div class="relative z-20 space-y-3">
-                            <span id="slogan-badge" class="px-2.5 py-0.5 bg-primary text-on-primary rounded-full text-[9px] font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(255,178,186,0.4)] inline-block">Yapay Zeka</span>
-                            <h3 id="slogan-text" class="text-sm md:text-base font-bold text-white leading-relaxed text-left text-shadow-md">Akıllı İlan Asistanı: Yapay zekayla saniyeler içinde sahibinden ve arabam uyumlu ilanlar hazırlayın!</h3>
-                        </div>
+                        <div id="slogan-bg-layer" class="absolute inset-0 bg-cover bg-center transition-all duration-700 z-0 scale-105" style="background-image: url('default_bg.png'); filter: brightness(0.85) contrast(1.05);"></div>
                     </div>
                 </div>
             </section>
@@ -1050,11 +1042,21 @@
                 if (workspaceContent) workspaceContent.classList.add('hidden');
                 if (workspaceTitle) workspaceTitle.classList.add('hidden');
                 if (workspaceSubtitle) workspaceSubtitle.classList.add('hidden');
+                
+                // Start background slideshow when returning home
+                if (typeof startBackgroundSlideshow === 'function') {
+                    startBackgroundSlideshow();
+                }
             } else {
                 if (welcomeState) welcomeState.classList.add('hidden');
                 if (workspaceContent) workspaceContent.classList.remove('hidden');
                 if (workspaceTitle) workspaceTitle.classList.remove('hidden');
                 if (workspaceSubtitle) workspaceSubtitle.classList.remove('hidden');
+                
+                // Stop background slideshow when leaving home
+                if (typeof stopBackgroundSlideshow === 'function') {
+                    stopBackgroundSlideshow();
+                }
                 
                 // Check if app.js functions are loaded
                 if (typeof setNiche === 'function') {

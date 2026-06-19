@@ -371,14 +371,14 @@ function updateSlogan(bgClass) {
     const sloganBadge = document.getElementById('slogan-badge');
     const sloganText = document.getElementById('slogan-text');
     const sloganBgLayer = document.getElementById('slogan-bg-layer');
-    if (!sloganArea || !sloganBadge || !sloganText) return;
+    if (!sloganArea) return;
 
     const data = slogans[bgClass] || slogans['default-bg'];
 
     sloganArea.classList.add('fade-out');
     setTimeout(() => {
-        sloganBadge.innerText = data.badge;
-        sloganText.innerText = data.text;
+        if (sloganBadge && data.badge) sloganBadge.innerText = data.badge;
+        if (sloganText && data.text) sloganText.innerText = data.text;
         
         // Sync inner-card background image with slogan
         if (sloganBgLayer) {
