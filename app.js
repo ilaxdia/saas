@@ -10,8 +10,8 @@ let currentProjectId = null;
 let appraisalPdfFile = null;
 let appraisalPdfBase64 = null;
 
-// Credit & Payment State
-let userCredits = parseInt(localStorage.getItem('user_credits') || '5');
+// Credit & Payment State (Deactivated for Free/Ad-Supported Model)
+let userCredits = 999999;
 let selectedPackage = { credits: 0, price: 0 };
 let slideshowInterval = null;
 let isSystemApiKeyActive = false;
@@ -301,30 +301,13 @@ async function validateApiKey(key) {
     }
 }
 
-// Credit Management Helpers
+// Credit Management Helpers (Deactivated for Free Model)
 function updateCreditsDisplay() {
-    const userCreditsVal = document.getElementById('user-credits-val');
-    const sidebarCreditsVal = document.getElementById('sidebar-credits-val');
-    const creditStatusText = document.getElementById('credit-status-text');
-    const creditProgressBar = document.getElementById('credit-progress-bar');
-    
-    if (userCreditsVal) userCreditsVal.innerText = userCredits;
-    if (sidebarCreditsVal) sidebarCreditsVal.innerText = userCredits;
-    if (creditStatusText) creditStatusText.innerText = `${userCredits} / 5 İlan Hakkı`;
-    if (creditProgressBar) {
-        const progressPercent = (userCredits / 5) * 100;
-        creditProgressBar.style.width = `${progressPercent}%`;
-    }
+    // Kredi sistemi kaldırıldı
 }
 
 function spendCredit() {
-    if (userCredits > 0) {
-        userCredits--;
-        localStorage.setItem('user_credits', userCredits);
-        updateCreditsDisplay();
-        return true;
-    }
-    return false;
+    return true; // Sınırsız kullanım için harcama yapılmıyor
 }
 
 // Sidebar open/close helper functions
@@ -1052,11 +1035,6 @@ function getSimulationData(filename) {
 }
 
 async function analyzeAppraisalPDF() {
-    if (userCredits <= 0) {
-        openCreditModal();
-        return;
-    }
-
     if (!appraisalPdfFile || !appraisalPdfBase64) return;
 
     // Show Loading Progress UI
@@ -1373,11 +1351,6 @@ function checkFormValidation() {
 
 // Call Gemini API and generate the description
 async function generateListing() {
-    if (userCredits <= 0) {
-        openCreditModal();
-        return;
-    }
-
     if (!geminiApiKey && !isSystemApiKeyActive) {
         alert('Lütfen önce API Ayarlarından API Anahtarınızı girin.');
         return;
@@ -2234,27 +2207,20 @@ function markdownToSimpleHtml(text) {
         .replace(/\n/g, '<br>');
 }
 
-async function getChatbotAIResponse(userMessage) {
-    const systemInstruction = `Sen AI İlan sitesinin Canlı Destek yapay zeka asistanısın. Görevin, kullanıcılara platformun kullanımı, kredi paketleri, iyzico ödemeleri ve Gemini API ayarları konusunda yardımcı olmaktır.
+    const systemInstruction = `Sen AI İlan sitesinin Canlı Destek yapay zeka asistanısın. Görevin, kullanıcılara platformun kullanımı, reklam/sponsorluk iş birlikleri ve Gemini API ayarları konusunda yardımcı olmaktır.
 Sitedeki güncel bilgiler ve sıkça sorulan soruların yanıtları:
 
-1. Kredi Yükleme Sorunu ("Kredi yükledim, hesabıma neden yüklenmedi?"):
-   - Sitemiz şu anda test/simülasyon aşamasındadır ve gerçek bir ödeme altyapısı yerine iyzico Test Simülatörü kullanmaktadır.
-   - Ödeme yapıldığında krediler anında yerel tarayıcınıza (tarayıcı belleğine) tanımlanır.
-   - Eğer bir aksaklık yaşandıysa sayfayı yenileyip (Ctrl + F5) tekrar kontrol ediniz. Sorun devam ederse destek için "info@aiilan.com" adresine yazabilirsiniz.
+1. Platform Ücretli mi? ("Kredi sistemi var mı?", "Nasıl satın alırım?"):
+   - Platformumuz tamamen ücretsizdir! Herhangi bir kredi paketi, ödeme sistemi veya aylık abonelik bulunmamaktadır.
+   - Kullanıcılar istedikleri kadar ilan üretebilir ve PDF analizi yapabilirler.
 
-2. Yapay Zekanın Çalışmaması Sorunu ("İlan oluşturdum ama yapay zeka çalışmadı/yazmadı"):
+2. Sponsorluk ve Reklam ("Reklam vermek istiyorum", "İletişim"):
+   - Web sitemize reklam vermek veya sponsorluk/iş birliği anlaşmaları yapmak için info@aiilan.com adresi üzerinden bizimle iletişime geçebilirsiniz.
+
+3. Yapay Zekanın Çalışmaması Sorunu ("İlan oluşturdum ama yapay zeka çalışmadı/yazmadı"):
    - Sağ üst köşede "Gemini Hazır" (yeşil ışık) yazdığından emin olun.
    - Eğer "API Bağlı Değil" (kırmızı ışık) yazıyorsa, sistem genel anahtarında veya bağlantınızda sorun olabilir. Sağ üstteki göstergeye tıklayarak Google AI Studio'dan alacağınız ücretsiz kendi Gemini API Anahtarınızı girip kaydedebilirsiniz.
    - İlan oluşturabilmek için en az 1 fotoğraf yüklediğinizden ve form detaylarını doldurduğunuzdan emin olun.
-
-3. Kredi Paketleri ve Ücretleri:
-   - Sitemizde 3 adet kredi paketi mevcuttur (Ödeme miktarı yükseldikçe kredi başı fiyat ucuzlar, kullanıcının avantajı artar):
-     - 10 Kredi: 100 TL (Kredi başı 10 TL)
-     - 50 Kredi (En Popüler): 400 TL (Kredi başı 8 TL - %20 indirimli!)
-     - 150 Kredi: 900 TL (Kredi başı 6 TL - %40 indirimli!)
-   - Satın almak için sol menünün en altında yer alan "Kredi Satın Al / Yükle" butonuna tıklayıp kart simülasyonuyla yükleme yapabilirsiniz.
-   - Başlangıçta sistem denemesi için herkese 5 adet ücretsiz ilan hakkı (kredi) verilir. Her ilan üretimi veya PDF analiz işlemi 1 kredi tüketir.
 
 Yanıtlarını samimi, kibar, kısa, net ve tam olarak Türkçe ver. Yanıtları doğrudan markdown formatında verebilirsin.`;
 
@@ -2290,9 +2256,9 @@ Yanıtlarını samimi, kibar, kısa, net ve tam olarak Türkçe ver. Yanıtları
 function getChatbotLocalFallback(query) {
     const q = query.toLowerCase();
     
-    // 1. Kredi yükleme sorunu
-    if (q.includes('yükle') && (q.includes('neden') || q.includes('olmadı') || q.includes('hata') || q.includes('gelmedi') || q.includes('geçmedi') || q.includes('yüklenmedi'))) {
-        return "Sistemimiz şu anda test/simülasyon aşamasındadır ve gerçek bir ödeme altyapısı yerine **iyzico Test Simülatörü** kullanmaktadır. Kart bilgilerinizi girdiğinizde kredileriniz anında yerel tarayıcınıza tanımlanır.\n\nEğer sistemsel bir aksaklık yaşandıysa sayfayı yenileyip (F5) tekrar kontrol edebilir, sorun devam ederse **info@aiilan.com** adresine ulaşabilirsiniz.";
+    // 1. Ücretsiz kullanım ve Kredi/Paket Soruları
+    if (q.includes('kredi') || q.includes('fiyat') || q.includes('paket') || q.includes('satın') || q.includes('yükle') || q.includes('ödeme') || q.includes('iyzico') || q.includes('ücret') || q.includes('abonelik') || q.includes('paralı')) {
+        return "Sistemimiz tamamen **ücretsizdir**! Eski kredi ve paket sistemini tamamen kaldırdık. Sınırsız bir şekilde ilan oluşturabilir ve PDF ekspertiz analizi yapabilirsiniz.\n\nGelecekte projemizi ayakta tutmak için sponsorluk ve reklam modellerine geçiş yapacağız.";
     }
     
     // 2. Yapay zeka çalışmadı sorunu
@@ -2300,9 +2266,9 @@ function getChatbotLocalFallback(query) {
         return "İlan oluşturma asistanının çalışabilmesi için sağ üstte **'Gemini Hazır'** (yeşil ışık) yazdığından emin olun. \n\nEğer **'API Bağlı Değil'** (kırmızı ışık) yazıyorsa sağ üstteki göstergeye tıklayarak Google AI Studio'dan alacağınız ücretsiz kendi **Gemini API Anahtarınızı** tanımlamalısınız. Ayrıca ilan oluştururken fotoğraf yüklediğinizden emin olun.";
     }
     
-    // 3. Kredi paketleri ve fiyatlar
-    if (q.includes('kredi') || q.includes('fiyat') || q.includes('paket') || q.includes('satın') || q.includes('yükle') || q.includes('ödeme') || q.includes('iyzico') || q.includes('ücret')) {
-        return "Sistemimizde ödeme miktarı yükseldikçe kredi avantajının arttığı 3 farklı kredi paketi mevcuttur:\n- **10 Kredi**: 100 TL (Kredi başı 10 TL)\n- **50 Kredi (En Popüler)**: 400 TL (Kredi başı 8 TL - %20 İndirimli!)\n- **150 Kredi**: 900 TL (Kredi başı 6 TL - %40 İndirimli!)\n\nKredi yüklemek için sol menünün en altında yer alan **'Kredi Satın Al / Yükle'** butonuna tıklayarak iyzico güvenli simülatörü üzerinden test kartı bilgileriyle saniyeler içinde yükleme yapabilirsiniz. Başlangıçta tanımlanan 5 ücretsiz krediniz bittiğinde buralardan yükleme yapabilirsiniz.";
+    // 3. Sponsorluk ve Reklam
+    if (q.includes('reklam') || q.includes('sponsor') || q.includes('ortak') || q.includes('iş birliği') || q.includes('iletisim') || q.includes('iletişim')) {
+        return "Web sitemizde sponsorluk ve reklam çalışmaları yapmak için bizimle **info@aiilan.com** e-posta adresi üzerinden iletişime geçebilirsiniz. Size en kısa sürede dönüş sağlayacağız.";
     }
     
     if (q.includes('api') || q.includes('key') || q.includes('anahtar') || q.includes('gemini') || q.includes('bağlantı') || q.includes('ayar')) {
@@ -2312,8 +2278,8 @@ function getChatbotLocalFallback(query) {
         return "AI İlan ile 3 farklı alanda asistan desteği alabilirsiniz:\n1. **Emlak İlanı:** Fotoğrafları yükleyip oda sayısı, konum ve fiyat belirterek akıcı emlak açıklamaları üretin.\n2. **Oto Galeri İlanı:** Aracın marka, model, vites, yakıt ve donanım bilgilerini girerek etkileyici oto ilanları üretin.\n3. **PDF Ekspertiz Analizi:** Oto ekspertiz raporunuzu (PDF) yükleyerek boya, değişen, tramer ve motor verilerini saniyeler içinde otomatik olarak özetleyin.";
     }
     if (q.includes('selam') || q.includes('merhaba') || q.includes('hey') || q.includes('nasıl') || q.includes('yardım')) {
-        return "Merhaba! Ben AI İlan Canlı Destek asistanıyım. Size nasıl yardımcı olabilirim? Kredi yükleme sorunları, yapay zekanın çalışmaması veya paket fiyatları hakkında soru sorabilirsiniz.";
+        return "Merhaba! Ben AI İlan Canlı Destek asistanıyım. Size nasıl yardımcı olabilirim? Reklam ortaklıkları, yapay zekanın çalışmaması veya platform kullanımı hakkında soru sorabilirsiniz.";
     }
-    return "Sorunuzu tam olarak anlayamadım kralım. Ancak size şu konularda yardımcı olabilirim:\n- Kredi yükleme sorunları (iyzico test ortamı)\n- Yapay zekanın çalışmaması durumunda Gemini API Key ayarları\n- Kredi paketleri ve fiyat detayları";
+    return "Sorunuzu tam olarak anlayamadım kralım. Ancak size şu konularda yardımcı olabilirim:\n- Reklam ve sponsorluk iş birlikleri\n- Yapay zekanın çalışmaması durumunda Gemini API Key ayarları\n- Platformun genel kullanımı";
 }
 
