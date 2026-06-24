@@ -2090,7 +2090,10 @@ window.toggleAuthMode = function() {
 };
 
 window.togglePasswordVisibility = function(inputId, btn) {
-    const input = document.getElementById(inputId);
+    let input = btn.parentElement ? btn.parentElement.querySelector('input') : null;
+    if (!input) {
+        input = document.getElementById(inputId);
+    }
     if (!input) return;
     const icon = btn.querySelector('.material-symbols-outlined');
     if (input.type === 'password') {
