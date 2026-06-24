@@ -232,9 +232,6 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-red-500" id="api-status-dot"></span>
                     <span id="api-status-text">Gemini Bağlı Değil</span>
                 </div>
-                <button onclick="openAuthModal()" id="btn-header-login-main" class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-label-sm text-label-sm hover:bg-primary/10 transition-all duration-300">
-                    Giriş Yap / Kayıt Ol
-                </button>
             </div>
         </div>
     </header>
@@ -802,53 +799,7 @@
         </div>
     </footer>
 
-    <!-- QUICK AUTH/LOGIN MODAL -->
-    <div id="auth-modal" class="modal-overlay hide">
-        <div class="modal" style="max-width: 400px; background: rgba(31, 31, 34, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px;">
-            <div class="modal-header">
-                <h3 id="auth-modal-title" style="font-family: var(--font-heading); font-weight: 700; color: white;">Hesap Oluştur</h3>
-                <button id="btn-close-auth-modal" class="btn-close" onclick="closeAuthModal()">&times;</button>
-            </div>
-            <div class="modal-body" style="padding: 16px 20px; text-align: left;">
-                <!-- Registration Form -->
-                <form id="auth-registration-form" onsubmit="handleAuthSubmit(event)" class="space-y-3">
-                    <div class="space-y-1">
-                        <label class="text-[10px] text-on-surface-variant/80 font-bold block">Kullanıcı Adı</label>
-                        <input type="text" id="reg-username" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Orn: ahmet123">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] text-on-surface-variant/80 font-bold block">E-mail Adresi</label>
-                        <input type="email" id="reg-email" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Orn: ahmet@mail.com">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre</label>
-                        <div class="relative">
-                            <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
-                            <button type="button" onclick="window.togglePasswordVisibility('reg-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
-                                <span class="material-symbols-outlined text-[18px]">visibility</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre Tekrar</label>
-                        <div class="relative">
-                            <input type="password" id="reg-password-confirm" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
-                            <button type="button" onclick="window.togglePasswordVisibility('reg-password-confirm', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
-                                <span class="material-symbols-outlined text-[18px]">visibility</span>
-                            </button>
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full mt-4 py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all duration-300">
-                        Kaydet
-                    </button>
-                </form>
-                
-                <div class="mt-4 pt-3 border-t border-white/5 text-center">
-                    <button type="button" onclick="toggleAuthMode()" id="btn-toggle-auth-mode" class="text-[10px] text-primary hover:underline">Zaten bir hesabım var? Giriş Yap</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- API SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay hide">
@@ -916,23 +867,8 @@
     </div>
 
     <!-- MAIN JAVASCRIPT -->
-    <script src="app.js?v=1.4.7"></script>
+    <script src="app.js?v=1.4.8"></script>
     <script>
-        window.togglePasswordVisibility = function(inputId, btn) {
-            let input = btn.parentElement ? btn.parentElement.querySelector('input') : null;
-            if (!input) {
-                input = document.getElementById(inputId);
-            }
-            if (!input) return;
-            const icon = btn.querySelector('.material-symbols-outlined');
-            if (input.type === 'password') {
-                input.type = 'text';
-                if (icon) icon.innerText = 'visibility_off';
-            } else {
-                input.type = 'password';
-                if (icon) icon.innerText = 'visibility';
-            }
-        };
 
         // Workspace Switch logic
         window.switchNiche = function(niche) {
@@ -1006,15 +942,7 @@
             });
         };
 
-        // Functions for Modal Popups
-        window.openAuthModal = function() {
-            const authModal = document.getElementById('auth-modal');
-            if (authModal) authModal.classList.remove('hide');
-        };
-        window.closeAuthModal = function() {
-            const authModal = document.getElementById('auth-modal');
-            if (authModal) authModal.classList.add('hide');
-        };
+
         
         window.openSettingsModal = function() {
             const apiInput = document.getElementById('api-key-input');
@@ -1101,39 +1029,8 @@
             }
         };
 
-        // Synchronize elements with LocalStorage
-        function syncCreditsAndAuth() {
-            // Kredi limit gösterimleri ve harcama sistemleri devre dışı bırakıldı.
-
-            // Auth status sync
-            const isLoggedIn = localStorage.getItem('is_logged_in') === 'true';
-            const userEmail = localStorage.getItem('user_email') || '';
-            const userPhoto = localStorage.getItem('user_photo') || '';
-            const headerAuthSection = document.getElementById('header-auth-section');
-
-            if (isLoggedIn && headerAuthSection) {
-                // Ensure we don't stamp out the API badge state from app.js by using classes and status checks
-                const hasKey = typeof isSystemApiKeyActive !== 'undefined' ? (geminiApiKey || isSystemApiKeyActive) : false;
-                headerAuthSection.innerHTML = `
-                    <div id="api-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] cursor-pointer ${hasKey ? 'status-connected' : 'status-disconnected'}" onclick="openSettingsModal()">
-                        <span class="w-1.5 h-1.5 rounded-full ${hasKey ? 'bg-emerald-500' : 'bg-red-500'}" id="api-status-dot"></span>
-                        <span id="api-status-text">${hasKey ? 'Gemini Hazır' : 'API Bağlı Değil'}</span>
-                    </div>
-                    <div class="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
-                        <img src="${userPhoto || 'https://lh3.googleusercontent.com/COxitqgJr1sICZ9t1ocFc2F5rfhc8O1W1y8oc5OB48W1rIpDY4Bp16h1w657N7568=w48-h48-n'}" class="w-8 h-8 rounded-full border border-primary/20 object-cover" />
-                        <div class="text-left leading-tight hidden md:block">
-                            <p class="text-xs text-white font-bold">Hoş Geldiniz</p>
-                            <p class="text-[10px] text-on-surface-variant">${userEmail}</p>
-                        </div>
-                        <button onclick="handleLogout()" class="material-symbols-outlined text-sm text-on-surface-variant hover:text-primary ml-1 cursor-pointer" title="Çıkış Yap">logout</button>
-                    </div>
-                `;
-            }
-        }
-
         // Initialize status
         document.addEventListener('DOMContentLoaded', () => {
-            syncCreditsAndAuth();
             
             // Listen to dynamic API key validator messages
             setInterval(() => {
