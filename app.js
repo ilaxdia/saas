@@ -2043,7 +2043,7 @@ window.toggleAuthMode = function() {
                 <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre</label>
                 <div class="relative">
                     <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
-                    <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
+                    <button type="button" onclick="window.togglePasswordVisibility('reg-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
                         <span class="material-symbols-outlined text-[18px]">visibility</span>
                     </button>
                 </div>
@@ -2068,7 +2068,7 @@ window.toggleAuthMode = function() {
                 <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre</label>
                 <div class="relative">
                     <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
-                    <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
+                    <button type="button" onclick="window.togglePasswordVisibility('reg-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
                         <span class="material-symbols-outlined text-[18px]">visibility</span>
                     </button>
                 </div>
@@ -2077,7 +2077,7 @@ window.toggleAuthMode = function() {
                 <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre Tekrar</label>
                 <div class="relative">
                     <input type="password" id="reg-password-confirm" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
-                    <button type="button" onclick="togglePasswordVisibility('reg-password-confirm', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
+                    <button type="button" onclick="window.togglePasswordVisibility('reg-password-confirm', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
                         <span class="material-symbols-outlined text-[18px]">visibility</span>
                     </button>
                 </div>
@@ -2322,6 +2322,7 @@ function markdownToSimpleHtml(text) {
         .replace(/\n/g, '<br>');
 }
 
+async function getChatbotAIResponse(userMessage) {
     const systemInstruction = `Sen AI İlan sitesinin Canlı Destek yapay zeka asistanısın. Görevin, kullanıcılara platformun kullanımı, reklam/sponsorluk iş birlikleri ve Gemini API ayarları konusunda yardımcı olmaktır.
 Sitedeki güncel bilgiler ve sıkça sorulan soruların yanıtları:
 
