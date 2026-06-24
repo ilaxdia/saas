@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html class="dark" lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AI İlan - Blog & Rehber | Sahibinden Satış İpuçları</title>
+    <meta name="description" content="Emlak ve otomobil alım satım rehberi. Oto ekspertiz raporu okuma, tapu devir işlemleri, konut kredisi ve yapay zeka ile sahibinden ilan hazırlama tüyoları." />
+    <!-- Google AdSense Auto Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2046620612806818"
+         crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700;800&amp;family=Geist:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "primary": "#ffb2ba",
+              "primary-container": "#ff4f73",
+              "secondary": "#d1bcff",
+              "surface": "#131316",
+              "surface-container": "#1f1f22",
+              "on-surface": "#e4e1e6",
+              "on-surface-variant": "#e5bdc0",
+              "outline-variant": "#5c3f42"
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body {
+            background-color: #0F0F12;
+            color: #e4e1e6;
+            font-family: 'Hanken Grotesk', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+        .ai-gradient-border {
+            position: relative;
+            border-radius: 8px;
+        }
+        .ai-gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border-radius: 9px;
+            padding: 1px;
+            background: linear-gradient(45deg, #ffb2ba, #00dbe7);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm fixed top-0 left-0 right-0 z-50 w-full h-16 md:h-20">
+        <div class="flex justify-between items-center w-full px-6 md:px-12 h-full max-w-[1200px] mx-auto">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="text-2xl font-bold text-primary tracking-tighter flex items-center gap-2 no-underline">
+                    <span class="material-symbols-outlined text-3xl">menu_book</span>
+                    AI İlan Blog
+                </a>
+            </div>
+            <div class="flex items-center gap-6 font-medium text-sm">
+                <a href="dashboard.html" class="text-on-surface-variant hover:text-primary transition-all flex items-center gap-1.5 bg-primary/10 border border-primary/20 px-4 py-2 rounded-lg">
+                    <span class="material-symbols-outlined text-sm">dashboard</span> Çalışma Paneli
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="pt-28 pb-20 px-4 md:px-12 max-w-[1200px] mx-auto">
+        
+        <!-- Welcome Banner -->
+        <section class="mb-12 text-center">
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight leading-tight">
+                Emlak & Otomobil Satış Rehberi
+            </h1>
+            <p class="text-on-surface-variant max-w-2xl mx-auto text-base md:text-lg">
+                Yapay zeka asistanımızla sahibinden veya galeriden daha hızlı satış yapmanın sırları, ekspertiz okuma tüyoları ve yasal prosedürler.
+            </p>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Left Side: Table of Contents & Quick Search (Sticky) -->
+            <aside class="lg:col-span-4 space-y-6">
+                <div class="glass-panel p-6 rounded-2xl sticky top-24 space-y-4">
+                    <h3 class="font-bold text-white text-lg flex items-center gap-2 border-b border-white/10 pb-3">
+                        <span class="material-symbols-outlined text-primary">toc</span> Rehber İçeriği
+                    </h3>
+                    <nav class="space-y-2 text-sm text-left">
+                        <a href="#rehber-ikinci-el" class="block py-2 px-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all leading-snug">
+                            1. 2. El Araç Alırken Nelere Dikkat Edilmeli?
+                        </a>
+                        <a href="#rehber-ekspertiz" class="block py-2 px-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all leading-snug">
+                            2. Oto Ekspertiz Raporu Nasıl Okunur?
+                        </a>
+                        <a href="#rehber-emlak-hukuk" class="block py-2 px-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all leading-snug">
+                            3. Emlak Alırken Hukuki Tuzaklar
+                        </a>
+                        <a href="#rehber-konut-kredisi" class="block py-2 px-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all leading-snug">
+                            4. Konut Kredisi Alırken 5 Kritik Madde
+                        </a>
+                        <a href="#rehber-yapay-zeka" class="block py-2 px-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all leading-snug">
+                            5. Yapay Zeka ile İlan Yazma Sırları
+                        </a>
+                        <a href="#rehber-deger-kaybi" class="block py-2 px-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all leading-snug">
+                            6. Araç Değer Kaybı Nasıl Hesaplanır?
+                        </a>
+                        <a href="#rehber-tapu-devir" class="block py-2 px-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all leading-snug">
+                            7. Tapu Devir İşlemleri Rehberi
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Right Side: The Articles -->
+            <div class="lg:col-span-8 space-y-12">
+
+                <!-- ARTICLE 1 -->
+                <article id="rehber-ikinci-el" class="glass-panel p-8 rounded-2xl border border-white/10 space-y-6 text-left">
+                    <header class="space-y-2">
+                        <span class="px-3 py-1 bg-primary-container/20 text-primary border border-primary/30 rounded-full text-xs font-semibold">Otomobil Rehberi</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">2. El Araç Alırken Nelere Dikkat Edilmeli? (Adım Adım Rehber)</h2>
+                        <div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 5 Dk Okuma Süresi</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> AI İlan Editörü</span>
+                        </div>
+                    </header>
+                    
+                    <div class="space-y-4 text-sm md:text-base leading-relaxed text-on-surface/90">
+                        <p>
+                            İkinci el araç piyasası, bütçesine uygun bir otomobil bulmak isteyen alıcılar için cazip fırsatlar sunsa da dikkat edilmediğinde ciddi mali kayıplara yol açabilecek riskleri de beraberinde getirir. İkinci el bir araba satın alırken hayal kırıklığı yaşamamak ve doğru yatırımı yapmak için adım adım sistematik bir süreç izlemek hayati önem taşır.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">1. Ön Araştırma ve Bütçe Belirleme</h3>
+                        <p>
+                            Satın alma işlemine başlamadan önce sadece aracın satış bedelini değil; sigorta, kasko, noter masrafları, ilk bakım giderleri ve olası vergi borçlarını da hesaba katarak net bir bütçe oluşturmalısınız. Beğendiğiniz modellerin piyasa değerlerini çeşitli ilan platformlarında karşılaştırarak ortalama fiyat aralıklarını belirlemek, değerinin çok üzerinde ya da şüpheli derecede altında fiyatlandırılan ilanları fark etmenize yardımcı olur.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">2. Aracın Geçmişini Sorgulama</h3>
+                        <p>
+                            Aracın plaka veya şasi numarası üzerinden Tramer hasar kaydı sorgulaması yapmak, aracın geçmişte karıştığı kazaları, aldığı hasarların büyüklüğünü ve varsa sigorta şirketlerince tutulan kayıtları gösterir. SMS yoluyla veya e-Devlet kapısı üzerinden yapılan sorgulamalarla ayrıca aracın kilometresinin geriye çekilip çekilmediğini (muayene istasyonu kayıtları ile karşılaştırarak) ve üzerinde haciz, rehin veya hak mahrumiyeti gibi hukuki engeller bulunup bulunmadığını mutlaka kontrol etmelisiniz.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">3. Fiziksel İnceleme ve Test Sürüşü</h3>
+                        <p>
+                            Mümkünse aracı gün ışığında ve temiz bir haldeyken inceleyin. Yağmurlu havalarda veya loş ışıkta kaportadaki çizik, göçük ve boya tonu farklarını görmek zorlaşır. Lastiklerin aşınma durumunu, iç döşemelerdeki yıpranmaları, klima ve elektrikli aksamların çalışıp çalışmadığını tek tek test edin. Motoru çalıştırarak garip sesler gelip gelmediğini dinleyin ve kısa bir test sürüşüne çıkarak vites geçişlerini, fren tepkilerini ve süspansiyon sistemini hissedin.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">4. Kurumsal Ekspertiz ve Güvenli Ödeme</h3>
+                        <p>
+                            Aracı kesinlikle satıcının yönlendirdiği değil, kendi seçtiğiniz kurumsal ve tarafsız bir oto ekspertiz merkezine götürün. Ekspertiz raporunda yer alan motor performansı, kaporta durumu ve şanzıman verilerini dikkatle inceleyin. Satış aşamasında ise nakit taşımak yerine bankaların sunduğu "Güvenli Ödeme Sistemi"ni kullanarak paranızı güvenceye alın. Noter satışı tamamlanmadan satıcıya havale veya EFT yapmamaya özen gösterin.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- ARTICLE 2 -->
+                <article id="rehber-ekspertiz" class="glass-panel p-8 rounded-2xl border border-white/10 space-y-6 text-left">
+                    <header class="space-y-2">
+                        <span class="px-3 py-1 bg-primary-container/20 text-primary border border-primary/30 rounded-full text-xs font-semibold">Ekspertiz Rehberi</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Oto Ekspertiz Raporu Nasıl Okunur? Değişen ve Boyalı Parçalar Ne Anlama Gelir?</h2>
+                        <div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 6 Dk Okuma Süresi</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> AI İlan Editörü</span>
+                        </div>
+                    </header>
+                    
+                    <div class="space-y-4 text-sm md:text-base leading-relaxed text-on-surface/90">
+                        <p>
+                            Oto ekspertiz raporu, ikinci el bir otomobilin mevcut durumunun röntgenini çeken teknik bir belgedir. Ancak rapordaki teknik terimler, grafikler ve renk kodları otomobil uzmanı olmayan kişiler için kafa karıştırıcı olabilir. Doğru kararı vermek için rapordaki kritik bölümleri doğru yorumlamayı öğrenmek gerekir.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Kaporta-Boya Bölümü ve Renklerin Dili</h3>
+                        <p>
+                            Raporun en çok incelenen kısmı genellikle kaporta şemasıdır. Bu şemada aracın gövdesindeki her parça analiz edilerek belirli renklerle veya kısaltmalarla işaretlenir:
+                        </p>
+                        <ul class="list-disc pl-5 space-y-1 text-on-surface/85">
+                            <li><strong>Orijinal (Genelde Yeşil):</strong> Parçanın üzerinde fabrikasyon boya dışında ekstra bir boya veya işlem olmadığını gösterir.</li>
+                            <li><strong>Boyalı (Genelde Sarı veya Mavi):</strong> Parçanın çizik, sürtme veya hafif kaza sonucu yeniden boyandığını ifade eder. Mikron değeri ölçülerek boyanın yüzeysel mi yoksa macunlu mu olduğu anlaşılır.</li>
+                            <li><strong>Lokal Boyalı:</strong> Parçanın tamamının değil, sadece belirli bir bölgesinin boyandığını gösterir. Genellikle büyük bir değer kaybına yol açmaz.</li>
+                            <li><strong>Değişmiş (Genelde Kırmızı):</strong> Orijinal parçanın hasar sonucu sökülüp yerine yeni bir parçanın takıldığını belirtir.</li>
+                        </ul>
+                        <h3 class="text-white font-bold text-lg mt-4">Kritik Noktalar: Şase, Podye ve Direkler</h3>
+                        <p>
+                            Kaportadaki sıradan çamurluk veya kapı değişimleri aracın güvenliğini doğrudan etkilemez ancak aracın iskeletini oluşturan **şaseler, podyeler, tavan ve kapı direkleri** gibi taşıyıcı elemanlarda kaynak, düzeltme veya boya olması, aracın geçmişte çok büyük bir kaza geçirdiğini ve orijinal mukavemetini kaybettiğini gösterir. Bu tür araçlar yüksek hızlarda veya olası bir başka kazada yeterli korumayı sağlayamazlar.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Motor, Şanzıman ve Dyno Testi</h3>
+                        <p>
+                            Dyno (Dinamometre) testi motorun tekerleklere aktardığı gücü ölçer ve fabrikasyon gücüne kıyasla yüzde kaç performans verdiğini raporlar. Bununla birlikte modern ekspertizlerde OBD cihazı ile araca bağlanılarak beynindeki elektronik arıza kodları taranır. Şanzıman kaçakları, yağ yakma durumları ve süspansiyon sistemindeki aşınma oranları da raporda detaylıca yer alır. Raporu okurken sadece kaportaya odaklanmamalı, mekanik aksamın çıkarabileceği masrafları da incelemelisiniz.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- ARTICLE 3 -->
+                <article id="rehber-emlak-hukuk" class="glass-panel p-8 rounded-2xl border border-white/10 space-y-6 text-left">
+                    <header class="space-y-2">
+                        <span class="px-3 py-1 bg-primary-container/20 text-primary border border-primary/30 rounded-full text-xs font-semibold">Emlak Rehberi</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Emlak Satın Alırken Karşılaşılabilecek Hukuki Tuzaklar ve Çözümleri</h2>
+                        <div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 4 Dk Okuma Süresi</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> AI İlan Editörü</span>
+                        </div>
+                    </header>
+                    
+                    <div class="space-y-4 text-sm md:text-base leading-relaxed text-on-surface/90">
+                        <p>
+                            Gayrimenkul yatırımları, bireylerin hayatları boyunca yaptıkları en yüksek bütçeli işlemlerden biridir. Ancak emlak alım sürecindeki yasal eksiklikler ve kontrol edilmeyen detaylar, sonradan içinden çıkılması zor hukuki uyuşmazlıklara ve ciddi maddi kayıplara neden olabilir. Güvenli bir emlak alımı için yasal engelleri önceden tespit etmek şarttır.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Tapu Sicilindeki Şerh ve İpoteklerin Kontrolü</h3>
+                        <p>
+                            Beğendiğiniz dairenin tapu senedine bakmak tek başına yeterli değildir. İlgili Tapu Müdürlüğü'ne giderek veya Web Tapu sistemi üzerinden gayrimenkulün üzerindeki güncel kayıtları incelemelisiniz. Tapu kütüğünde yer alan ipotek, haciz, aile konutu şerhi veya satış vaadi sözleşmesi gibi kısıtlamalar, evi satın aldıktan sonra yasal olarak başınızı ağrıtabilir. Üzerinde haciz olan bir mülkün satışı noter veya tapu dairesinde bloke edilebilir ya da borç yükü üzerinize kalabilir.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Ruhsat ve İmar Durumu Sorgulama</h3>
+                        <p>
+                            Satın alacağınız binanın belediyedeki imar dosyasını inceleyin. Binanın yapı ruhsatı ve en önemlisi iskân belgesinin (Yapı Kullanım İzin Belgesi) olup olmadığını kontrol edin. İskânı olmayan binalar yasal olarak "inşaat" statüsünde görünür; elektrik, su ve doğalgaz abonelikleri şantiye tarifesi üzerinden ücretlendirilebilir. Ayrıca projeye aykırı olarak sonradan eklenmiş kaçak katlar veya genişletilmiş alanlar, ileride belediye tarafından yıkım kararı veya para cezası ile karşılaşmanıza sebep olabilir.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Hisseli Tapu ve Önalım Hakkı Riski</h3>
+                        <p>
+                            Satın alacağınız gayrimenkulün müstakil tapu mu yoksa hisseli tapu mu olduğunu kesinleştirin. Hisseli tapularda, diğer hissedarların yasal olarak "şufa" (önalım) hakkı bulunur. Diğer ortaklar, hissenizi üçüncü bir kişiye sattığınızda aynı bedeli ödeyerek mülkü öncelikli olarak satın alma hakkına sahiptir. Bu tür durumlarda diğer hissedarlardan yazılı olarak önalım hakkından feragat ettiklerine dair noter onaylı beyan almak en güvenli yoldur.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- ARTICLE 4 -->
+                <article id="rehber-konut-kredisi" class="glass-panel p-8 rounded-2xl border border-white/10 space-y-6 text-left">
+                    <header class="space-y-2">
+                        <span class="px-3 py-1 bg-primary-container/20 text-primary border border-primary/30 rounded-full text-xs font-semibold">Finans Rehberi</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Konut Kredisi (Emlak Kredisi) Alırken Bilmeniz Gereken 5 Kritik Madde</h2>
+                        <div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 4 Dk Okuma Süresi</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> AI İlan Editörü</span>
+                        </div>
+                    </header>
+                    
+                    <div class="space-y-4 text-sm md:text-base leading-relaxed text-on-surface/90">
+                        <p>
+                            Kendi evine sahip olmak isteyen milyonlarca insan için konut kredileri en önemli finansman kaynağıdır. Ancak uzun vadeli borçlanma anlamına gelen konut kredisini kullanmadan önce, sadece aylık taksit tutarlarına değil, kredinin toplam maliyetine ve ek masraflarına dikkat etmek gerekir.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">1. Toplam Maliyet Oranı ve Faiz Yapısı</h3>
+                        <p>
+                            Bankaların reklamlarında öne çıkardığı aylık faiz oranı tek başına karar kriteri olmamalıdır. Yasal olarak bankaların tüketiciye sunmak zorunda olduğu "Yıllık Toplam Maliyet Oranı"nı inceleyin. Bu oran; faiz, tahsis ücreti, ekspertiz ücreti, ipotek tesis ücreti ve zorunlu sigortalar dahil olmak üzere cebinizden çıkacak gerçek yıllık maliyeti gösterir.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">2. Ekspertiz Değeri ve Kredi Limiti</h3>
+                        <p>
+                            Bankanın yönlendirdiği bağımsız ekspertiz uzmanı, satın alacağınız evin piyasa değerini belirler. Bankalar genellikle bu ekspertiz değerinin belirli bir oranına kadar (örneğin %70-%80) kredi kullandırırlar. Satış fiyatı üzerinden değil, ekspertiz raporundaki değer üzerinden kredi verileceğini bilerek peşinatınızı buna göre ayarlamalısınız.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">3. Sigorta Paketleri ve Esneklik</h3>
+                        <p>
+                            Konut kredisi kullanımı sırasında DASK (Doğal Afet Sigortası) zorunludur. Ancak bankalar genellikle hayat sigortası, konut sigortası ve tapu güvenliği sigortası gibi ek paketleri de yaptırmanızı talep eder. Bu sigortaların prim tutarlarını ve her yıl yenilenme maliyetlerini öğrenin; yasal olarak sigortaları farklı acentelerden yaptırıp bankaya sunma hakkınız olduğunu unutmayın.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">4. Erken Ödeme ve Kapatma Cezası</h3>
+                        <p>
+                            Gelecekte elinize toplu bir para geçtiğinde veya gelirinizi artırdığınızda krediyi vadesinden önce kapatmak isteyebilirsiniz. Sabit faizli konut kredilerinde, borcun kalan anaparası üzerinden yasal olarak erken ödeme tazminatı (kapatma cezası) uygulanır. Bu oran kalan vadeye göre %1 ile %2 arasında değişir. Sözleşmeyi imzalarken bu maddeleri detaylıca okuyun.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- ARTICLE 5 -->
+                <article id="rehber-yapay-zeka" class="glass-panel p-8 rounded-2xl border border-white/10 space-y-6 text-left">
+                    <header class="space-y-2">
+                        <span class="px-3 py-1 bg-primary-container/20 text-primary border border-primary/30 rounded-full text-xs font-semibold">Teknoloji & Pazarlama</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Yapay Zeka ile Etkili Sahibinden İlanı Nasıl Yazılır? (Hızlı Satış Sırları)</h2>
+                        <div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 5 Dk Okuma Süresi</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> AI İlan Editörü</span>
+                        </div>
+                    </header>
+                    
+                    <div class="space-y-4 text-sm md:text-base leading-relaxed text-on-surface/90">
+                        <p>
+                            İnternet üzerinden emlak veya araç satarken potansiyel alıcıların dikkatini çekmek için sadece kaliteli fotoğraflar yetmez. Arama motorlarında (sahibinden, arabam vb.) ilanınızın üst sıralara çıkması ve tıklanması için ikna edici, detaylı ve doğru anahtar kelimelerle zenginleştirilmiş bir ilan açıklaması yazmanız gerekir. Yapay zeka teknolojileri, bu süreci saniyeler içinde profesyonelce yönetmenize olanak tanır.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Alıcı Psikolojisini Hedefleyen Başlıklar</h3>
+                        <p>
+                            Yapay zeka modelleri, ilan başlıklarında doğrudan alıcıların arattığı kelimeleri kullanır. Örneğin sıradan bir "Satılık BMW 320d" başlığı yerine "Hatasız Boyasız Yetkili Servis Bakımlı BMW 320d M-Sport" gibi detayları öne çıkaran başlıklar arama sonuçlarında tıklanma oranını katlar. Emlak ilanlarında ise "Kadıköy'de Metroya 2 Dakika Mesafede İskanlı Masrafsız 3+1 Daire" gibi konumsal avantajları başlığa taşır.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Detaylı ve Kolay Okunabilir Açıklama Metinleri</h3>
+                        <p>
+                            İnternet kullanıcıları çok uzun ve paragraf halindeki yazıları okumaktan kaçınır. Yapay zeka asistanları, ilan metinlerini başlıklar, bullet pointler (madde işaretleri) ve kalın yazılmış kelimelerle yapılandırarak göz yormayan bir düzen sunar. Teknik özellikler (oda sayısı, yakıt tüketimi, bina yaşı vb.) ile duygusal değerler (ferah manzara, sessiz sokak, prestijli site) arasında mükemmel bir denge kurar.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">SEO ve Anahtar Kelime Optimizasyonu</h3>
+                        <p>
+                            Yapay zeka destekli ilan hazırlama araçları, alıcıların arama kutusuna yazabileceği "krediye uygun satılık", "hasarsız takasa açık", "sahibinden acil satılık emlak" gibi popüler arama kalıplarını ilan metninin içine doğal bir şekilde entegre eder. Bu sayede ilanınız platformun algoritması tarafından daha alakalı bulunarak üst sıralara taşınır ve daha fazla kişiye ulaşır.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- ARTICLE 6 -->
+                <article id="rehber-deger-kaybi" class="glass-panel p-8 rounded-2xl border border-white/10 space-y-6 text-left">
+                    <header class="space-y-2">
+                        <span class="px-3 py-1 bg-primary-container/20 text-primary border border-primary/30 rounded-full text-xs font-semibold">Hukuk & Otomobil</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Araç Değer Kaybı Nedir ve Nasıl Hesaplanır? Hasar Sonrası Haklarınız</h2>
+                        <div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 4 Dk Okuma Süresi</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> AI İlan Editörü</span>
+                        </div>
+                    </header>
+                    
+                    <div class="space-y-4 text-sm md:text-base leading-relaxed text-on-surface/90">
+                        <p>
+                            Trafikte meydana gelen kazalar sonrasında araçlar onarılsa dahi, geçmişindeki hasar kaydı nedeniyle piyasa değerinde bir düşüş yaşanır. Yasal olarak "araç değer kaybı" olarak adlandırılan bu durum, kazada kusuru bulunmayan veya daha az kusurlu olan tarafın karşı tarafın sigortasından talep edebileceği yasal bir haktır.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Değer Kaybı Başvuru Şartları Nelerdir?</h3>
+                        <p>
+                            Bir kazada değer kaybı tazminatı talep edebilmek için belirli yasal şartların sağlanması gerekir:
+                        </p>
+                        <ul class="list-disc pl-5 space-y-1 text-on-surface/85">
+                            <li><strong>Kusursuzluk Oranı:</strong> Kazada tamamen kusurlu olan taraf değer kaybı talep edemez. Karşı tarafın en azından kısmen kusurlu olması (örneğin %50, %75 veya %100) gerekir.</li>
+                            <li><strong>Zaman Aşımı:</strong> Araç değer kaybı talepleri, kazanın gerçekleştiği tarihten itibaren **2 yıl** içinde yapılmalıdır. Bu süre geçtikten sonra hak talep edilemez.</li>
+                            <li><strong>Daha Önce İşlem Görmemiş Parçalar:</strong> Hasar alan parçaların kaza öncesinde orijinal olması gerekir. Daha önce başka bir kazada değişmiş veya boyanmış bir parçanın tekrar hasar alması durumunda değer kaybı hesaplanmaz.</li>
+                        </ul>
+                        <h3 class="text-white font-bold text-lg mt-4">Değer Kaybı Nasıl Hesaplanır?</h3>
+                        <p>
+                            Hesaplama işlemi Sigorta Tahkim Komisyonu ve eksperler tarafından belirlenen standart formüllerle yapılır. Hesaplamada aracın kilometresi, üretim yılı (yaşı), marka ve modeli, pazar hareketliliği, hasar gören parçaların niteliği (metal, plastik, taşıyıcı iskelet vb.) ve işçilik kalitesi gibi birçok kriter göz önünde bulundurulur. Başvuru için kaza tespit tutanağı, eksper raporu, hasarlı araç fotoğrafları ve servis faturaları ile birlikte karşı tarafın Trafik Sigortasına (ZSMM) yazılı başvuru yapılmalıdır.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- ARTICLE 7 -->
+                <article id="rehber-tapu-devir" class="glass-panel p-8 rounded-2xl border border-white/10 space-y-6 text-left">
+                    <header class="space-y-2">
+                        <span class="px-3 py-1 bg-primary-container/20 text-primary border border-primary/30 rounded-full text-xs font-semibold">Tapu İşlemleri</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Tapu Devir İşlemleri Rehberi: Tapu Harcı ve Gerekli Belgeler</h2>
+                        <div class="flex items-center gap-4 text-xs text-on-surface-variant/70">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 5 Dk Okuma Süresi</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> AI İlan Editörü</span>
+                        </div>
+                    </header>
+                    
+                    <div class="space-y-4 text-sm md:text-base leading-relaxed text-on-surface/90">
+                        <p>
+                            Emlak alım satım sürecinin resmi olarak tamamlandığı ve mülkiyetin yeni sahibine geçtiği yer Tapu Müdürlüğü'dür. Tapu devir işlemleri sırasında zaman kaybetmemek ve yasal bir hata yapmamak için gerekli belgeleri önceden hazırlamak ve mali yükümlülükleri bilmek gerekir.
+                        </p>
+                        <h3 class="text-white font-bold text-lg mt-4">Tapu Başvurusu İçin Gerekli Belgeler</h3>
+                        <p>
+                            Başvuru işlemi artık e-Devlet entegrasyonlu Web Tapu sistemi üzerinden online olarak kolayca yapılabilmektedir. Tapu randevusu öncesinde hem alıcı hem satıcı tarafın şu belgeleri hazırlaması gerekir:
+                        </p>
+                        <ul class="list-disc pl-5 space-y-1 text-on-surface/85">
+                            <li>Satılacak gayrimenkulün tapu fotokopisi veya ada/parsel bilgileri.</li>
+                            <li>Alıcı ve satıcının kimlik asılları ve fotokopileri.</li>
+                            <li>İlgili belediyeden alınmış gayrimenkulün cari yıla ait **"Emlak Beyan Değeri" (Rayiç Değer)** belgesi.</li>
+                            <li>Zorunlu Deprem Sigortası (DASK) poliçesi.</li>
+                            <li>Vekaletname ile işlem yapılacaksa, noter onaylı vekaletname aslı.</li>
+                        </ul>
+                        <h3 class="text-white font-bold text-lg mt-4">Tapu Harcı ve Döner Sermaye Bedeli</h3>
+                        <p>
+                            Tapu işlemlerinin en önemli mali boyutu tapu harcı ödemesidir. Yasal olarak satış bedelinin **%4'ü** oranında tapu harcı ödenir. Kanuna göre bu harç alıcı ve satıcı arasında eşit olarak (%2 alıcı, %2 satıcı) paylaşılır, ancak taraflar kendi aralarında anlaşarak harcın tamamını tek bir tarafın ödemesini de kararlaştırabilirler. Tapu harcı, beyan edilen satış bedeli üzerinden hesaplanır. Ancak bu bedelin belediyenin belirlediği rayiç bedelin altında olmaması gerekir. Aksi takdirde vergi dairelerince geriye dönük cezalı tarhiyat yapılabilir. Harç dışında her yıl belirlenen cüzi bir döner sermaye hizmet bedeli de ödenir.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0e0e11] border-t border-outline-variant/30 py-8 text-sm text-on-surface-variant/70 text-center">
+        <div class="max-w-[1200px] mx-auto px-6 space-y-4">
+            <p>© 2026 AI İlan. Tüm hakları saklıdır.</p>
+            <div class="flex justify-center gap-6">
+                <a href="index.html" class="hover:text-primary transition-colors">Ana Sayfa</a>
+                <a href="dashboard.html" class="hover:text-primary transition-colors">Çalışma Paneli</a>
+                <a href="mailto:info@aiilan.com" class="hover:text-primary transition-colors">İletişim: info@aiilan.com</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

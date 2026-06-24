@@ -1,21 +1,235 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html class="dark" lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI İlan - Akıllı İlan Asistanı</title>
+    <title>AI İlan - Yapay Zeka Destekli Sahibinden İlan Hazırlama Asistanı</title>
+    <meta name="description" content="Sahibinden ve Arabam uyumlu emlak, oto galeri ilanlarını yapay zeka ile saniyeler içinde hazırlayın. Fotoğrafları yükleyin, detayları dokunarak seçin ve profesyonel ilan metniniz hazır olsun!">
     <!-- Google AdSense Auto Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2046620612806818"
          crossorigin="anonymous"></script>
-    <!-- Redirect directly to premium workspace dashboard.html page -->
-    <script>
-        window.location.replace("dashboard.html");
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700;800&amp;family=Geist:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "primary": "#ffb2ba",
+              "primary-container": "#ff4f73",
+              "secondary": "#d1bcff",
+              "surface": "#131316",
+              "surface-container": "#1f1f22",
+              "on-surface": "#e4e1e6",
+              "on-surface-variant": "#e5bdc0",
+              "outline-variant": "#5c3f42"
+            }
+          }
+        }
+      }
     </script>
+    <style>
+        body {
+            background-color: #0F0F12;
+            color: #e4e1e6;
+            font-family: 'Hanken Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+        .glow-button {
+            background: linear-gradient(90deg, #ff4f73, #ffb2ba);
+            box-shadow: 0 0 15px rgba(255, 79, 115, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(255, 79, 115, 0.5);
+            transform: scale(1.02);
+        }
+        .ai-gradient-border {
+            position: relative;
+            border-radius: 8px;
+        }
+        .ai-gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border-radius: 9px;
+            padding: 1px;
+            background: linear-gradient(45deg, #ffb2ba, #00dbe7);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+    </style>
 </head>
-<body style="background:#0F0F12; color:white; font-family:sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;">
-    <div style="text-align:center;">
-        <h2 style="margin-bottom:10px;">AI İlan Yükleniyor...</h2>
-        <p style="color:#888; font-size:14px;">Lütfen bekleyin, premium çalışma paneline yönlendiriliyorsunuz.</p>
-    </div>
+<body class="bg-surface text-on-surface">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm fixed top-0 left-0 right-0 z-50 w-full h-16 md:h-20">
+        <div class="flex justify-between items-center w-full px-6 md:px-12 h-full max-w-[1200px] mx-auto">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="text-2xl font-bold text-primary tracking-tighter flex items-center gap-2 no-underline">
+                    <span class="material-symbols-outlined text-3xl">auto_awesome</span>
+                    AI İlan
+                </a>
+            </div>
+            <div class="flex items-center gap-6 font-medium text-sm">
+                <a href="blog.html" class="text-on-surface-variant hover:text-white transition-colors">Blog / Rehber</a>
+                <a href="dashboard.html" class="bg-primary-container text-white px-5 py-2 rounded-lg font-bold text-xs hover:bg-primary-container/80 transition-all">
+                    Çalışma Paneline Git
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 px-6 max-w-[1200px] mx-auto text-center md:pt-40 md:pb-24">
+        <div class="space-y-6 max-w-3xl mx-auto">
+            <span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs font-bold uppercase tracking-wider inline-block">Yapay Zeka Destekli İlan Asistanı</span>
+            <h1 class="text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight">
+                Saniyeler İçinde <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Profesyonel İlanlar</span> Hazırlayın
+            </h1>
+            <p class="text-on-surface-variant text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                Fotoğrafları yükleyin, detayları klavye kullanmadan dokunarak seçin; yapay zeka Sahibinden ve Arabam platformları ile tam uyumlu, alıcı çeken açıklama metinlerini anında oluştursun.
+            </p>
+            <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="dashboard.html" class="glow-button text-white px-8 py-4 rounded-xl font-bold text-base transition-all text-center">
+                    Hemen İlan Hazırlayın
+                </a>
+                <a href="blog.html" class="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-bold text-base transition-all text-center">
+                    Satış Rehberini Oku
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 px-6 max-w-[1200px] mx-auto border-t border-white/5">
+        <h2 class="text-2xl md:text-4xl font-bold text-white text-center mb-12 tracking-tight">Nasıl Çalışır ve Neler Sunar?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="glass-panel p-8 rounded-2xl space-y-4 text-left">
+                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary text-2xl">keyboard_off</span>
+                </div>
+                <h3 class="text-lg font-bold text-white">Sıfır Klavye Girişi</h3>
+                <p class="text-on-surface-variant text-sm leading-relaxed">
+                    Emlak ve otomobil detaylarını klavyeden yazmak yerine, özel olarak optimize edilmiş akıllı butonlar ve seçim çipleri sayesinde saniyeler içinde belirleyin.
+                </p>
+            </div>
+            <!-- Card 2 -->
+            <div class="glass-panel p-8 rounded-2xl space-y-4 text-left">
+                <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary text-2xl">description</span>
+                </div>
+                <h3 class="text-lg font-bold text-white">PDF Ekspertiz Analizi</h3>
+                <p class="text-on-surface-variant text-sm leading-relaxed">
+                    Oto ekspertiz raporunun PDF belgesini yükleyin; yapay zeka boyalı/değişen parçaları, tramer hasarlarını ve motor kondisyonunu saniyeler içinde analiz edip raporlasın.
+                </p>
+            </div>
+            <!-- Card 3 -->
+            <div class="glass-panel p-8 rounded-2xl space-y-4 text-left">
+                <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+                    <span class="material-symbols-outlined text-emerald-400 text-2xl">auto_awesome</span>
+                </div>
+                <h3 class="text-lg font-bold text-white">Alıcı Odaklı SEO Metinleri</h3>
+                <p class="text-on-surface-variant text-sm leading-relaxed">
+                    Arama motoru algoritmalarına uyumlu, satışı hızlandıran, doğru anahtar kelimeleri içeren ve göz yormayan düzenli ilan açıklamalarını tek tıkla kopyalayın.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Blog Posts Section (AdSense SEO Crawling target) -->
+    <section class="py-16 px-6 max-w-[1200px] mx-auto border-t border-white/5">
+        <div class="flex justify-between items-end mb-12">
+            <div class="text-left">
+                <h2 class="text-2xl md:text-4xl font-bold text-white tracking-tight">Oto & Emlak Satış Akademisi</h2>
+                <p class="text-on-surface-variant text-sm mt-2">Piyasa dinamikleri, hukuki işlemler ve başarılı satış ipuçları.</p>
+            </div>
+            <a href="blog.html" class="text-primary font-bold hover:underline text-sm flex items-center gap-1">
+                Tümünü Gör <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Article Preview 1 -->
+            <a href="blog.html#rehber-ikinci-el" class="glass-panel p-6 rounded-2xl hover:bg-white/5 transition-all text-left block group">
+                <span class="text-xs text-primary font-semibold tracking-wider uppercase">Otomobil Rehberi</span>
+                <h3 class="text-lg font-bold text-white mt-2 group-hover:text-primary transition-colors line-clamp-2">2. El Araç Alırken Nelere Dikkat Edilmeli? (Adım Adım Rehber)</h3>
+                <p class="text-on-surface-variant/80 text-xs mt-3 line-clamp-3 leading-relaxed">
+                    İkinci el araç alırken mağdur olmamak için bütçe planlamasından, hasar ve kilometre sorgulamaya, fiziksel kontrolden güvenli ödeme sistemlerine kadar dikkat etmeniz gerekenler...
+                </p>
+                <div class="mt-4 text-xs text-primary font-bold flex items-center gap-1">
+                    Devamını Oku <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </div>
+            </a>
+
+            <!-- Article Preview 2 -->
+            <a href="blog.html#rehber-ekspertiz" class="glass-panel p-6 rounded-2xl hover:bg-white/5 transition-all text-left block group">
+                <span class="text-xs text-primary font-semibold tracking-wider uppercase">Ekspertiz Rehberi</span>
+                <h3 class="text-lg font-bold text-white mt-2 group-hover:text-primary transition-colors line-clamp-2">Oto Ekspertiz Raporu Nasıl Okunur? Değişen ve Boyalı Parçalar Ne Anlama Gelir?</h3>
+                <p class="text-on-surface-variant/80 text-xs mt-3 line-clamp-3 leading-relaxed">
+                    Ekspertiz raporundaki yeşil, sarı ve kırmızı renklerin dili. Şase, podye, direk ve tavan gibi kritik parçalardaki işlemlerin araç güvenliğine etkisi ve dyno motor testleri...
+                </p>
+                <div class="mt-4 text-xs text-primary font-bold flex items-center gap-1">
+                    Devamını Oku <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </div>
+            </a>
+
+            <!-- Article Preview 3 -->
+            <a href="blog.html#rehber-emlak-hukuk" class="glass-panel p-6 rounded-2xl hover:bg-white/5 transition-all text-left block group">
+                <span class="text-xs text-primary font-semibold tracking-wider uppercase">Emlak Rehberi</span>
+                <h3 class="text-lg font-bold text-white mt-2 group-hover:text-primary transition-colors line-clamp-2">Emlak Satın Alırken Karşılaşılabilecek Hukuki Tuzaklar ve Çözümleri</h3>
+                <p class="text-on-surface-variant/80 text-xs mt-3 line-clamp-3 leading-relaxed">
+                    Tapu sicil kaydı üzerindeki ipotek, haciz ve şerh kontrolleri. İskân (yapı kullanım izin belgesi) durumu, kaçak kat riskleri ve hisseli tapulardaki önalım hakkı uyuşmazlıkları...
+                </p>
+                <div class="mt-4 text-xs text-primary font-bold flex items-center gap-1">
+                    Devamını Oku <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-6 max-w-[1200px] mx-auto text-center border-t border-white/5">
+        <div class="glass-panel p-10 md:p-16 rounded-3xl space-y-6 relative overflow-hidden">
+            <h2 class="text-3xl md:text-5xl font-bold text-white tracking-tight">Hemen İlanınızı Oluşturun</h2>
+            <p class="text-on-surface-variant max-w-xl mx-auto text-sm md:text-base leading-relaxed">
+                Yapay zekanın gücünü kullanarak emlak ve araç ilanlarınızı en profesyonel şekilde hazırlayın, alıcıların dikkatini anında çekin.
+            </p>
+            <div class="pt-4">
+                <a href="dashboard.html" class="glow-button text-white px-10 py-4 rounded-xl font-bold text-base transition-all inline-block">
+                    Çalışma Panelini Aç
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#0e0e11] border-t border-outline-variant/30 py-12 text-sm text-on-surface-variant/70 text-center">
+        <div class="max-w-[1200px] mx-auto px-6 space-y-6">
+            <div class="flex justify-center gap-8 flex-wrap">
+                <a href="index.html" class="hover:text-primary transition-colors">Ana Sayfa</a>
+                <a href="dashboard.html" class="hover:text-primary transition-colors">Çalışma Paneli</a>
+                <a href="blog.html" class="hover:text-primary transition-colors">Satış Akademisi (Blog)</a>
+                <a href="mailto:info@aiilan.com" class="hover:text-primary transition-colors">Bize Ulaşın</a>
+            </div>
+            <p>© 2026 AI İlan. Tüm hakları saklıdır.</p>
+            <p class="text-xs text-on-surface-variant/40 max-w-md mx-auto leading-relaxed">
+                Bu platform, kullanıcılara yapay zeka desteğiyle ilan açıklamaları kurgulamasında yardımcı olan bir asistan yazılımıdır.
+            </p>
+        </div>
+    </footer>
+
 </body>
 </html>
