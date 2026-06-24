@@ -663,6 +663,7 @@ function initEventListeners() {
         uploadZone.addEventListener('click', () => { if (fileInput) fileInput.click(); });
     }
     if (fileInput) {
+        fileInput.addEventListener('click', (e) => e.stopPropagation());
         fileInput.addEventListener('change', handleFileSelect);
     }
 
@@ -705,6 +706,7 @@ function initEventListeners() {
     // Appraisal PDF Upload Olayları
     if (appraisalUploadZone) {
         appraisalUploadZone.addEventListener('click', () => appraisalFileInput.click());
+        appraisalFileInput.addEventListener('click', (e) => e.stopPropagation());
         appraisalFileInput.addEventListener('change', handleAppraisalFileSelect);
 
         // Drag and Drop
