@@ -203,6 +203,11 @@
         }
         .hide { display: none !important; }
     </style>
+    <script>
+        window.addEventListener('error', function(e) {
+            alert("Sistem hatası yakalandı:\n" + e.message + "\nDosya: " + e.filename + "\nSatır: " + e.lineno);
+        });
+    </script>
 </head>
 <body class="bg-surface">
 
@@ -374,7 +379,7 @@
                         <button id="btn-clear-photos" class="hidden text-xs text-red-400 hover:underline">Temizle</button>
                     </div>
                     
-                    <div id="upload-zone" class="border-2 border-dashed border-outline-variant/40 rounded-xl p-10 flex flex-col items-center justify-center bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+                    <div id="upload-zone" onclick="document.getElementById('file-input').click()" class="border-2 border-dashed border-outline-variant/40 rounded-xl p-10 flex flex-col items-center justify-center bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
                         <span class="material-symbols-outlined text-5xl text-on-surface-variant/50 group-hover:text-primary transition-colors mb-4">cloud_upload</span>
                         <p class="font-label-sm text-on-surface-variant">Sürükle ve bırak veya <span class="text-primary font-bold">Göz At</span></p>
                         <p class="text-[10px] text-on-surface-variant/40 mt-2 uppercase tracking-widest">PNG, JPG (En fazla 10 fotoğraf)</p>
@@ -626,7 +631,7 @@
                         </p>
                         
                         <!-- PDF Upload Zone -->
-                        <div id="appraisal-upload-zone" class="border-2 border-dashed border-outline-variant/40 rounded-xl p-10 flex flex-col items-center justify-center bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+                        <div id="appraisal-upload-zone" onclick="document.getElementById('appraisal-file-input').click()" class="border-2 border-dashed border-outline-variant/40 rounded-xl p-10 flex flex-col items-center justify-center bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
                             <span class="material-symbols-outlined text-5xl text-on-surface-variant/50 group-hover:text-primary transition-colors mb-4">description</span>
                             <p class="font-label-sm text-on-surface-variant">Ekspertiz PDF Raporunu Sürükleyin veya <span class="text-primary font-bold">Seçiniz</span></p>
                             <p class="text-[10px] text-on-surface-variant/40 mt-2 uppercase tracking-widest">Sadece PDF (Maks. 10MB)</p>
@@ -901,7 +906,7 @@
     </div>
 
     <!-- MAIN JAVASCRIPT -->
-    <script src="app.js?v=1.4.2"></script>
+    <script src="app.js?v=1.4.3"></script>
     <script>
         // Workspace Switch logic
         window.switchNiche = function(niche) {
