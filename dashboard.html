@@ -379,7 +379,7 @@
                         <p class="font-label-sm text-on-surface-variant">Sürükle ve bırak veya <span class="text-primary font-bold">Göz At</span></p>
                         <p class="text-[10px] text-on-surface-variant/40 mt-2 uppercase tracking-widest">PNG, JPG (En fazla 10 fotoğraf)</p>
                     </div>
-                    <input type="file" id="file-input" multiple accept="image/*" class="hidden">
+                    <input type="file" id="file-input" multiple accept="image/*" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; opacity: 0;">
                     
                     <!-- Previews grid -->
                     <div id="photo-grid" class="grid grid-cols-4 gap-4 mt-6">
@@ -631,7 +631,7 @@
                             <p class="font-label-sm text-on-surface-variant">Ekspertiz PDF Raporunu Sürükleyin veya <span class="text-primary font-bold">Seçiniz</span></p>
                             <p class="text-[10px] text-on-surface-variant/40 mt-2 uppercase tracking-widest">Sadece PDF (Maks. 10MB)</p>
                         </div>
-                        <input type="file" id="appraisal-file-input" accept="application/pdf" class="hidden">
+                        <input type="file" id="appraisal-file-input" accept="application/pdf" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; opacity: 0;">
 
                         <!-- PDF Preview -->
                         <div id="appraisal-file-preview" class="hidden flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
@@ -901,7 +901,7 @@
     </div>
 
     <!-- MAIN JAVASCRIPT -->
-    <script src="app.js?v=1.3.4"></script>
+    <script src="app.js?v=1.4.2"></script>
     <script>
         // Workspace Switch logic
         window.switchNiche = function(niche) {

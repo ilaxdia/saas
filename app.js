@@ -124,7 +124,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     startBackgroundSlideshow();
 
     // Lucide Icons Initialization
-    lucide.createIcons();
+    try {
+        if (typeof lucide !== 'undefined' && lucide && typeof lucide.createIcons === 'function') {
+            lucide.createIcons();
+        }
+    } catch (e) {
+        console.warn("Lucide icons failed to initialize:", e);
+    }
 
     // Parse URL parameter to automatically switch tabs (from Dashboard links)
     const urlParams = new URLSearchParams(window.location.search);
@@ -660,11 +666,24 @@ function initEventListeners() {
 
     // File Upload Handlers
     if (uploadZone) {
-        uploadZone.addEventListener('click', () => { if (fileInput) fileInput.click(); });
+        uploadZone.addEventListener('click', () => {
+            console.log("Upload zone clicked, triggering file input click.");
+            if (fileInput) {
+                fileInput.click();
+            } else {
+                console.error("fileInput is null!");
+            }
+        });
     }
     if (fileInput) {
-        fileInput.addEventListener('click', (e) => e.stopPropagation());
-        fileInput.addEventListener('change', handleFileSelect);
+        fileInput.addEventListener('click', (e) => {
+            console.log("FileInput click event propagation stopped.");
+            e.stopPropagation();
+        });
+        fileInput.addEventListener('change', (e) => {
+            console.log("FileInput change event fired:", e.target.files);
+            handleFileSelect(e);
+        });
     }
 
     // Drag and Drop Zone
@@ -705,9 +724,22 @@ function initEventListeners() {
 
     // Appraisal PDF Upload Olayları
     if (appraisalUploadZone) {
-        appraisalUploadZone.addEventListener('click', () => appraisalFileInput.click());
-        appraisalFileInput.addEventListener('click', (e) => e.stopPropagation());
-        appraisalFileInput.addEventListener('change', handleAppraisalFileSelect);
+        appraisalUploadZone.addEventListener('click', () => {
+            console.log("Appraisal upload zone clicked, triggering appraisal file input click.");
+            if (appraisalFileInput) {
+                appraisalFileInput.click();
+            } else {
+                console.error("appraisalFileInput is null!");
+            }
+        });
+        appraisalFileInput.addEventListener('click', (e) => {
+            console.log("AppraisalFileInput click event propagation stopped.");
+            e.stopPropagation();
+        });
+        appraisalFileInput.addEventListener('change', (e) => {
+            console.log("AppraisalFileInput change event fired:", e.target.files);
+            handleAppraisalFileSelect(e);
+        });
 
         // Drag and Drop
         ['dragenter', 'dragover'].forEach(eventName => {
