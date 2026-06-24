@@ -107,7 +107,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Load Saved API Key
     if (geminiApiKey) {
         if (apiKeyInput) apiKeyInput.value = geminiApiKey;
-        validateApiKey(geminiApiKey);
+        // Mark it as connected immediately so buttons are active, then validate silently in background
+        updateApiStatus(true);
+        validateApiKeySilent(geminiApiKey);
     } else if (isSystemApiKeyActive) {
         updateApiStatus(true);
     } else {
@@ -304,6 +306,57 @@ async function validateApiKey(key) {
         window.lastApiError = error.message || 'Bağlantı kurulamadı.';
         updateApiStatus(false, 'Bağlantı Hatası');
         return false;
+    }
+}
+
+async function validateApiKeySilent(key) {
+    try {
+        let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: 'Merhaba' }] }],
+                generationConfig: { maxOutputTokens: 5 }
+            })
+        });
+
+        if (response.ok) {
+            selectedGeminiModel = 'gemini-2.5-flash';
+            localStorage.setItem('selected_gemini_model', selectedGeminiModel);
+            updateApiStatus(true);
+            return true;
+        } else {
+            // Try fallback model
+            response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: 'Merhaba' }] }],
+                    generationConfig: { maxOutputTokens: 5 }
+                })
+            });
+
+            if (response.ok) {
+                selectedGeminiModel = 'gemini-1.5-flash';
+                localStorage.setItem('selected_gemini_model', selectedGeminiModel);
+                updateApiStatus(true);
+                return true;
+            } else {
+                // Only disconnect if explicitly unauthorized/bad key (400 or 403)
+                if (response.status === 400 || response.status === 403) {
+                    let errData = {};
+                    try { errData = await response.json(); } catch(e){}
+                    const errMsg = errData.error?.message || response.statusText;
+                    window.lastApiError = errMsg;
+                    updateApiStatus(false, 'Hatalı API Key');
+                    return false;
+                }
+                return true;
+            }
+        }
+    } catch (error) {
+        console.warn('Silent API validation failed due to network issue:', error);
+        return true;
     }
 }
 
