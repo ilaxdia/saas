@@ -2041,7 +2041,12 @@ window.toggleAuthMode = function() {
             </div>
             <div class="space-y-1">
                 <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre</label>
-                <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+                <div class="relative">
+                    <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+                    <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
+                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                    </button>
+                </div>
             </div>
             <button type="submit" class="w-full mt-4 py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all duration-300">
                 Giriş Yap
@@ -2061,16 +2066,39 @@ window.toggleAuthMode = function() {
             </div>
             <div class="space-y-1">
                 <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre</label>
-                <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+                <div class="relative">
+                    <input type="password" id="reg-password" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+                    <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
+                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                    </button>
+                </div>
             </div>
             <div class="space-y-1">
                 <label class="text-[10px] text-on-surface-variant/80 font-bold block">Şifre Tekrar</label>
-                <input type="password" id="reg-password-confirm" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+                <div class="relative">
+                    <input type="password" id="reg-password-confirm" required class="w-full bg-[#1A1A1E] border-white/10 text-xs text-white rounded-[6px] p-2.5 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="••••••••">
+                    <button type="button" onclick="togglePasswordVisibility('reg-password-confirm', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-white flex items-center justify-center bg-transparent border-none cursor-pointer select-none">
+                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                    </button>
+                </div>
             </div>
             <button type="submit" class="w-full mt-4 py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-[6px] text-xs font-bold transition-all duration-300">
                 Kaydet
             </button>
         `;
+    }
+};
+
+window.togglePasswordVisibility = function(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) icon.innerText = 'visibility_off';
+    } else {
+        input.type = 'password';
+        if (icon) icon.innerText = 'visibility';
     }
 };
 
