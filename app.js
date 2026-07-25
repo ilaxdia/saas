@@ -1429,10 +1429,9 @@ window.rotatePhoto = function(index) {
 
 // Check if form is ready for generation
 function checkFormValidation() {
-    const isApiKeyValid = apiStatusIndicator.classList.contains('status-connected');
-    // Enable generation buttons as long as the API Key is active
-    btnGenerates.forEach(btn => {
-        btn.disabled = !isApiKeyValid;
+    const genBtns = document.querySelectorAll('.btn-generate, #btn-generate-main');
+    genBtns.forEach(btn => {
+        btn.disabled = false;
     });
 }
 

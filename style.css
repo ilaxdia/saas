@@ -1755,3 +1755,22 @@ textarea:focus {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Mobile Touch & Pointer Enhancements */
+button, a, input, select, label, .cursor-pointer, [onclick] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Chatbot Mobile Responsiveness */
+@media (max-width: 640px) {
+    #chatbot-window {
+        width: calc(100vw - 32px) !important;
+        right: 16px !important;
+        left: 16px !important;
+        bottom: 84px !important;
+        height: 70vh !important;
+        max-height: 500px !important;
+    }
+}
+
+
